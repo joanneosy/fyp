@@ -47,7 +47,7 @@ public class AddEmployeeServlet extends HttpServlet {
         
         if (!password.equals(confirmPassword)) {
             request.setAttribute("errMsg", "Passwords do not match.");
-            RequestDispatcher view = request.getRequestDispatcher("AddNormalWorkshopStaff.jsp");
+            RequestDispatcher view = request.getRequestDispatcher("AddEmployee.jsp");
             view.forward(request, response);
         } else {
             HttpSession session = request.getSession(true);

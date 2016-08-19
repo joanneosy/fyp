@@ -43,18 +43,19 @@ public class AddWorkshopServlet extends HttpServlet {
             throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
 
-        String name = request.getParameter("name");
-        String address = request.getParameter("address");
-        String postalCode = request.getParameter("postalCode");
-        String email = request.getParameter("email");
+        String name = request.getParameter("name").trim();
+        String address = request.getParameter("address").trim();
+        String postalCode = request.getParameter("postalCode").trim();
+        String email = request.getParameter("email").trim();
         String[] specializeArr = request.getParameterValues("specialize");
-        String description = request.getParameter("description");
+        String description = request.getParameter("description").trim();
 
-        String website = request.getParameter("website");
-        if (!website.contains("http://") && !website.contains("https://")) {
-            website = "http://" + website;
+        String website = request.getParameter("website").trim();
+        if (website.length() != 0) {
+            if (!website.contains("http://") && !website.contains("https://")) {
+                website = "http://" + website;
+            }
         }
-
         String mondayOpen = request.getParameter("mondayOpen");
         String mondayClose = request.getParameter("mondayClose");
         String tuesdayOpen = request.getParameter("tuesdayOpen");
@@ -77,15 +78,25 @@ public class AddWorkshopServlet extends HttpServlet {
         String openingHourFormat = request.getParameter("openingHourFormat");
         double latitude = 0.0;
         double longitude = 0.0;
-        String contact = request.getParameter("contact");
-        String contact2 = request.getParameter("contact2");
+        String contact = request.getParameter("contact").trim();
+        String contact2 = request.getParameter("contact2").trim();
         String location = request.getParameter("location");
-        String brandsCarried = request.getParameter("brandsCarried");
+        String brandsCarried = request.getParameter("brandsCarried").trim();
         String[] categoryArr = request.getParameterValues("category");
-        String remark = request.getParameter("remark");
+        String remark = request.getParameter("remark").trim();
 
         ArrayList<String> errMsg = new ArrayList<String>();
-
+        
+        try {
+            int contactInt = Integer.parseInt(contact);
+            int contact2Int = Integer.parseInt(contact2);
+            if (!contact.substring(0,1).equals("6") || !contact2.substring(0,1).equals("9")) {
+            errMsg.add("Please enter valid contact numbers.");
+            }
+        } catch (NumberFormatException e) {
+            errMsg.add("Please enter valid contact numbers.");
+        }
+        
         String openingHour = "";
         openingHour = "Monday-" + mondayOpen + "-" + mondayClose + ","
                 + "Tuesday-" + tuesdayOpen + "-" + tuesdayClose + ","
@@ -97,9 +108,27 @@ public class AddWorkshopServlet extends HttpServlet {
                 + "Ph-" + phOpen + "-" + phClose + ","
                 + "PhEve-" + phEveOpen + "-" + phEveClose;
 
+        String[] openingHoursArr = openingHour.split(",");
+        for (String s : openingHoursArr) {
+            String[] eachDayArr = s.split("-");
+            if (eachDayArr[1].equals("Closed") || eachDayArr[2].equals("Closed")) {
+                if (!eachDayArr[1].equals(eachDayArr[2])) {
+                    errMsg.add("Please enter valid opening hours.");
+                    break;
+                }
+            } else {
+                int open = Integer.parseInt(eachDayArr[1]);
+                int close = Integer.parseInt(eachDayArr[2]);
+                if (open > close) {
+                    errMsg.add("Please enter valid opening hours.");
+                    break;
+                }
+            }
+        }
+
         String specialize = "";
         if (specializeArr == null) {
-            errMsg.add("No car brands selected.");
+            errMsg.add("Please select at least one specilized car brand.");
         } else {
             specialize = specializeArr[0];
             for (int i = 1; i < specializeArr.length; i++) {
@@ -109,7 +138,7 @@ public class AddWorkshopServlet extends HttpServlet {
 
         String category = "";
         if (categoryArr == null) {
-            errMsg.add("No category selected.");
+            errMsg.add("Please select at least one category.");
         } else {
             category = categoryArr[0];
             for (int i = 1; i < categoryArr.length; i++) {
@@ -121,12 +150,18 @@ public class AddWorkshopServlet extends HttpServlet {
         WorkshopDAO wDAO = new WorkshopDAO();
         String[] latLong = wDAO.retrieveLatLong("Singapore " + postalCode);
         if (latLong == null) {
-            errMsg.add("Invalid address.");
+            errMsg.add("Please enter a valid address.");
         } else {
             latitude = Double.parseDouble(latLong[0]);
             longitude = Double.parseDouble(latLong[1]);
         }
 
+        try {
+            int postalCodeInt = Integer.parseInt(postalCode);
+        } catch (NumberFormatException e) {
+            errMsg.add("Please enter a valid postal code.");
+        }
+            
         if (errMsg.size() == 0) {
             HttpSession session = request.getSession(true);
             WebUser user = (WebUser) session.getAttribute("loggedInUser");
@@ -138,9 +173,9 @@ public class AddWorkshopServlet extends HttpServlet {
                 Workshop ws = wDAO.retrieveWorkshop(email, user.getStaffId(), user.getToken());
                 int wsId = ws.getId();
                 session.setAttribute("workshopId", wsId);
-//                RequestDispatcher view = request.getRequestDispatcher("AddMasterWorkshopStaff.jsp");
-//                view.forward(request, response);
-                response.sendRedirect("AddWorkshopMasterAccount.jsp");
+                RequestDispatcher view = request.getRequestDispatcher("AddWorkshopMasterAccount.jsp");
+                view.forward(request, response);
+                //response.sendRedirect("AddWorkshopMasterAccount.jsp");
             } else {
                 request.setAttribute("errMsg", addErrMsg);
                 request.setAttribute("name", name);

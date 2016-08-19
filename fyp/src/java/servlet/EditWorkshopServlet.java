@@ -42,16 +42,18 @@ public class EditWorkshopServlet extends HttpServlet {
             throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name");
-        String address = request.getParameter("address");
-        String postalCode = request.getParameter("postalCode");
-        String email = request.getParameter("email");
+        String name = request.getParameter("name").trim();
+        String address = request.getParameter("address").trim();
+        String postalCode = request.getParameter("postalCode").trim();
+        String email = request.getParameter("email").trim();
         String[] specializeArr = request.getParameterValues("specialize");
-        String description = request.getParameter("description");
+        String description = request.getParameter("description").trim();
 
-        String website = request.getParameter("website");
-        if (!website.contains("http://") && !website.contains("https://")) {
-            website = "http://" + website;
+        String website = request.getParameter("website").trim();
+        if (website.length() != 0) {
+            if (!website.contains("http://") && !website.contains("https://")) {
+                website = "http://" + website;
+            }
         }
 
         String mondayOpen = request.getParameter("mondayOpen");
@@ -81,29 +83,49 @@ public class EditWorkshopServlet extends HttpServlet {
                 + "Friday-" + fridayOpen + "-" + fridayClose + ","
                 + "Saturday-" + saturdayOpen + "-" + saturdayClose + ","
                 + "Sunday-" + sundayOpen + "-" + sundayClose + ","
-                + "Ph-" + phOpen + "-" + phClose + ","
-                + "PhEve-" + phEveOpen + "-" + phEveClose;
-        System.out.println(openingHour);
+                + "Ph-" + phOpen + "-" + phClose + ",";
+
+        
         String openingHourFormat = request.getParameter("openingHourFormat");
         double latitude = 0.0;
         double longitude = 0.0;
-        String contact = request.getParameter("contact");
-        String contact2 = request.getParameter("contact2");
+        String contact = request.getParameter("contact").trim();
+        String contact2 = request.getParameter("contact2").trim();
         String location = request.getParameter("location");
-        String brandsCarried = request.getParameter("brandsCarried");
+        String brandsCarried = request.getParameter("brandsCarried").trim();
         String[] categoryArr = request.getParameterValues("category");
-        String remark = request.getParameter("remark");
-        String statusStr = request.getParameter("isActive");
-        int status = 1;
-        if (statusStr == null) {
-            status = 0;
-        }
-        String specialize = "";
+        String remark = request.getParameter("remark").trim();
 
         ArrayList<String> errMsg = new ArrayList<String>();
 
+        String[] openingHoursArr = openingHour.split(",");
+        for (String s : openingHoursArr) {
+            String[] eachDayArr = s.split("-");
+            if (eachDayArr[1].equals("Closed") || eachDayArr[2].equals("Closed")) {
+                if (!eachDayArr[1].equals(eachDayArr[2])) {
+                    errMsg.add("Please enter valid opening hours.");
+                    break;
+                }
+            } else {
+                int open = Integer.parseInt(eachDayArr[1]);
+                int close = Integer.parseInt(eachDayArr[2]);
+                if (open > close) {
+                    errMsg.add("Please enter valid opening hours.");
+                    break;
+                }
+            }
+        }
+
+        try {
+            int contactInt = Integer.parseInt(contact);
+            int contact2Int = Integer.parseInt(contact2);
+        } catch (NumberFormatException e) {
+            errMsg.add("Please enter valid contact numbers.");
+        }
+
+        String specialize = "";
         if (specializeArr == null) {
-            errMsg.add("No car brands selected.");
+            errMsg.add("Please select at least one specilized car brand.");
         } else {
             specialize = specializeArr[0];
             for (int i = 1; i < specializeArr.length; i++) {
@@ -113,7 +135,7 @@ public class EditWorkshopServlet extends HttpServlet {
 
         String category = "";
         if (categoryArr == null) {
-            errMsg.add("No category selected.");
+            errMsg.add("Please select at least one category.");
         } else {
             category = categoryArr[0];
             for (int i = 1; i < categoryArr.length; i++) {
@@ -124,10 +146,16 @@ public class EditWorkshopServlet extends HttpServlet {
         WorkshopDAO wDAO = new WorkshopDAO();
         String[] latLong = wDAO.retrieveLatLong("Singapore " + postalCode);
         if (latLong == null) {
-            errMsg.add("Invalid address.");
+            errMsg.add("Please enter a valid address.");
         } else {
             latitude = Double.parseDouble(latLong[0]);
             longitude = Double.parseDouble(latLong[1]);
+        }
+        
+        try {
+            int postalCodeInt = Integer.parseInt(postalCode);
+        } catch (NumberFormatException e) {
+            errMsg.add("Please enter a valid postal code.");
         }
         HttpSession session = request.getSession(true);
         String userType = (String) session.getAttribute("loggedInUserType");
@@ -138,7 +166,7 @@ public class EditWorkshopServlet extends HttpServlet {
             int staffId = user.getStaffId();
             String token = user.getToken();
             ArrayList<String> addErrMsg = wDAO.updateWorkshop(id, email, name, description, website, address + " " + postalCode, openingHour, openingHourFormat,
-                    latitude, longitude, contact, contact2, location, specialize, category, brandsCarried, remark, status, staffId, token);
+                    latitude, longitude, contact, contact2, location, specialize, category, brandsCarried, remark, 1, staffId, token);
             if (addErrMsg.size() == 0) {
                 request.setAttribute("successMsg", "Workshop successfully edited!");
                 RequestDispatcher view = request.getRequestDispatcher("ViewWorkshop.jsp");
