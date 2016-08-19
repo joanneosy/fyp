@@ -26,7 +26,7 @@
         <%            WebUserDAO webUserDAO = new WebUserDAO();
             HashMap<Integer, WebUser> webUserMap = new HashMap<Integer, WebUser>();
             HashMap<Integer, WebUser> adminUserMap = new HashMap<Integer, WebUser>();
-            
+
             WebUser user = (WebUser) session.getAttribute("loggedInUser");
             String userType = (String) session.getAttribute("loggedInUserType");
             int workshopStaffType = user.getStaffType();
@@ -85,58 +85,74 @@
                                     <!-- /tile header -->
 
                                     <!-- tile body -->
-                                    <div class="tile-body nopadding">
+                                    <div class="tile-body no-vpadding">
+                                        <div class="table-responsive">
+                                            <table id="example" class="table table-custom1 table-sortable" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="sortable">Employee ID</th>
+                                                        <th class="sortable">Name</th>
+                                                        <th class="sortable">Email</th>
+                                                        <th class="sortable">Phone Number</th>
+                                                        <th>Edit/Delete</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <%
 
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Employee ID</th>
-                                                    <th>Name</th>
-                                                    <th>Email</th>
-                                                    <th>Phone Number</th>
-                                                    <th>Edit/Delete</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <%
-                                                   
-                                                    Iterator it = webUserMap.entrySet().iterator();
-                                                    //counter for delete id
-                                                    int deleteCounter = 0;
-                                                    while (it.hasNext()) {
-                                                        Map.Entry pair = (Map.Entry) it.next();
-                                                        WebUser staff = (WebUser) pair.getValue();
-                                                        String email = staff.getEmail();
-                                                        int idToDelete = staff.getStaffId();
-                                                        String name = staff.getName();
-                                                        String hp = staff.getHandphone();
-                                                        
+                                                        Iterator it = webUserMap.entrySet().iterator();
+                                                        //counter for delete id
+                                                        int deleteCounter = 0;
+                                                        while (it.hasNext()) {
+                                                            Map.Entry pair = (Map.Entry) it.next();
+                                                            WebUser staff = (WebUser) pair.getValue();
+                                                            String email = staff.getEmail();
+                                                            int idToDelete = staff.getStaffId();
+                                                            String name = staff.getName();
+                                                            String hp = staff.getHandphone();
 
-                                                %>
-                                                <tr>
-                                                    <td><%=idToDelete%></td>
-                                                    <td><%=name%></td>
-                                                    <td><%=email%></td>
-                                                    <td><%=hp%></td>                                                
-                                                    <!--<td id="01"> <a href="#" class="btn btn-p1rimary btn-xs" role="button">Delete</a></td>-->
 
-                                                    <!--<td><button onclick="remove(staffId)" class="btn btn-primary btn-xs" role="button">Delete</button></td>-->
-                                                    <td>
-                                                        <% 
-                                                        //check only master workshop can edit/delete staff
-                                                        
-                                                        if (user.getStaffId() != idToDelete && workshopStaffType == 1) {
-                                                            //if (userType.equals("Admin")) { 
-                                                        %>
-                                                        
-                                                        <form class="form-horizontal" role="form" action="DeleteEmployee" method="POST">
+                                                    %>
+                                                    <tr>
+                                                        <td><%=idToDelete%></td>
+                                                        <td><%=name%></td>
+                                                        <td><%=email%></td>
+                                                        <td><%=hp%></td>                                                
+                                                        <!--<td id="01"> <a href="#" class="btn btn-p1rimary btn-xs" role="button">Delete</a></td>-->
+
+                                                        <!--<td><button onclick="remove(staffId)" class="btn btn-primary btn-xs" role="button">Delete</button></td>-->
+                                                        <td>
+                                                            <%
+                                                                //check only master workshop can edit/delete staff
+
+                                                                if (user.getStaffId() != idToDelete && workshopStaffType == 1) {
+                                                                    //if (userType.equals("Admin")) { 
+%>
+
                                                             <a href="EditEmployee.jsp?id=<%=idToDelete%>" name="idToDelete" class="btn btn-xs btn-primary" role="button">Edit</a>
-                                                            <button type="submit" name="idToDelete" value="<%=idToDelete%>" class="btn btn-primary btn-xs">Delete</button>
-                                                        </form>
-                                                        <% }  %>
-                                                        
-                                                    </td>
-                                                    
+                                                            <button class="btn btn-default btn-xs md-trigger" data-modal="<% out.print("myModal" + idToDelete);%>" type="button">Delete</button>
+
+
+                                                            <% }  %>
+
+                                                        </td>
+                                                        <!-- Modal -->
+                                                <div class="md-modal md-effect-13 md-slategray colorize-overlay" id="<% out.print("myModal" + idToDelete);%>">
+
+                                                    <div class="md-content">
+
+                                                        <div class="col-xs-12">
+                                                            <h4>Are you sure you want to delete <%=name%>?</h4>
+                                                            <form class="form-horizontal" role="form" action="DeleteEmployee" method="POST">
+                                                                <button type="submit" name="idToDelete" value="<%=idToDelete%>" class="btn btn-primary btn-sm">Delete</button>
+                                                            </form>
+                                                        </div>
+                                                        <div class="col-xs-12">
+                                                            <button class="md-close btn btn-default">Close</button>
+                                                        </div>
+                                                    </div> <!--/.modal-content -->
+                                                </div> <!--/.modal -->
+
                                                 </tr>
 
 
@@ -154,7 +170,7 @@
                                                             int idToDelete = adminStaff.getStaffId();
                                                             String name = adminStaff.getName();
                                                             String hp = adminStaff.getHandphone();
-                                                            
+
                                                             int currentStaffType = adminStaff.getStaffType();
                                                 %>
                                                 <tr>
@@ -162,35 +178,50 @@
                                                     <td><%=name%></td>
                                                     <td><%=email%></td>
                                                     <td><%=hp%></td>
-                                                    
-                                                        <%
-                                                        int staffType = user.getStaffType(); 
+
+                                                    <%
+                                                        int staffType = user.getStaffType();
                                                         //super and master admin can edit/delete normal admin
-                                                        if ((staffType == 1 || staffType == 2)&& currentStaffType ==3) {
-                                                            
-                                                        
-                                                        %>
+                                                        if ((staffType == 1 || staffType == 2) && currentStaffType == 3) {
+
+
+                                                    %>
                                                     <td>
-                                                        <form class="form-horizontal" role="form" action="DeleteEmployee" method="POST">
-                                                            <a href="EditEmployee.jsp?id=<%=idToDelete%>" name="idToDelete" class="btn btn-xs btn-primary" role="button">Edit</a>
-                                                            <button type="submit" name="idToDelete" value="<%=idToDelete%>" class="btn btn-primary btn-xs">Delete</button>
-                                                        </form>
+                                                        <a href="EditEmployee.jsp?id=<%=idToDelete%>" name="idToDelete" class="btn btn-xs btn-primary" role="button">Edit</a>
+                                                        <button class="btn btn-default btn-xs md-trigger" data-modal="<% out.print("myModal" + idToDelete);%>" type="button">Delete</button>
                                                     </td>
-                                                        <% } else { %>
-                                                    <td>
-                                                        <button type="button" disabled class="btn btn-primaryb btn-xs">Edit</button>
-                                                        <button type="button" disabled class="btn btn-primaryb btn-xs">Delete </button>
-                                                    </td>
+                                                    <!-- Modal -->
+                                                <div class="md-modal md-effect-13 md-slategray colorize-overlay" id="<% out.print("myModal" + idToDelete);%>">
+
+                                                    <div class="md-content">
+
+                                                        <div class="col-xs-12">
+                                                            <h4>Are you sure you want to delete <%=name%>?</h4>
+                                                            <form class="form-horizontal" role="form" action="DeleteEmployee" method="POST">
+                                                                <button type="submit" name="idToDelete" value="<%=idToDelete%>" class="btn btn-primary btn-sm">Delete</button>
+                                                            </form>
+                                                        </div>
+                                                        <div class="col-xs-12">
+                                                            <button class="md-close btn btn-default">Close</button>
+                                                        </div>
+                                                    </div> <!--/.modal-content -->
+                                                </div> <!--/.modal -->
+                                                <% } else { %>
+                                                <td>
+                                                    <button type="button" disabled class="btn btn-primaryb btn-xs">Edit</button>
+                                                    <button type="button" disabled class="btn btn-primaryb btn-xs">Delete </button>
+                                                </td>
+
                                                 </tr>
                                                 <%
+                                                            }
                                                         }
                                                     }
-                                                }
 
                                                 %>
-                                            </tbody>
-                                        </table>
-
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                     <!-- /tile body -->
                                 </section>
@@ -207,136 +238,190 @@
             <!--End page fluid-->
         </div>
         <!--End page wrap-->
-        <%-- scripts --%>
-
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="js/jquery.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/bootstrap-dropdown-multilevel.js"></script>
-        <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?lang=css&amp;skin=sons-of-obsidian"></script>
-        <script type="text/javascript" src="js/jquery.mmenu.min.js"></script>
-        <script type="text/javascript" src="js/jquery.sparkline.min.js"></script>
-        <script type="text/javascript" src="js/jquery.nicescroll.min.js"></script>
-        <script type="text/javascript" src="js/jquery.animateNumbers.js"></script>
-        <script type="text/javascript" src="js/jquery.videobackground.js"></script>
-        <script type="text/javascript" src="js/jquery.blockUI.js"></script>
-
-        <script src="js/summernote.min.js"></script>
-
-        <script src="js/chosen.jquery.min.js"></script>
-
-        <script src="js/moment-with-langs.min.js"></script>
-        <script src="js/bootstrap-datetimepicker.js"></script>
-
-        <script src="js/bootstrap-colorpicker.min.js"></script>
-
-        <script src="js/bootstrap-colorpalette.js"></script>
-
-        <script src="js/minimal.min.js"></script>
-
-
-        <script>
-
-            //initialize file upload button function
-            $(document)
-                    .on('change', '.btn-file :file', function () {
-                        var input = $(this),
-                                numFiles = input.get(0).files ? input.get(0).files.length : 1,
-                                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-                        input.trigger('fileselect', [numFiles, label]);
-                    });
-
-
-            $(function () {
-
-                //load wysiwyg editor
-                $('#input06').summernote({
-                    toolbar: [
-                        //['style', ['style']], // no style button
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['height', ['height']],
-                                //['insert', ['picture', 'link']], // no insert buttons
-                                //['table', ['table']], // no table button
-                                //['help', ['help']] //no help button
-                    ],
-                    height: 137   //set editable area's height
-                });
-
-                //chosen select input
-                $(".chosen-select").chosen({disable_search_threshold: 10});
-
-                //initialize datepicker
-                $('#datepicker').datetimepicker({
-                    icons: {
-                        time: "fa fa-clock-o",
-                        date: "fa fa-calendar",
-                        up: "fa fa-arrow-up",
-                        down: "fa fa-arrow-down"
-                    }
-                });
-
-                $("#datepicker").on("dp.show", function (e) {
-                    var newtop = $('.bootstrap-datetimepicker-widget').position().top - 45;
-                    $('.bootstrap-datetimepicker-widget').css('top', newtop + 'px');
-                });
-
-                //initialize colorpicker
-                $('#colorpicker').colorpicker();
-
-                $('#colorpicker').colorpicker().on('showPicker', function (e) {
-                    var newtop = $('.dropdown-menu.colorpicker.colorpicker-visible').position().top - 45;
-                    $('.dropdown-menu.colorpicker.colorpicker-visible').css('top', newtop + 'px');
-                });
-
-                //initialize colorpicker RGB
-                $('#colorpicker-rgb').colorpicker({
-                    format: 'rgb'
-                });
-
-                $('#colorpicker-rgb').colorpicker().on('showPicker', function (e) {
-                    var newtop = $('.dropdown-menu.colorpicker.colorpicker-visible').position().top - 45;
-                    $('.dropdown-menu.colorpicker.colorpicker-visible').css('top', newtop + 'px');
-                });
-
-                //initialize file upload button
-                $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
-
-                    var input = $(this).parents('.input-group').find(':text'),
-                            log = numFiles > 1 ? numFiles + ' files selected' : label;
-
-                    console.log(log);
-
-                    if (input.length) {
-                        input.val(log);
-                    } else {
-                        if (log)
-                            alert(log);
-                    }
-
-                });
-
-                // Initialize colorpalette
-                $('#event-colorpalette').colorPalette({
-                    colors: [['#428bca', '#5cb85c', '#5bc0de', '#f0ad4e', '#d9534f', '#ff4a43', '#22beef', '#a2d200', '#ffc100', '#cd97eb', '#16a085', '#FF0066', '#A40778', '#1693A5']]
-                }).on('selectColor', function (e) {
-                    var data = $(this).data();
-
-                    $(data.returnColor).val(e.color);
-                    $(this).parents(".input-group").css("border-bottom-color", e.color);
-                });
-
-            })
-
-            function remove(staffId) {
-                $.post("url", function (data, status) {
-                    alert(data + " " + status);
-                });
-            }
-
-        </script>
     </body>
+    <%-- scripts --%>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-dropdown-multilevel.js"></script>
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?lang=css&amp;skin=sons-of-obsidian"></script>
+    <script type="text/javascript" src="js/jquery.mmenu.min.js"></script>
+    <script type="text/javascript" src="js/jquery.sparkline.min.js"></script>
+    <script type="text/javascript" src="js/jquery.nicescroll.min.js"></script>
+    <script type="text/javascript" src="js/jquery.animateNumbers.js"></script>
+    <script type="text/javascript" src="js/jquery.videobackground.js"></script>
+    <script type="text/javascript" src="js/jquery.blockUI.js"></script>
+    <script src="js/summernote.min.js"></script>
+    <script src="js/chosen.jquery.min.js"></script>
+    <script src="js/moment-with-langs.min.js"></script>
+    <script src="js/bootstrap-colorpalette.js"></script>
+    <script src="js/minimal.min.js"></script>
+    <script type="text/javascript" src="js/jquery.tablesorter.js"></script> 
+    <script type="text/javascript" src="js/jquery.tabpager.min.js"></script> 
+    <script type="text/javascript" src="js/jquery.dataTables.min.js"></script> 
+    <script type="text/javascript" src="js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/classie.js"></script> 
+    <script type="text/javascript" src="js/modalEffects.js"></script> 
+
+
+    <script>
+
+        //initialize file upload button function
+        $(document)
+                .on('change', '.btn-file :file', function () {
+                    var input = $(this),
+                            numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                    input.trigger('fileselect', [numFiles, label]);
+                });
+
+
+        $(function () {
+
+            //load wysiwyg editor
+            $('#input06').summernote({
+                toolbar: [
+                    //['style', ['style']], // no style button
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                            //['insert', ['picture', 'link']], // no insert buttons
+                            //['table', ['table']], // no table button
+                            //['help', ['help']] //no help button
+                ],
+                height: 137   //set editable area's height
+            });
+
+            //chosen select input
+            $(".chosen-select").chosen({disable_search_threshold: 10});
+
+            //initialize datepicker
+            $('#datepicker').datetimepicker({
+                icons: {
+                    time: "fa fa-clock-o",
+                    date: "fa fa-calendar",
+                    up: "fa fa-arrow-up",
+                    down: "fa fa-arrow-down"
+                }
+            });
+
+            $("#datepicker").on("dp.show", function (e) {
+                var newtop = $('.bootstrap-datetimepicker-widget').position().top - 45;
+                $('.bootstrap-datetimepicker-widget').css('top', newtop + 'px');
+            });
+
+            //initialize colorpicker
+            $('#colorpicker').colorpicker();
+
+            $('#colorpicker').colorpicker().on('showPicker', function (e) {
+                var newtop = $('.dropdown-menu.colorpicker.colorpicker-visible').position().top - 45;
+                $('.dropdown-menu.colorpicker.colorpicker-visible').css('top', newtop + 'px');
+            });
+
+            //initialize colorpicker RGB
+            $('#colorpicker-rgb').colorpicker({
+                format: 'rgb'
+            });
+
+            $('#colorpicker-rgb').colorpicker().on('showPicker', function (e) {
+                var newtop = $('.dropdown-menu.colorpicker.colorpicker-visible').position().top - 45;
+                $('.dropdown-menu.colorpicker.colorpicker-visible').css('top', newtop + 'px');
+            });
+
+            //initialize file upload button
+            $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
+
+                var input = $(this).parents('.input-group').find(':text'),
+                        log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+                console.log(log);
+
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log)
+                        alert(log);
+                }
+
+            });
+
+            //         sortable table
+            $('.table.table-sortable th.sortable').click(function () {
+                var o = $(this).hasClass('sort-asc') ? 'sort-desc' : 'sort-asc';
+                $('th.sortable').removeClass('sort-asc').removeClass('sort-desc');
+                $(this).addClass(o);
+            });
+
+            // Initialize colorpalette
+            $('#event-colorpalette').colorPalette({
+                colors: [['#428bca', '#5cb85c', '#5bc0de', '#f0ad4e', '#d9534f', '#ff4a43', '#22beef', '#a2d200', '#ffc100', '#cd97eb', '#16a085', '#FF0066', '#A40778', '#1693A5']]
+            }).on('selectColor', function (e) {
+                var data = $(this).data();
+
+                $(data.returnColor).val(e.color);
+                $(this).parents(".input-group").css("border-bottom-color", e.color);
+            });
+
+        })
+
+        function remove(staffId) {
+            $.post("url", function (data, status) {
+                alert(data + " " + status);
+            });
+        }
+
+    </script>
+    <script>
+        (function (document) {
+            'use strict';
+
+            var LightTableFilter = (function (Arr) {
+
+                var _input;
+
+                function _onInputEvent(e) {
+                    _input = e.target;
+                    var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
+                    Arr.forEach.call(tables, function (table) {
+                        Arr.forEach.call(table.tBodies, function (tbody) {
+                            Arr.forEach.call(tbody.rows, _filter);
+                        });
+                    });
+                }
+
+                function _filter(row) {
+                    var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
+                    row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+                }
+
+                return {
+                    init: function () {
+                        var inputs = document.getElementsByClassName('light-table-filter');
+                        Arr.forEach.call(inputs, function (input) {
+                            input.oninput = _onInputEvent;
+                        });
+                    }
+                };
+            })(Array.prototype);
+
+            document.addEventListener('readystatechange', function () {
+                if (document.readyState === 'complete') {
+                    LightTableFilter.init();
+                }
+            });
+
+        })(document);
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+
+
 </html>

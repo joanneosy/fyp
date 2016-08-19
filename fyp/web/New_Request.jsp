@@ -157,164 +157,6 @@
 
                                         <!-- cards -->
                                         <%@include file="include/flipcard.jsp"%>
-                                        <!--                                        <div class="row cards">
-                                        
-                                                                                    <div class="card-container col-lg-2 col-sm-6 col-sm-12">
-                                                                                        <div class="card card-redbrown hover">
-                                                                                            <div class="front"> 
-                                        
-                                                                                                <div class="media">        
-                                                                                                                                                                <span class="pull-left">
-                                                                                                                                                                    <i class="fa fa-users media-object"></i>
-                                                                                                                                                                </span>
-                                        
-                                                                                                    <div class="media-body">
-                                                                                                        New Requests
-                                                                                                        <h2 class="media-heading animate-number" data-value="<%//=newSize%>" data-animation-duration="1500">0</h2>
-                                                                                                    </div>
-                                                                                                </div> 
-                                        
-                                                                                            </div>
-                                                                                            <div class="back">
-                                                                                                <a href="New_Request.jsp">
-                                                                                                    <i class="fa fa-bar-chart-o fa-4x"></i>
-                                                                                                    <span>More Information</span>
-                                                                                                </a>  
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                        
-                                        
-                                                                                    <div class="card-container col-lg-2 col-sm-6 col-sm-12">
-                                                                                        <div class="card card-redbrown hover">
-                                                                                            <div class="front">        
-                                        
-                                                                                                <div class="media">                  
-                                                                                                                                                                <span class="pull-left">
-                                                                                                                                                                    <i class="fa fa-shopping-cart media-object"></i>
-                                                                                                                                                                </span>
-                                        
-                                                                                                    <div class="media-body">
-                                                                                                        Send Final Quote
-                                                                                                        <h2 class="media-heading animate-number" data-value="<%//=sendFinalSize%>" data-animation-duration="1500">0</h2>
-                                                                                                    </div>
-                                                                                                </div> 
-                                        
-                                                                                            </div>
-                                                                                            <div class="back">
-                                                                                                <a href="Send_Final_Quote.jsp">
-                                                                                                    <i class="fa fa-bar-chart-o fa-4x"></i>
-                                                                                                    <span>More Information</span>
-                                                                                                </a>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                        
-                                        
-                                        
-                                                                                    <div class="card-container col-lg-2 col-sm-6 col-sm-12">
-                                                                                        <div class="card card-redbrown hover">
-                                                                                            <div class="front">        
-                                        
-                                                                                                <div class="media">
-                                                                                                                                                                <span class="pull-left">
-                                                                                                                                                                    <i class="fa fa-usd media-object"></i>
-                                                                                                                                                                </span>
-                                        
-                                                                                                    <div class="media-body">
-                                                                                                        Final Quote Accepted
-                                                                                                        <h2 class="media-heading animate-number" data-value="<%//=finalAcceptSize%>" data-animation-duration="1500">0</h2>
-                                                                                                    </div>
-                                                                                                </div>
-                                        
-                                        
-                                        
-                                                                                            </div>
-                                                                                            <div class="back">
-                                                                                                <a href="Final_Quote_Accepted.jsp">
-                                                                                                    <i class="fa fa-bar-chart-o fa-4x"></i>
-                                                                                                    <span>More Information</span>
-                                                                                                </a>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="card-container col-lg-2 col-sm-6 col-sm-12">
-                                                                                        <div class="card card-greensea hover">
-                                                                                            <div class="front">        
-                                        
-                                                                                                <div class="media">
-                                                                                                                                                                <span class="pull-left">
-                                                                                                                                                                    <i class="fa fa-usd media-object"></i>
-                                                                                                                                                                </span>
-                                        
-                                                                                                    <div class="media-body">
-                                                                                                        New Service
-                                                                                                        <h2 class="media-heading animate-number" data-value="<%//=newService%>" data-animation-duration="1500">0</h2>
-                                                                                                    </div>
-                                                                                                </div>
-                                        
-                                        
-                                        
-                                                                                            </div>
-                                                                                            <div class="back">
-                                                                                                <a href="New_Service.jsp">
-                                                                                                    <i class="fa fa-bar-chart-o fa-4x"></i>
-                                                                                                    <span>More Information</span>
-                                                                                                </a>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="card-container col-lg-2 col-sm-6 col-sm-12">
-                                                                                        <div class="card card-greensea hover">
-                                                                                            <div class="front">        
-                                        
-                                                                                                <div class="media">
-                                                                                                                                                                <span class="pull-left">
-                                                                                                                                                                    <i class="fa fa-usd media-object"></i>
-                                                                                                                                                                </span>
-                                        
-                                                                                                    <div class="media-body">
-                                                                                                        Completed Service
-                                                                                                        <h2 class="media-heading animate-number" data-value="<%//=completedService%>" data-animation-duration="1500">0</h2>
-                                                                                                    </div>
-                                                                                                </div>
-                                        
-                                        
-                                        
-                                                                                            </div>
-                                                                                            <div class="back">
-                                                                                                <a href="Completed_Service.jsp">
-                                                                                                    <i class="fa fa-bar-chart-o fa-4x"></i>
-                                                                                                    <span>More Information</span>
-                                                                                                </a>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                        
-                                                                                    <div class="card-container col-lg-2 col-sm-6 col-xs-12">
-                                                                                        <div class="card1 card-slategray hover">
-                                                                                            <div class="front"> 
-                                        
-                                                                                                <div class="media">                   
-                                                                                                                                                                <span class="pull-left">
-                                                                                                                                                                    <i class="fa fa-eye media-object"></i>
-                                                                                                                                                                </span>
-                                        
-                                                                                                    <div class="media-body">
-                                                                                                        Average Rating
-                                                                                                        <h2 class="media-heading animate-number" data-value="4.2" data-animation-duration="1500">0</h2>
-                                                                                                    </div>
-                                                                                                </div> 
-                                                                                            </div>
-                                                                                                                                                <div class="back">
-                                                                                                                                                    <a href="#">
-                                                                                                                                                        <i class="fa fa-bar-chart-o fa-4x"></i>
-                                                                                                                                                        <span>Check Summary</span>
-                                                                                                                                                    </a>
-                                                                                                                                                </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>-->
                                         <!-- /cards -->
                                     </div>
                                     <!-- /tile body -->
@@ -349,56 +191,17 @@
                                         <!-- tile header -->
                                         <div class="tile-header">
                                             <h1><strong>View Request</strong></h1>
-                                            <!--                                        <div class="search">
-                                                                                        <input type="search" class="light-table-filter" data-table="order-table" placeholder="Filter">
-                                                                                    </div>-->
-                                            <!--                                            <div class="controls">
-                                                                                            <a href="#" class="minimize"><i class="fa fa-chevron-down"></i></a>
-                                                                                            <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
-                                                                                            <a href="#" class="remove"><i class="fa fa-times"></i></a>
-                                                                                        </div>-->
                                         </div>
                                         <!-- /tile header -->
 
                                         <!-- tile widget -->
                                         <div class="tile-widget bg-transparent-white-2">
                                             <div class="row">
-
-                                                <!--                                            <div class="col-sm-2 col-xs-3">
-                                                                                                <div class="search" id="requestSearch">
-                                                                                                    <input type="search" class="light-table-filter" data-table="order-table" placeholder="Filter">
-                                                                                                </div>
-                                                                                                                                                <div class="input-group table-options">
-                                                                                                                                                    <select class="chosen-select form-control">
-                                                                                                                                                        <option>Bulk Action</option>
-                                                                                                                                                        <option>Delete Selected</option>
-                                                                                                                                                        <option>Copy Selected</option>
-                                                                                                                                                        <option>Archive Selected</option>
-                                                                                                                                                    </select>
-                                                                                                                                                    <span class="input-group-btn">
-                                                                                                                                                        <button class="btn btn-default" type="button">Apply</button>
-                                                                                                                                                    </span>
-                                                                                                                                                </div>
-                                                                                            </div>-->
-
                                                 <div class="col-sm-12 col-xs-12 text-right">
-
-                                                    <!--                                                <div class="btn-group btn-group-xs table-options">
-                                                                                                        <button type="button active" class="btn btn-default" href="#New">New</button>
-                                                                                                        <button type="button" class="btn btn-default" href="#Ongoing">Ongoing</button>
-                                                                                                        <button type="button" class="btn btn-default" href="#Completed">Completed</button>
-                                                                                                        <button type="button" class="btn btn-default" href="#All">All</button>
-                                                                                                    </div>-->
-
-
                                                     <div class="btn-group btn-group-xs table-options desktopOnly">
                                                         <ul class="nav nav-pills tabpager">
                                                             <li class="active"><a href="#New" data-toggle="pill">New Request</a></li>
                                                             <li><a href="#Waiting_for_Response" data-toggle="pill">Waiting for Response</a></li>
-                                                            <!--                                                            <li><a href="#Send_Final_Quote" data-toggle="pill">Send Final Quote</a></li>
-                                                                                                                        <li><a href="#Awaiting_Final_Confirmation" data-toggle="pill">Awaiting Final Confirmation</a></li>
-                                                                                                                        <li><a href="#Final_Quote_Accepted" data-toggle="pill">Final Quote Accepted</a></li>-->
-                                                            <!--<li><a href="#All" data-toggle="pill">All</a></li>-->
                                                         </ul>
                                                     </div>
                                                     <!--                                                <div class="btn-group mobileOnly" style="float:right">
@@ -1029,7 +832,7 @@
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script> 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -1152,68 +955,6 @@
 
 
     </script>
-    <!--        <script>
-                $(function () {
-    
-                    //check all checkboxes
-                    $('table thead input[type="checkbox"]').change(function () {
-                        $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', $(this).prop('checked'));
-                    });
-    
-                    // sortable table
-                    $('.table.table-sortable1 th.sortable').click(function () {
-                        var o = $(this).hasClass('sort-asc') ? 'sort-desc' : 'sort-asc';
-                        $(this).parents('table').find('th.sortable').removeClass('sort-asc').removeClass('sort-desc');
-                        $(this).addClass(o);
-                    });
-    
-                    //chosen select input
-                    $(".chosen-select").chosen({disable_search_threshold: 10});
-    
-                    //check toggling
-                    $('.check-toggler').on('click', function () {
-                        $(this).toggleClass('checked');
-                    });
-                });
-    
-            </script>-->
-    <script>
-        //        $(function(){
-        //            $('.table.table-sortable1 th.sortable').click(function () {
-        //                var o = $(this).hasClass('sort-asc') ? 'sort-desc' : 'sort-asc';
-        //                $(this).parents('table').find('th.sortable').removeClass('sort-asc').removeClass('sort-desc');
-        //                $(this).addClass(o);
-        //            });
-        //        });
-
-
-    </script>
-    <script>
-        $(document).ready(function ()
-        {
-            //        $("#myTable1").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable2").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable3").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable4").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable5").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable1").tablesorter();
-            //        $("#myTable2").tablesorter();
-            //        $("#myTable3").tablesorter();
-            //        $("#myTable4").tablesorter();
-            //        $("#myTable5").tablesorter();
-        }
-        );
-    </script>
     <script>
         //Script to load tab and data based on the href #
         $(window).load(function () {
@@ -1293,17 +1034,6 @@
 
         })(document);
     </script>
-    <script>
-        //    var acc = document.getElementsByClassName("accordion");
-        //    var i;
-        //
-        //    for (i = 0; i < acc.length; i++) {
-        //        acc[i].onclick = function () {
-        //            this.classList.toggle("active");
-        //            this.nextElementSibling.classList.toggle("show");
-        //        }
-        //    }
-    </script>
     <script type="text/javascript">
         function displaymsg() {
             var msg = '<%=session.getAttribute("isSuccess")%>';
@@ -1334,29 +1064,6 @@
             $(this).toggleClass("active").next('div').slideToggle(250)
                     .closest('li').siblings().find('span').removeClass('active').next('div').slideUp(250);
         });
-
-    </script>
-    <script>
-        //    $(document).ready(function () {
-        //        $(".tabpager").tabpager({
-        ////  maximum visible items
-        //            items: 5,
-        //// CSS class for tabbed content
-        //            contents: 'contents',
-        //// transition speed
-        //            time: 300,
-        //// text for previous button
-        //            previous: '&laquo;Prev',
-        //// text for next button
-        //            next: 'Next&raquo;',
-        //// initial tab
-        //            start: 1,
-        //// top or bottom
-        //            position: 'bottom',
-        //// scrollable
-        //            scroll: true
-        //        });
-        //    });
 
     </script>
     <script>
