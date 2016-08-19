@@ -56,14 +56,14 @@ public class AddMasterWorkshopStaffServlet extends HttpServlet {
             int staffId = user.getStaffId();
             String token = user.getToken();
             WebUserDAO uDAO = new WebUserDAO();
-            boolean isSuccess = uDAO.addMasterWorkshopStaff(staffId, token, wsStaffName, wsStaffEmail, wsStaffHpNo, wsId, password);
-            if (isSuccess) {
+            String isSuccess = uDAO.addMasterWorkshopStaff(staffId, token, wsStaffName, wsStaffEmail, wsStaffHpNo, wsId, password);
+            if (isSuccess.length()==0) {
                 request.setAttribute("successMsg", "Master Workshop Staff added successfully for workshop ID " + wsId);
                 RequestDispatcher view = request.getRequestDispatcher("ViewWorkshop.jsp");
                 view.forward(request, response);
             } else {
                 request.setAttribute("workshopId", wsId);
-                request.setAttribute("errMsg", "Failed");
+                request.setAttribute("errMsg", isSuccess + "(Workshop ID: " + wsId + ")");
                 RequestDispatcher view = request.getRequestDispatcher("AddWorkshopMasterAccount.jsp");
                 view.forward(request, response);
             }

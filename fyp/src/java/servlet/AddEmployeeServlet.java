@@ -9,6 +9,7 @@ import dao.WebUserDAO;
 import entity.WebUser;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import util.Validation;
 
 /**
  *
@@ -41,20 +43,24 @@ public class AddEmployeeServlet extends HttpServlet {
         String staffEmail = request.getParameter("staffEmail");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
-        //retrieve hidden fields
-        String userType = request.getParameter("userType");
-        int staffType = Integer.parseInt(request.getParameter("staffType"));
-        
-        if (!password.equals(confirmPassword)) {
-            request.setAttribute("errMsg", "Passwords do not match.");
+        //Type of employee to be added
+        String typeStr = request.getParameter("type");
+
+        Validation validation = new Validation();
+        ArrayList<String> errMsg = validation.validateNewEmployee(staffHpNo, password, confirmPassword);
+        if (errMsg.size() != 0) {
+            request.setAttribute("errMsgArr", errMsg);
             RequestDispatcher view = request.getRequestDispatcher("AddEmployee.jsp");
             view.forward(request, response);
         } else {
+            //Logged in user details
             HttpSession session = request.getSession(true);
             WebUser user = (WebUser) session.getAttribute("loggedInUser");
             int staffId = user.getStaffId();
             String token = user.getToken();
             int wsId = user.getShopId();
+            String userType = (String) session.getAttribute("loggedInUserType");
+            int staffType = user.getStaffType();
             WebUserDAO uDAO = new WebUserDAO();
             String errorMsg = "";
             //check user and stafftype before calling respective add methods
@@ -68,14 +74,25 @@ public class AddEmployeeServlet extends HttpServlet {
                 }
             }
             if (userType.equals("Admin")) {
-                if (staffType == 1 || staffType == 2 ) {
-                    errorMsg = uDAO.addNormalAdmin(staffId, token, staffName, staffEmail,staffHpNo, password);
+                if (staffType == 1) {
+                    if (typeStr == null || typeStr.length() == 0) {
+                        errorMsg = "Please select employee type.";
+                    } else {
+                        int type = Integer.parseInt(typeStr);
+                        if (type == 2) {
+                            errorMsg = uDAO.addMasterAdmin(staffId, token, staffName, staffEmail, staffHpNo, password);
+                        } else if (type == 3) {
+                            errorMsg = uDAO.addNormalAdmin(staffId, token, staffName, staffEmail, staffHpNo, password);
+                        }
+                    }
+                } else if (staffType == 2) {
+                    errorMsg = uDAO.addNormalAdmin(staffId, token, staffName, staffEmail, staffHpNo, password);
                 }
             }
             if (errorMsg.isEmpty()) {
                 response.sendRedirect("ViewEmployees.jsp");
             } else {
-                request.setAttribute("workshopId", wsId);    
+                request.setAttribute("workshopId", wsId);
                 request.setAttribute("errMsg", errorMsg);
                 RequestDispatcher view = request.getRequestDispatcher("AddEmployee.jsp");
                 view.forward(request, response);

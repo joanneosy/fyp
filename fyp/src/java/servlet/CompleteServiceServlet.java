@@ -49,15 +49,15 @@ public class CompleteServiceServlet extends HttpServlet {
         int staffId = user.getStaffId();
         String token = user.getToken();
         QuotationRequestDAO qrDAO = new QuotationRequestDAO();
-        boolean isSuccess = qrDAO.completeService(staffId, token, offerId);
+        String isSuccess = qrDAO.completeService(staffId, token, offerId);
         //Error message? success message?
-        if (isSuccess) {
+        if (isSuccess.length()==0) {
             session.setAttribute("isSuccess", "Service completed!");
 //            RequestDispatcher view = request.getRequestDispatcher("ManageService.jsp");
 //            view.forward(request, response);
             response.sendRedirect("Ongoing_Service.jsp");
         } else {
-            session.setAttribute("isSuccess", "Failed!");
+            session.setAttribute("isSuccess", isSuccess + "(ID: " + offerId + ")");
 //            RequestDispatcher view = request.getRequestDispatcher("ManageService.jsp");
 //            view.forward(request, response);
             response.sendRedirect("Ongoing_Service.jsp");

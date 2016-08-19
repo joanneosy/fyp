@@ -265,7 +265,7 @@ public class WebUserDAO {
         }
     }
 
-    public boolean addMasterWorkshopStaff(int staffId, String token, String name, String email, String hpNo, int shopId, String password) throws UnsupportedEncodingException, IOException {
+    public String addMasterWorkshopStaff(int staffId, String token, String name, String email, String hpNo, int shopId, String password) throws UnsupportedEncodingException, IOException {
         String url = "http://119.81.43.85/erp/user/add_new_master_workshop_staff";
 
         HttpClient client = new DefaultHttpClient();
@@ -299,12 +299,12 @@ public class WebUserDAO {
         JsonParser jsonParser = new JsonParser();
         JsonElement element = jsonParser.parse(str);
         JsonObject jobj = element.getAsJsonObject();
-        JsonElement isSuccess = jobj.get("is_success");
-        if (isSuccess.getAsString().equals("false")) {
-            return false;
-        } else {
-            return true;
+        JsonElement errMsgEle = jobj.get("error_message");
+        String errMsg = "";
+        if (errMsgEle != null && !errMsgEle.isJsonNull()) {
+            errMsg = errMsgEle.getAsString();
         }
+        return errMsg;
     }
 
     public String addNormalWorkshopStaff(int staffId, String token, String name, String email, String hpNo, int shopId, String password) throws UnsupportedEncodingException, IOException {
@@ -349,7 +349,7 @@ public class WebUserDAO {
         return errMsg;
     }
 
-    public boolean addMasterAdmin(int staffId, String token, String name, String email, String hpNo, String password) throws UnsupportedEncodingException, IOException {
+    public String addMasterAdmin(int staffId, String token, String name, String email, String hpNo, String password) throws UnsupportedEncodingException, IOException {
         String url = "http://119.81.43.85/erp/user/add_new_master_admin";
 
         HttpClient client = new DefaultHttpClient();
@@ -382,12 +382,12 @@ public class WebUserDAO {
         JsonParser jsonParser = new JsonParser();
         JsonElement element = jsonParser.parse(str);
         JsonObject jobj = element.getAsJsonObject();
-        JsonElement isSuccess = jobj.get("is_success");
-        if (isSuccess.getAsString().equals("false")) {
-            return false;
-        } else {
-            return true;
+        JsonElement errMsgEle = jobj.get("error_message");
+        String errMsg = "";
+        if (errMsgEle != null && !errMsgEle.isJsonNull()) {
+            errMsg = errMsgEle.getAsString();
         }
+        return errMsg;
     }
 
     public String addNormalAdmin(int staffId, String token, String name, String email, String hpNo, String password) throws UnsupportedEncodingException, IOException {
@@ -726,7 +726,6 @@ public class WebUserDAO {
                 staffType = attElement.getAsInt();
             }
 
-            System.out.println(name);
             WebUser staff = new WebUser(indivStaffId, email, userType, refStaffId, indivToken, shopId, name, handphone, staffType);
             allStaff.put(i, staff);
         }
@@ -829,7 +828,7 @@ public class WebUserDAO {
             if (attElement != null && !attElement.isJsonNull()) {
                 staffType = attElement.getAsInt();
             }
-            System.out.println(name);
+
             WebUser staff = new WebUser(indivStaffId, email, userType, refStaffId, indivToken, shopId, name, handphone, staffType);
             allStaff.put(i, staff);
         }
@@ -932,7 +931,7 @@ public class WebUserDAO {
             if (attElement != null && !attElement.isJsonNull()) {
                 staffType = attElement.getAsInt();
             }
-            System.out.println(name);
+
             WebUser staff = new WebUser(indivStaffId, email, userType, refStaffId, indivToken, shopId, name, handphone, staffType);
             allStaff.put(i, staff);
         }

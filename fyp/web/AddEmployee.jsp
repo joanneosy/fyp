@@ -4,10 +4,12 @@
     Author     : Joshymantou
 --%>
 
+<%@page import="java.util.ArrayList"%>
 <%@page import="entity.WebUser"%>
 <%@page import="dao.WebUserDAO"%>
 <%@page import="dao.WorkshopDAO"%>
 <%@page import="entity.Workshop"%>
+<%@include file="ProtectWebUsers.jsp"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -24,10 +26,7 @@
                 <div class="mask"><div id="loader"></div></div>
                 <!-- Page content -->
                 <div id="content" class="col-md-12">
-                    <%
-                        WebUser user = (WebUser) session.getAttribute("loggedInUser");
-                        String userType = (String) session.getAttribute("loggedInUserType");
-                        int staffType = user.getStaffType();
+                    <%                        String userType = (String) session.getAttribute("loggedInUserType");
                     %>
                     <%@include file="include/topbar.jsp"%>
 
@@ -58,7 +57,14 @@
                                             <%
                                                 String errMsg = (String) request.getAttribute("errMsg");
                                                 if (errMsg != null) {
-                                                    out.println(errMsg + "<br/>");
+                                                    out.println(errMsg);
+                                                }
+
+                                                ArrayList<String> errMsgArr = (ArrayList<String>) request.getAttribute("errMsgArr");
+                                                if (errMsgArr != null && errMsgArr.size() > 0) {
+                                                    for (String error : errMsgArr) {
+                                                        out.println(error + " ");
+                                                    }
                                                 }
                                             %>
 
@@ -98,21 +104,18 @@
                                                         <input type="password" class="form-control" id="input05" name="confirmPassword">
                                                     </div>
                                                 </div>
-                                                <!-- Hidden fields for servlet to verify user and staff type -->
-                                                <div class="form-group hidden">
-                                                    
+
+                                                <%
+                                                    if (userType.equals("Admin") && user.getStaffType() == 1) {
+                                                %>
+                                                <div class="form-group">
+                                                    <label for="input05" class="col-sm-4 control-label">Type of Employee</label>
                                                     <div class="col-sm-8">
-                                                        <input type="hidden" class="form-control" id="input06" name="userType" value="<%= userType%>">
+                                                        <input type="radio" name="type" value="2"> Master 
+                                                        <input type="radio" name="type" value="3"> Normal
                                                     </div>
                                                 </div>
-                                                <div class="form-group hidden">
-                                                    
-                                                    <div class="col-sm-8">
-                                                        <input type="hidden" class="form-control" id="input06" name="staffType" value="<%= staffType %>">
-                                                    </div>
-                                                </div>
-                                                <!-- hidden fields-->
-                                                
+                                                <%}%>
                                                 <!--form footer for submit-->
                                                 <div class="form-group form-footer">
                                                     <div class="col-sm-offset-4 col-sm-8">
