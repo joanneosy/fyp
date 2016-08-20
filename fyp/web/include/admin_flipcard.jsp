@@ -17,7 +17,7 @@
     <div class="col-lg-6 col-sm-18 col-sm-36"><h4>REQUEST</h4></div>
 <!--    <div class="col-lg-2 col-sm-6 col-sm-12">3</div>
     <div class="col-lg-2 col-sm-6 col-sm-12">4</div>-->
-    <div class="col-lg-4 col-sm-12 col-sm-24"><h4>SERVICE</h4></div>
+    <div class="col-lg-4 col-sm-12 col-sm-24"><h4>Valet</h4></div>
     <!--<div class="col-lg-2 col-sm-6 col-sm-12"><h4>RATING</h4></div>-->
     
 </div>
@@ -29,7 +29,7 @@
 
                 <div class="media">        
                     <span class="pull-left">
-                        <i class="fa fa-usd media-object"></i>
+                        <i class="fa fa-list media-object"></i>
                     </span>
 
                     <div class="media-body">
@@ -57,7 +57,7 @@
 
                 <div class="media">                  
                     <span class="pull-left">
-                        <i class="fa fa-usd media-object"></i>
+                        <i class="fa fa-list media-object"></i>
                     </span>
 
                     <div class="media-body">
@@ -76,42 +76,13 @@
         </div>
     </div>
 
-
-<%--
-    <div class="card-container col-lg-2 col-sm-6 col-sm-12" onclick="location.href='Final_Quote_Accepted.jsp'">
-        <div class="card card-redbrown hover">
-            <div class="front">        
-
-                <div class="media">
-                    <span class="pull-left">
-                        <i class="fa fa-usd media-object"></i>
-                    </span>
-
-                    <div class="media-body">
-                        Final Quote Accepted
-                        <h2 class="media-heading animate-number" data-value="<%=finalAcceptSize%>" data-animation-duration="1500">0</h2>
-                    </div>
-                </div>
-
-
-
-            </div>
-            <div class="back">
-                <a href="Final_Quote_Accepted.jsp">
-                    <!--<i class="fa fa-bar-chart-o fa-4x"></i>-->
-                    <span>More Information</span>
-                </a>
-            </div>
-        </div>
-    </div>
-    --%>
     <div class="card-container col-lg-3 col-sm-6 col-sm-12" onclick="location.href='Admin_New_Valet.jsp'">
         <div class="card card-greensea hover">
             <div class="front">        
 
                 <div class="media">
                     <span class="pull-left">
-                        <i class="fa fa-tasks media-object"></i>
+                        <i class="fa fa-map-marker media-object"></i>
                     </span>
 
                     <div class="media-body">
@@ -139,7 +110,7 @@
 
                 <div class="media">
                     <span class="pull-left">
-                        <i class="fa fa-tasks media-object"></i>
+                        <i class="fa fa-map-marker media-object"></i>
                     </span>
 
                     <div class="media-body">
