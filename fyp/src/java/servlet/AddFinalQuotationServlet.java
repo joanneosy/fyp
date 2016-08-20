@@ -48,15 +48,15 @@ public class AddFinalQuotationServlet extends HttpServlet {
         int staffId = user.getStaffId();
         String token = user.getToken();
         QuotationRequestDAO qrDAO = new QuotationRequestDAO();
-        boolean isSuccess = qrDAO.addFinalQuotation(staffId, token, offerId, price);
+        String isSuccess = qrDAO.addFinalQuotation(staffId, token, offerId, price);
         //Error message? success message?
-        if (isSuccess) {
+        if (isSuccess.length()==0) {
             session.setAttribute("isSuccess", "$" + price + "0 quoted as the final amount for ID: " + quotationRequestId);
 //            RequestDispatcher view = request.getRequestDispatcher("ViewRequest.jsp?id=" + quotationRequestId);
 //            view.forward(request, response);
             response.sendRedirect("Send_Final_Quote.jsp");
         } else {
-            session.setAttribute("isSuccess", "Failed!");
+            session.setAttribute("isSuccess", isSuccess + "(ID: " + offerId + ")");
 //            RequestDispatcher view = request.getRequestDispatcher("AddFinalQuotation.jsp?id=" + offerId);
 //            view.forward(request, response);
             response.sendRedirect("Send_Final_Quote.jsp");

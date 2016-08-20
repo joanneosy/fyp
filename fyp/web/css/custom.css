@@ -15,6 +15,12 @@
 .card-container .card1.card-slategray .back p { color: #3f4e62; }
 /*Dashboard Card(Ave rating)*/
 
+/*Dashboard Card Height*/
+.card-container .card .card-custom{
+    height: 125px;
+}
+/*Dashboard Card Height*/
+
 [class^="tile"].color table.table-custom1 > thead > tr > th, [class^="tile"].color table.table-custom1 > thead > tr > td { color: rgba(255, 255, 255, 0.6); }
 [class^="tile"].color table.table-custom1 > thead > tr > th:after, [class^="tile"].color table.table-custom1 > thead > tr > td:after { background-color: rgba(255, 255, 255, 0.3); }
 [class^="tile"].color table.table-custom1 > thead > tr > th.sortable:hover, [class^="tile"].color table.table-custom1 > thead > tr > th.sorting:hover, [class^="tile"].color table.table-custom1 > thead > tr > td.sortable:hover, [class^="tile"].color table.table-custom1 > thead > tr > td.sorting:hover { color: white; }

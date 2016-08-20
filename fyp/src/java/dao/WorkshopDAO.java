@@ -37,7 +37,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.w3c.dom.Document;
-import util.ConnectionManager;
 
 /**
  *
@@ -708,7 +707,7 @@ public class WorkshopDAO {
     }
 
     public static void main(String[] args) throws IOException {
-//        String openingHr = "Monday-0900-1800,Tuesday-0900-1800,Wednesday-0900-1800,Thursday-0900-1800,Friday-0900-1800,Saturday-0900-1400,Sunday-Closed-Closed,Ph-Closed-Closed,PhEve-0000-0000";
+        String openingHour = "Monday-0900-1800,Tuesday-0900-0800,Wednesday-0900-0800,Thursday-0900-1800,Friday-0900-1800,Saturday-0900-1400,Sunday-0900-Closed,Ph-Closed-Closed,PhEve-0000-0000";
 //        ArrayList<String> compiled = new ArrayList<String>();
 //        //Monday-0900-1800
 //        String[] daysAndTime = openingHr.split(",");
@@ -784,5 +783,23 @@ public class WorkshopDAO {
 //        for (String x : compiled) {
 //            System.out.println(x);
 //        }
+
+        String[] openingHoursArr = openingHour.split(",");
+        for (String s : openingHoursArr) {
+            String[] eachDayArr = s.split("-");
+            if (eachDayArr[1].equals("Closed") || eachDayArr[2].equals("Closed")) {
+                if (!eachDayArr[1].equals(eachDayArr[2])) {
+                    System.out.println("Invalid Opening Hours");
+                    break;
+                }
+            } else {
+                int open = Integer.parseInt(eachDayArr[1]);
+                int close = Integer.parseInt(eachDayArr[2]);
+                if (open > close) {
+                    System.out.println("Invalid Opening Hours");
+                    break;
+                }
+            }
+        }
     }
 }

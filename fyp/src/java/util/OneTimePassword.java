@@ -34,19 +34,19 @@ public class OneTimePassword {
     
     public void storeOTP(int userID, int workshopID, int serviceID, String hashOTP) {
 
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = ConnectionManager.getConnection();
-            pstmt = null;
-            pstmt = conn.prepareStatement("INSERT INTO otp VALUES (" + userID + "," + workshopID + "," + serviceID + ",'" + hashOTP + "');");
-            pstmt.executeUpdate();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            ConnectionManager.close(conn, pstmt);
-        }
+//        Connection conn = null;
+//        PreparedStatement pstmt = null;
+//
+//        try {
+//            conn = ConnectionManager.getConnection();
+//            pstmt = null;
+//            pstmt = conn.prepareStatement("INSERT INTO otp VALUES (" + userID + "," + workshopID + "," + serviceID + ",'" + hashOTP + "');");
+//            pstmt.executeUpdate();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            ConnectionManager.close(conn, pstmt);
+//        }
     } 
 }

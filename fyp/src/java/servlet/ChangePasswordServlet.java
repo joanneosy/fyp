@@ -5,7 +5,6 @@
  */
 package servlet;
 
-import util.HashCode;
 import dao.WebUserDAO;
 import entity.WebUser;
 import java.io.IOException;

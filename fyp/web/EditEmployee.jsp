@@ -36,6 +36,13 @@
                             out.println(errMsg);
                         }
 
+                        ArrayList<String> errMsgArr = (ArrayList<String>) request.getAttribute("errMsgArr");
+                        if (errMsgArr != null && errMsgArr.size() > 0) {
+                            for (String error : errMsgArr) {
+                                out.println(error + " ");
+                            }
+                        }
+
                         int id = Integer.parseInt(request.getParameter("id"));
                         WebUserDAO uDAO = new WebUserDAO();
                         WebUser userToEdit = uDAO.retrieveUser(user.getStaffId(), user.getToken(), id);

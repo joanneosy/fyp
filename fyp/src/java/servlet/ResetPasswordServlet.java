@@ -5,7 +5,6 @@
  */
 package servlet;
 
-import util.HashCode;
 import dao.WebUserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,7 +17,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import util.ForgotPassword;
 
 /**
  *
@@ -55,25 +53,25 @@ public class ResetPasswordServlet extends HttpServlet {
     // To handle the reset password link sent to the user
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            //getParameter decode the URL, and hence replaces + with a space
-            //getQueryString return hashCode=.. and hence the need to substring to remove "hashCode"
-            String hashCode = request.getQueryString().substring(3);
-            ForgotPassword fp = new ForgotPassword();
-            String email = fp.verifyPwHashCode(hashCode);
-            
-            if (email != null) {
-                request.setAttribute("resetPasswordEmail", email);
-                RequestDispatcher view = request.getRequestDispatcher("ResetPassword.jsp");
-                view.forward(request, response);
-            } else {
-                request.setAttribute("errMsg", "Invalid Link");
-                RequestDispatcher view = request.getRequestDispatcher("ForgotPassword.jsp");
-                view.forward(request, response);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+//        try {
+//            //getParameter decode the URL, and hence replaces + with a space
+//            //getQueryString return hashCode=.. and hence the need to substring to remove "hashCode"
+//            String hashCode = request.getQueryString().substring(3);
+//            ForgotPassword fp = new ForgotPassword();
+//            String email = fp.verifyPwHashCode(hashCode);
+//            
+//            if (email != null) {
+//                request.setAttribute("resetPasswordEmail", email);
+//                RequestDispatcher view = request.getRequestDispatcher("ResetPassword.jsp");
+//                view.forward(request, response);
+//            } else {
+//                request.setAttribute("errMsg", "Invalid Link");
+//                RequestDispatcher view = request.getRequestDispatcher("ForgotPassword.jsp");
+//                view.forward(request, response);
+//            }
+//        } catch (SQLException ex) {
+//            ex.printStackTrace();
+//        }
     }
 
     /**

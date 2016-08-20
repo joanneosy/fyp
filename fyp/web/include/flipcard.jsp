@@ -21,7 +21,7 @@
 
     <div class="card-container col-lg-2 col-sm-6 col-sm-12">
         <div class="card card-redbrown hover" onclick="location.href='New_Request.jsp'">
-            <div class="front"> 
+            <div class="front card-custom"> 
 
                 <div class="media">        
                     <span class="pull-left">
@@ -35,7 +35,7 @@
                 </div> 
 
             </div>
-            <div class="back">
+            <div class="back card-custom">
                 <a href="New_Request.jsp">
                     <!--                                        <span class="pull-left">
                                                             </span>-->
@@ -49,7 +49,7 @@
 
     <div class="card-container col-lg-2 col-sm-6 col-sm-12">
         <div class="card card-redbrown hover" onclick="location.href='Send_Final_Quote.jsp'">
-            <div class="front">        
+            <div class="front card-custom">        
 
                 <div class="media">                  
                     <span class="pull-left">
@@ -63,7 +63,7 @@
                 </div> 
 
             </div>
-            <div class="back">
+            <div class="back card-custom">
                 <a href="Send_Final_Quote.jsp">
                     <!--<i class="fa fa-bar-chart-o fa-4x"></i>-->
                     <span>More Information</span>
@@ -72,11 +72,9 @@
         </div>
     </div>
 
-
-
     <div class="card-container col-lg-2 col-sm-6 col-sm-12" onclick="location.href='Final_Quote_Accepted.jsp'">
         <div class="card card-redbrown hover">
-            <div class="front">        
+            <div class="front card-custom">        
 
                 <div class="media">
                     <span class="pull-left">
@@ -92,7 +90,7 @@
 
 
             </div>
-            <div class="back">
+            <div class="back card-custom">
                 <a href="Final_Quote_Accepted.jsp">
                     <!--<i class="fa fa-bar-chart-o fa-4x"></i>-->
                     <span>More Information</span>
@@ -103,7 +101,7 @@
 
     <div class="card-container col-lg-2 col-sm-6 col-sm-12" onclick="location.href='New_Service.jsp'">
         <div class="card card-greensea hover">
-            <div class="front">        
+            <div class="front card-custom">        
 
                 <div class="media">
                     <span class="pull-left">
@@ -119,7 +117,7 @@
 
 
             </div>
-            <div class="back">
+            <div class="back card-custom">
                 <a href="New_Service.jsp">
                     <!--<i class="fa fa-bar-chart-o fa-4x"></i>-->
                     <span>More Information</span>
@@ -130,7 +128,7 @@
 
     <div class="card-container col-lg-2 col-sm-6 col-sm-12" onclick="location.href='Ongoing_Service.jsp'">
         <div class="card card-greensea hover">
-            <div class="front">        
+            <div class="front card-custom">        
 
                 <div class="media">
                     <span class="pull-left">
@@ -146,7 +144,7 @@
 
 
             </div>
-            <div class="back">
+            <div class="back card-custom">
                 <a href="Ongoing_Service.jsp">
                     <!--<i class="fa fa-bar-chart-o fa-4x"></i>-->
                     <span>More Information</span>

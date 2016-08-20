@@ -227,14 +227,14 @@
                                                     
                                                     <label for="input02" class="col-sm-2 control-label">Contact Number</label>
                                                     <div class="col-sm-4">
-                                                        <input type="text" class="form-control" id="input02" name="contact" value="<%=contact%>">
+                                                        <input type="number" class="form-control" id="input02" name="contact" value="<%=contact%>">
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label for="input03" class="col-sm-2 control-label">Alt. Contact</label>
                                                     <div class="col-sm-4">
-                                                        <input type="text" class="form-control" id="input03" name="contact2" value="<%=contact2%>">
+                                                        <input type="number" class="form-control" id="input03" name="contact2" value="<%=contact2%>">
                                                     </div>
 
                                                     <label for="input04" class="col-sm-2 control-label">Address</label>
@@ -246,7 +246,7 @@
                                                 <div class="form-group">
                                                     <label for="input05" class="col-sm-2 control-label">Postal Code</label>
                                                     <div class="col-sm-4">
-                                                        <input type="text" class="form-control" id="input05" name="postalCode" value="<%=postalCode%>">
+                                                        <input type="number" class="form-control" id="input05" name="postalCode" value="<%=postalCode%>">
                                                     </div>
 
                                                     <label for="input06" class="col-sm-2 control-label">Website</label>

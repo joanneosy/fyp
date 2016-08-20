@@ -38,7 +38,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import util.ConnectionManager;
 
 /**
  *
@@ -611,7 +610,7 @@ public class QuotationRequestDAO {
         return allQuotationRequests;
     }
 
-    public boolean completeService(int staffId, String token, int offerId) throws UnsupportedEncodingException, IOException {
+    public String completeService(int staffId, String token, int offerId) throws UnsupportedEncodingException, IOException {
         String url = "http://119.81.43.85/erp/quotation_request/complete_service";
 
         HttpClient client = new DefaultHttpClient();
@@ -641,15 +640,15 @@ public class QuotationRequestDAO {
         JsonParser jsonParser = new JsonParser();
         JsonElement element = jsonParser.parse(str);
         JsonObject jobj = element.getAsJsonObject();
-        JsonElement isSuccess = jobj.get("is_success");
-        if (isSuccess.getAsString().equals("false")) {
-            return false;
-        } else {
-            return true;
+        JsonElement errMsgEle = jobj.get("error_message");
+        String errMsg = "";
+        if (errMsgEle != null && !errMsgEle.isJsonNull()) {
+            errMsg = errMsgEle.getAsString();
         }
+        return errMsg;
     }
 
-    public boolean addInitialQuotation(int staffId, String token, int quotationRequestId, int workshopId, double minPrice, double maxPrice, String description) throws UnsupportedEncodingException, IOException {
+    public String addInitialQuotation(int staffId, String token, int quotationRequestId, int workshopId, double minPrice, double maxPrice, String description) throws UnsupportedEncodingException, IOException {
         String url = "http://119.81.43.85/erp/quotation_request/save_offer";
 
         HttpClient client = new DefaultHttpClient();
@@ -683,15 +682,15 @@ public class QuotationRequestDAO {
         JsonParser jsonParser = new JsonParser();
         JsonElement element = jsonParser.parse(str);
         JsonObject jobj = element.getAsJsonObject();
-        JsonElement isSuccess = jobj.get("is_success");
-        if (isSuccess.getAsString().equals("false")) {
-            return false;
-        } else {
-            return true;
+        JsonElement errMsgEle = jobj.get("error_message");
+        String errMsg = "";
+        if (errMsgEle != null && !errMsgEle.isJsonNull()) {
+            errMsg = errMsgEle.getAsString();
         }
+        return errMsg;
     }
 
-    public boolean addDiagnosticPrice(int staffId, String token, int quotationRequestId, int workshopId, double price, String description) throws UnsupportedEncodingException, IOException {
+    public String addDiagnosticPrice(int staffId, String token, int quotationRequestId, int workshopId, double price, String description) throws UnsupportedEncodingException, IOException {
         String url = "http://119.81.43.85/erp/quotation_request/save_offer";
 
         HttpClient client = new DefaultHttpClient();
@@ -724,15 +723,15 @@ public class QuotationRequestDAO {
         JsonParser jsonParser = new JsonParser();
         JsonElement element = jsonParser.parse(str);
         JsonObject jobj = element.getAsJsonObject();
-        JsonElement isSuccess = jobj.get("is_success");
-        if (isSuccess.getAsString().equals("false")) {
-            return false;
-        } else {
-            return true;
+        JsonElement errMsgEle = jobj.get("error_message");
+        String errMsg = "";
+        if (errMsgEle != null && !errMsgEle.isJsonNull()) {
+            errMsg = errMsgEle.getAsString();
         }
+        return errMsg;
     }
 
-    public boolean addFinalQuotation(int staffId, String token, int offerId, double price) throws UnsupportedEncodingException, IOException {
+    public String addFinalQuotation(int staffId, String token, int offerId, double price) throws UnsupportedEncodingException, IOException {
         String url = "http://119.81.43.85/erp/quotation_request/add_final_quotation";
 
         HttpClient client = new DefaultHttpClient();
@@ -763,15 +762,15 @@ public class QuotationRequestDAO {
         JsonParser jsonParser = new JsonParser();
         JsonElement element = jsonParser.parse(str);
         JsonObject jobj = element.getAsJsonObject();
-        JsonElement isSuccess = jobj.get("is_success");
-        if (isSuccess.getAsString().equals("false")) {
-            return false;
-        } else {
-            return true;
+        JsonElement errMsgEle = jobj.get("error_message");
+        String errMsg = "";
+        if (errMsgEle != null && !errMsgEle.isJsonNull()) {
+            errMsg = errMsgEle.getAsString();
         }
+        return errMsg;
     }
 
-    public boolean addEstimatedCompletionTime(int staffId, String token, int offerId, String time) throws UnsupportedEncodingException, IOException {
+    public String addEstimatedCompletionTime(int staffId, String token, int offerId, String time) throws UnsupportedEncodingException, IOException {
         String url = "http://119.81.43.85/erp/quotation_request/update_estimated_completion_time";
 
         HttpClient client = new DefaultHttpClient();
@@ -802,12 +801,12 @@ public class QuotationRequestDAO {
         JsonParser jsonParser = new JsonParser();
         JsonElement element = jsonParser.parse(str);
         JsonObject jobj = element.getAsJsonObject();
-        JsonElement isSuccess = jobj.get("is_success");
-        if (isSuccess.getAsString().equals("false")) {
-            return false;
-        } else {
-            return true;
+        JsonElement errMsgEle = jobj.get("error_message");
+        String errMsg = "";
+        if (errMsgEle != null && !errMsgEle.isJsonNull()) {
+            errMsg = errMsgEle.getAsString();
         }
+        return errMsg;
     }
 
     public Offer retrieveOffer(int staffId, String token, int offerId) throws SQLException, ParseException, UnsupportedEncodingException, IOException {
