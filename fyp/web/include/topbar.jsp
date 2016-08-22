@@ -274,7 +274,7 @@
                     <%=wsName%><i class="fa fa-caret-down"></i>
                 </a>
 
-                <ul class="dropdown-menu arrow settings dropdown-menu-right">
+                <ul class="dropdown-menu arrow settings dropdown-menu-right" style="z-index: 9999;">
 
                     <!--                    <li>
                     

@@ -73,7 +73,7 @@
 
                                     <!-- tile header -->
                                     <div class="tile-header">
-                                        <div class="col-md-12">
+                                        <div class="col-md-12" style="z-index: 2;">
                                             <% if (workshopStaffType == 1) { %>
                                             <div class="col-md-offset-11">
                                                 <!--<a href ="AddEmployee.jsp" type="button" class="btn btn-primary">Add Employee</a>-->
@@ -127,7 +127,7 @@
 
                                                                 if (user.getStaffId() != idToDelete && workshopStaffType == 1) {
                                                                     //if (userType.equals("Admin")) { 
-%>
+                                                            %>
 
                                                             <a href="EditEmployee.jsp?id=<%=idToDelete%>" name="idToDelete" class="btn btn-xs btn-primary" role="button">Edit</a>
                                                             <button class="btn btn-default btn-xs md-trigger" data-modal="<% out.print("myModal" + idToDelete);%>" type="button">Delete</button>
@@ -219,6 +219,7 @@
                                                     }
 
                                                 %>
+                                                <div class="md-overlay"></div>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -266,89 +267,17 @@
     <script type="text/javascript" src="js/classie.js"></script> 
     <script type="text/javascript" src="js/modalEffects.js"></script> 
 
-
     <script>
-
-        //initialize file upload button function
-        $(document)
-                .on('change', '.btn-file :file', function () {
-                    var input = $(this),
-                            numFiles = input.get(0).files ? input.get(0).files.length : 1,
-                            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-                    input.trigger('fileselect', [numFiles, label]);
-                });
-
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+    <script>
 
         $(function () {
 
-            //load wysiwyg editor
-            $('#input06').summernote({
-                toolbar: [
-                    //['style', ['style']], // no style button
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']],
-                            //['insert', ['picture', 'link']], // no insert buttons
-                            //['table', ['table']], // no table button
-                            //['help', ['help']] //no help button
-                ],
-                height: 137   //set editable area's height
-            });
-
             //chosen select input
             $(".chosen-select").chosen({disable_search_threshold: 10});
-
-            //initialize datepicker
-            $('#datepicker').datetimepicker({
-                icons: {
-                    time: "fa fa-clock-o",
-                    date: "fa fa-calendar",
-                    up: "fa fa-arrow-up",
-                    down: "fa fa-arrow-down"
-                }
-            });
-
-            $("#datepicker").on("dp.show", function (e) {
-                var newtop = $('.bootstrap-datetimepicker-widget').position().top - 45;
-                $('.bootstrap-datetimepicker-widget').css('top', newtop + 'px');
-            });
-
-            //initialize colorpicker
-            $('#colorpicker').colorpicker();
-
-            $('#colorpicker').colorpicker().on('showPicker', function (e) {
-                var newtop = $('.dropdown-menu.colorpicker.colorpicker-visible').position().top - 45;
-                $('.dropdown-menu.colorpicker.colorpicker-visible').css('top', newtop + 'px');
-            });
-
-            //initialize colorpicker RGB
-            $('#colorpicker-rgb').colorpicker({
-                format: 'rgb'
-            });
-
-            $('#colorpicker-rgb').colorpicker().on('showPicker', function (e) {
-                var newtop = $('.dropdown-menu.colorpicker.colorpicker-visible').position().top - 45;
-                $('.dropdown-menu.colorpicker.colorpicker-visible').css('top', newtop + 'px');
-            });
-
-            //initialize file upload button
-            $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
-
-                var input = $(this).parents('.input-group').find(':text'),
-                        log = numFiles > 1 ? numFiles + ' files selected' : label;
-
-                console.log(log);
-
-                if (input.length) {
-                    input.val(log);
-                } else {
-                    if (log)
-                        alert(log);
-                }
-
-            });
 
             //         sortable table
             $('.table.table-sortable th.sortable').click(function () {
@@ -357,18 +286,9 @@
                 $(this).addClass(o);
             });
 
-            // Initialize colorpalette
-            $('#event-colorpalette').colorPalette({
-                colors: [['#428bca', '#5cb85c', '#5bc0de', '#f0ad4e', '#d9534f', '#ff4a43', '#22beef', '#a2d200', '#ffc100', '#cd97eb', '#16a085', '#FF0066', '#A40778', '#1693A5']]
-            }).on('selectColor', function (e) {
-                var data = $(this).data();
-
-                $(data.returnColor).val(e.color);
-                $(this).parents(".input-group").css("border-bottom-color", e.color);
-            });
-
         })
-
+    </script>
+    <script>
         function remove(staffId) {
             $.post("url", function (data, status) {
                 alert(data + " " + status);
@@ -376,52 +296,4 @@
         }
 
     </script>
-    <script>
-        (function (document) {
-            'use strict';
-
-            var LightTableFilter = (function (Arr) {
-
-                var _input;
-
-                function _onInputEvent(e) {
-                    _input = e.target;
-                    var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
-                    Arr.forEach.call(tables, function (table) {
-                        Arr.forEach.call(table.tBodies, function (tbody) {
-                            Arr.forEach.call(tbody.rows, _filter);
-                        });
-                    });
-                }
-
-                function _filter(row) {
-                    var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
-                    row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
-                }
-
-                return {
-                    init: function () {
-                        var inputs = document.getElementsByClassName('light-table-filter');
-                        Arr.forEach.call(inputs, function (input) {
-                            input.oninput = _onInputEvent;
-                        });
-                    }
-                };
-            })(Array.prototype);
-
-            document.addEventListener('readystatechange', function () {
-                if (document.readyState === 'complete') {
-                    LightTableFilter.init();
-                }
-            });
-
-        })(document);
-    </script>
-    <script>
-        $(document).ready(function () {
-            $('#example').DataTable();
-        });
-    </script>
-
-
 </html>

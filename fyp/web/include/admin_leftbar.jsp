@@ -37,12 +37,6 @@
             
             <li>
                 <a href="PageOffline.jsp">
-                    <i class="fa fa-comments"></i> Chat
-                </a>
-            </li>
-            
-            <li>
-                <a href="PageOffline.jsp">
                     <i class="fa fa-shopping-cart"></i> Payment
                 </a>
             </li>
