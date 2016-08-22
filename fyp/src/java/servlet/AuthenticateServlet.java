@@ -53,7 +53,7 @@ public class AuthenticateServlet extends HttpServlet {
                 response.sendRedirect("New_Request.jsp");
             } else if (userType == 2) {
                 session.setAttribute("loggedInUserType", "Admin");
-                response.sendRedirect("Admin_New_Request.jsp");
+                response.sendRedirect("Admin_Dashboard.jsp");
                 return;
             } else if (userType == 3) {
                 session.setAttribute("loggedInUserType", "Groomer");

@@ -17,6 +17,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Admin Settings</title>
         <jsp:include page="include/head.jsp"/>
+
     </head>
     <body class="bg-3">
         <!-- Wrap all page content here -->
@@ -50,17 +51,7 @@
                                             <h1><strong>Add</strong> Workshop</h1>
                                             <%
                                                 ArrayList<String> errMsg = (ArrayList<String>) request.getAttribute("errMsg");
-                                                if (errMsg != null && errMsg.size() > 0) {
-                                            %>
-                                            <font color="yellow">
-                                            <%
-                                                for (String error : errMsg) {
-                                                    out.println(error + " ");
-                                                }
-                                            %>
-                                            </font>
-                                            <%
-                                                }
+                                                
                                             %>
                                         </div>
                                         <!-- /tile header -->
@@ -214,16 +205,26 @@
                                                 }
                                                 String[] openCloseTimings = {mondayOpen, mondayClose, tuesdayOpen, tuesdayClose, wednesdayOpen, wednesdayClose, thursdayOpen, thursdayClose, fridayOpen, fridayClose, saturdayOpen, saturdayClose, sundayOpen, sundayClose, phOpen, phClose, phEveOpen, phEveClose};
 
-
                                             %>
+                                            <%if (errMsg != null) { %>   
+                                            <div class="alert alert-danger">
+
+                                                <strong>Error</strong>
+                                                <%
+                                                    for (String error : errMsg) {
+                                                        out.println(error + " ");
+                                                    }
+                                                %>
+                                            </div>       
+                                            <%}%>
                                             <form class="form-horizontal" role="form" action="AddWorkshop" method="POST">
 
                                                 <div class="form-group">
                                                     <label for="input01" class="col-sm-2 control-label">Workshop Name</label>
                                                     <div class="col-sm-4">
-                                                        <input type="text" class="form-control" id="input01" name="name" value="<%=name%>">
+                                                        <input type="text" class="form-control" name="name" />
                                                     </div>
-
+                                                    
                                                     <label for="input02" class="col-sm-2 control-label">Contact Number</label>
                                                     <div class="col-sm-4">
                                                         <input type="number" class="form-control" id="input02" name="contact" value="<%=contact%>">
@@ -250,7 +251,7 @@
 
                                                     <label for="input06" class="col-sm-2 control-label">Website</label>
                                                     <div class="col-sm-4">
-                                                        <input type="text" class="form-control" id="" name="website" value="<%=website%>">
+                                                        <input type="text" class="form-control" id="input06" name="website" value="<%=website%>">
                                                     </div>
                                                 </div>
 
@@ -318,43 +319,6 @@
 
                                                 </div>
 
-
-
-
-
-
-
-
-                                                <!--                                                <div class="form-group">
-                                                                                                    <label for="input07" class="col-sm-2 control-label">Brands Carried</label>
-                                                                                                    <div class="col-sm-4">
-                                                                                                        <input type="text" class="form-control" id="input07" name="brandsCarried">
-                                                                                                    </div>
-                                                
-                                                                                                    <label for="input08" class="col-sm-2 control-label">Remarks</label>
-                                                                                                    <div class="col-sm-4">
-                                                                                                        <input type="text" class="form-control" id="input08" name="remark">
-                                                                                                    </div>
-                                                                                                </div>
-                                                
-                                                                                                <div class="form-group">
-                                                                                                    <label for="input09" class="col-sm-2 control-label">Description</label>
-                                                                                                    <div class="col-sm-4">
-                                                                                                        <textarea class="form-control" id="input09" rows="3" name="description"></textarea>
-                                                                                                    </div>
-                                                
-                                                                                                    <label for="input10" class="col-sm-2 control-label">Location</label>
-                                                                                                    <div class="col-sm-4">
-                                                                                                        <select class="chosen-select chosen-transparent form-control" id="input10" name="location">
-                                                                                                            <option>North</option>
-                                                                                                            <option>South</option>
-                                                                                                            <option>East</option>
-                                                                                                            <option>West</option>
-                                                                                                            <option>Central</option>
-                                                                                                        </select>
-                                                                                                    </div>
-                                                                                                </div>-->
-
                                                 <div class="form-group">
                                                     <h3><label class="col-sm-6">Operating Hours (Open - Close)</label></h3>
                                                     <h3><label class="col-sm-3">Specialize</label></h3>
@@ -389,7 +353,6 @@
                                                     hours.add("2100");
                                                     hours.add("2200");
                                                     hours.add("2300");
-                                                    
 
                                                     int label = 11;
                                                 %>
@@ -547,15 +510,15 @@
                                                         <select class="chosen-select chosen-transparent form-control" id="" name="<%=paramList.get(z)%>">
                                                             <%
                                                                 z++;
-                                                                    for (int j = 0; j < hours.size(); j++) {
-                                                                        String hour = hours.get(j);
-                                                                        if (openCloseTimings[i * 2 + 1].equals(hour)) {
-                                                                            out.println("<option selected>" + hour + "</option>");
-                                                                        } else {
-                                                                            out.println("<option>" + hour + "</option>");
-                                                                        }
+                                                                for (int j = 0; j < hours.size(); j++) {
+                                                                    String hour = hours.get(j);
+                                                                    if (openCloseTimings[i * 2 + 1].equals(hour)) {
+                                                                        out.println("<option selected>" + hour + "</option>");
+                                                                    } else {
+                                                                        out.println("<option>" + hour + "</option>");
                                                                     }
-                                                                
+                                                                }
+
                                                             %>
                                                         </select>
                                                     </div>
@@ -565,8 +528,7 @@
                                                     </div>
                                                 </div>  
 
-                                                <%
-                                                }//end of for loop for operating days
+                                                <%                                                    }//end of for loop for operating days
                                                 %>
                                                 <div class="form-group form-footer">
                                                     <div class="col-sm-offset-5 col-sm-8">
@@ -643,20 +605,20 @@
             $(function () {
 
                 //load wysiwyg editor
-                $('#input06').summernote({
-                    toolbar: [
-                        //['style', ['style']], // no style button
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['height', ['height']],
-                                //['insert', ['picture', 'link']], // no insert buttons
-                                //['table', ['table']], // no table button
-                                //['help', ['help']] //no help button
-                    ],
-                    height: 137   //set editable area's height
-                });
+//                $('#input06').summernote({
+//                    toolbar: [
+//                        //['style', ['style']], // no style button
+//                        ['style', ['bold', 'italic', 'underline', 'clear']],
+//                        ['fontsize', ['fontsize']],
+//                        ['color', ['color']],
+//                        ['para', ['ul', 'ol', 'paragraph']],
+//                        ['height', ['height']],
+//                                //['insert', ['picture', 'link']], // no insert buttons
+//                                //['table', ['table']], // no table button
+//                                //['help', ['help']] //no help button
+//                    ],
+//                    height: 137   //set editable area's height
+//                });
 
                 //chosen select input
                 $(".chosen-select").chosen({disable_search_threshold: 10});
@@ -725,5 +687,25 @@
 
         </script>
 
+        <!--Form Error Handling-->
+        <script>
+            $(function () {
+                $("#workshopForm").submit(function () {
+                    var inputVal = $("#inputExample").val();
+                    $(document).trigger("clear-alert-id.example");
+                    if (inputVal.length < 1) {
+                        $(document).trigger("set-alert-id-example", [
+                            {
+                                message: "Please enter the workshop name",
+                                priority: "error"
+                            },
+                        ]);
+                    }
+                });
+            });
+
+
+
+        </script>
     </body>
 </html>

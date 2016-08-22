@@ -58,15 +58,15 @@ public class AddEstimatedCompletionTimeServlet extends HttpServlet {
         int staffId = user.getStaffId();
         String token = user.getToken();
         QuotationRequestDAO qrDAO = new QuotationRequestDAO();
-        boolean isSuccess = qrDAO.addEstimatedCompletionTime(staffId, token, offerId, estTimeStr);
+        String isSuccess = qrDAO.addEstimatedCompletionTime(staffId, token, offerId, estTimeStr);
         //Error message? success message?
-        if (isSuccess) {
+        if (isSuccess.length() == 0) {
             session.setAttribute("isSuccess", "Estimated completion time is: " + estTimeStr);
 //            RequestDispatcher view = request.getRequestDispatcher("ManageService.jsp");
 //            view.forward(request, response);
             response.sendRedirect("New_Service.jsp");
         } else {
-            session.setAttribute("isSuccess", "Failed!");
+            session.setAttribute("isSuccess", isSuccess + "(ID: " + offerId + ")");
 //            RequestDispatcher view = request.getRequestDispatcher("ManageService.jsp");
 //            view.forward(request, response);
             response.sendRedirect("New_Service.jsp");

@@ -12,7 +12,7 @@
         <ul class="menu"> 
 
             <li>
-                <a href="Admin_New_Request.jsp">
+                <a href="Admin_Dashboard.jsp">
                     <i class="fa fa-tachometer"></i> Dashboard
                 </a>
             </li>
@@ -46,6 +46,34 @@
                     <i class="fa fa-bar-chart-o"></i> Analytics
                 </a>
             </li>
+            
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-gear"></i> Admin Settings <b class="fa fa-plus dropdown-plus"></b>
+                </a>
+                
+                
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="Admin_Settings.jsp">
+                            <i class="fa fa-caret-right"></i> Urgency Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-caret-right"></i> Setting #2
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-caret-right"></i> Setting #3
+                        </a>
+                    </li>
+                </ul>
+            </li>
+                
+            
+            
             
             
 <%--

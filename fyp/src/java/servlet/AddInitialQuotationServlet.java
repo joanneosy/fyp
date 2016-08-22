@@ -49,15 +49,15 @@ public class AddInitialQuotationServlet extends HttpServlet {
         String token = user.getToken();
         int workshopId = user.getShopId();
         QuotationRequestDAO qrDAO = new QuotationRequestDAO();
-        boolean isSuccess = qrDAO.addInitialQuotation(staffId, token, quotationRequestId, workshopId, minPrice, maxPrice, description);
+        String isSuccess = qrDAO.addInitialQuotation(staffId, token, quotationRequestId, workshopId, minPrice, maxPrice, description);
         //Error message? success message?
-        if (isSuccess) {
+        if (isSuccess.length() == 0) {
             session.setAttribute("isSuccess", "Quoted $" + minPrice + "0 - $" + maxPrice + "0 for ID: " + quotationRequestId);
 //            RequestDispatcher view = request.getRequestDispatcher("ViewRequest.jsp");
 //            view.forward(request, response);
             response.sendRedirect("New_Request.jsp");
         } else {
-            session.setAttribute("isSuccess", "Quotation failed for ID: " + quotationRequestId);
+            session.setAttribute("isSuccess", isSuccess + "(ID: " + quotationRequestId + ")");
 //            RequestDispatcher view = request.getRequestDispatcher("ViewRequest.jsp");
 //            view.forward(request, response);
             response.sendRedirect("New_Request.jsp");

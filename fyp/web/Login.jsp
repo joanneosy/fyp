@@ -33,15 +33,6 @@
                         <img src="images/Logo.png" alt class="logo">
                         <h1><strong>Welcome</strong></h1>
 
-                        
-                        <!--<a href = "ForgotPassword.jsp">Forgot Password</a><br/><br/>
-                        <form action = "Authenticate.jsp" method= "post">
-                            Email: <input type="email" name="email" required/><br/>
-                            Password: <input type="password" name="password" required/><br/>
-                            <input type="submit" value="Log In"/>
-                        </form><br/>-->
-
-
                         <form id="form-signin" class="form-signin" action = "Authenticate" method= "post">
                             <section>
                                 <div class="input-group">
@@ -82,6 +73,4 @@
         </div>
         <!-- Wrap all page content end -->
     </body>
-
-</body>
 </html>

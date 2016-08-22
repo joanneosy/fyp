@@ -31,8 +31,7 @@
         <meta charset="UTF-8" />
         <title>Request</title>
         <jsp:include page="include/head.jsp"/>
-    </head>
-    <style>
+        <style>
         #accordion {
             list-style: none;
             padding: 2px;
@@ -86,7 +85,8 @@
 
 
     </style>
-
+    </head>
+    
     <body class="bg-3">
         <!--<h1>Welcome</h1>-->
         <%            String successChangePasswordMsg = (String) request.getAttribute("successChangePasswordMsg");

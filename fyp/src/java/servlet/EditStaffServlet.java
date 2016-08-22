@@ -9,6 +9,7 @@ import dao.WebUserDAO;
 import entity.WebUser;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import util.Validation;
 
 /**
  *
@@ -36,48 +38,55 @@ public class EditStaffServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name").trim();
         String email = request.getParameter("email").trim();
         String handphone = request.getParameter("handphone").trim();
-        
+
         WebUserDAO uDAO = new WebUserDAO();
-                
+
         HttpSession session = request.getSession(true);
         WebUser loggedInUser = (WebUser) session.getAttribute("loggedInUser");
         int staffId = loggedInUser.getStaffId();
         String token = loggedInUser.getToken();
-        
+
         WebUser editUser = uDAO.retrieveUser(staffId, token, id);
         int editUserType = editUser.getUserType();
         int editUserStaffType = editUser.getStaffType();
-        String errMsg = "";
-        //Workshop Staff
-        if (editUserType == 1) {
-            //Master Workshop Staff
-            if (editUserStaffType == 1) {
-                errMsg = uDAO.updateMasterWorkshopStaff(staffId, token, name, email, handphone, id);
-            //Normal Workshop Staff
-            } else if (editUserStaffType == 2) {
-                errMsg = uDAO.updateNormalWorkshopStaff(staffId, token, name, email, handphone, id);
+        Validation validation = new Validation();
+        ArrayList<String> errMsgArr = validation.validateExistingEmployee(handphone);
+        if (errMsgArr.size() != 0) {
+            request.setAttribute("errMsgArr", errMsgArr);
+            RequestDispatcher view = request.getRequestDispatcher("EditEmployee.jsp?id=" + id);
+            view.forward(request, response);
+        } else {
+            String errMsg = "";
+            //Workshop Staff
+            if (editUserType == 1) {
+                //Master Workshop Staff
+                if (editUserStaffType == 1) {
+                    errMsg = uDAO.updateMasterWorkshopStaff(staffId, token, name, email, handphone, id);
+                    //Normal Workshop Staff
+                } else if (editUserStaffType == 2) {
+                    errMsg = uDAO.updateNormalWorkshopStaff(staffId, token, name, email, handphone, id);
+                }
+
+                //Fixir Admin
+            } else if (editUserType == 2) {
+                //Super Fixir Admin
+                if (editUserStaffType == 1) {
+                    errMsg = uDAO.updateSuperAdmin(staffId, token, name, email, handphone, id);
+                    //Master Fixir Admin
+                } else if (editUserStaffType == 2) {
+                    errMsg = uDAO.updateMasterAdmin(staffId, token, name, email, handphone, id);
+                    //Normal Fixir Admin
+                } else if (editUserStaffType == 3) {
+                    errMsg = uDAO.updateNormalAdmin(staffId, token, name, email, handphone, id);
+                }
             }
-            
-        //Fixir Admin
-        } else if (editUserType == 2) {
-            //Super Fixir Admin
-            if (editUserStaffType == 1) {
-                errMsg = uDAO.updateSuperAdmin(staffId, token, name, email, handphone, id);
-            //Master Fixir Admin
-            } else if (editUserStaffType == 2) {
-                errMsg = uDAO.updateMasterAdmin(staffId, token, name, email, handphone, id);
-            //Normal Fixir Admin
-            } else if (editUserStaffType == 3) {
-                errMsg = uDAO.updateNormalAdmin(staffId, token, name, email, handphone, id);
-            }
-        } 
-        
-        if (errMsg.equals("")) {
+
+            if (errMsg.equals("")) {
                 request.setAttribute("errMsg", "Employee successfully edited!");
                 RequestDispatcher view = request.getRequestDispatcher("ViewEmployees.jsp?id=" + id);
                 view.forward(request, response);
@@ -86,6 +95,7 @@ public class EditStaffServlet extends HttpServlet {
                 RequestDispatcher view = request.getRequestDispatcher("EditEmployee.jsp?id=" + id);
                 view.forward(request, response);
             }
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

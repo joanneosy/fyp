@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import util.Validation;
 
 /**
  *
@@ -84,18 +85,6 @@ public class AddWorkshopServlet extends HttpServlet {
         String[] categoryArr = request.getParameterValues("category");
         String remark = request.getParameter("remark").trim();
 
-        ArrayList<String> errMsg = new ArrayList<String>();
-        
-        try {
-            int contactInt = Integer.parseInt(contact);
-            int contact2Int = Integer.parseInt(contact2);
-            if (!contact.substring(0,1).equals("6") || !contact2.substring(0,1).equals("9")) {
-            errMsg.add("Please enter valid contact numbers.");
-            }
-        } catch (NumberFormatException e) {
-            errMsg.add("Please enter valid contact numbers.");
-        }
-        
         String openingHour = "";
         openingHour = "Monday-" + mondayOpen + "-" + mondayClose + ","
                 + "Tuesday-" + tuesdayOpen + "-" + tuesdayClose + ","
@@ -107,24 +96,9 @@ public class AddWorkshopServlet extends HttpServlet {
                 + "Ph-" + phOpen + "-" + phClose + ","
                 + "PhEve-" + phEveOpen + "-" + phEveClose;
 
-        String[] openingHoursArr = openingHour.split(",");
-        for (String s : openingHoursArr) {
-            String[] eachDayArr = s.split("-");
-            if (eachDayArr[1].equals("Closed") || eachDayArr[2].equals("Closed")) {
-                if (!eachDayArr[1].equals(eachDayArr[2])) {
-                    errMsg.add("Please enter valid opening hours.");
-                    break;
-                }
-            } else {
-                int open = Integer.parseInt(eachDayArr[1]);
-                int close = Integer.parseInt(eachDayArr[2]);
-                if (open > close) {
-                    errMsg.add("Please enter valid opening hours.");
-                    break;
-                }
-            }
-        }
-
+        Validation validation = new Validation();
+        ArrayList<String> errMsg = validation.validateWorkshop(contact, contact2, postalCode, openingHour);
+        
         String specialize = "";
         if (specializeArr == null) {
             errMsg.add("Please select at least one specilized car brand.");
@@ -147,20 +121,17 @@ public class AddWorkshopServlet extends HttpServlet {
 
         WebUserDAO uDAO = new WebUserDAO();
         WorkshopDAO wDAO = new WorkshopDAO();
-        String[] latLong = wDAO.retrieveLatLong("Singapore " + postalCode);
+        String[] latLong = wDAO.retrieveLatLong(address);
         if (latLong == null) {
-            errMsg.add("Please enter a valid address.");
+            latLong = wDAO.retrieveLatLong("Singapore " + postalCode);
+            if (latLong == null) {
+                errMsg.add("Please enter a valid address.");
+            }
         } else {
             latitude = Double.parseDouble(latLong[0]);
             longitude = Double.parseDouble(latLong[1]);
         }
 
-        try {
-            int postalCodeInt = Integer.parseInt(postalCode);
-        } catch (NumberFormatException e) {
-            errMsg.add("Please enter a valid postal code.");
-        }
-            
         if (errMsg.size() == 0) {
             HttpSession session = request.getSession(true);
             WebUser user = (WebUser) session.getAttribute("loggedInUser");
