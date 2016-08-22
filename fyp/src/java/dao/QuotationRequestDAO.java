@@ -1421,11 +1421,122 @@ public class QuotationRequestDAO {
         return allQuotationRequests;
     }
     
+    public HashMap<Integer, Integer> retrieveNumberOfNewRequests(int staffId, String token) throws SQLException, UnsupportedEncodingException, IOException, ParseException {
+
+        //Key = Shop Id
+        //Value = Number of new request that shop has
+        HashMap<Integer, Integer> numberOfNewRequests = new HashMap<Integer, Integer>();
+        String url = "http://119.81.43.85/erp/quotation_request/get_number_of_new_or_completed_requests";
+
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(url);
+
+        // add header
+        post.setHeader("User-Agent", USER_AGENT);
+
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        urlParameters.add(new BasicNameValuePair("staff_id", staffId + ""));
+        urlParameters.add(new BasicNameValuePair("token", token));
+        urlParameters.add(new BasicNameValuePair("status", 1 + ""));
+
+        post.setEntity(new UrlEncodedFormEntity(urlParameters));
+
+        HttpResponse response = client.execute(post);
+        BufferedReader rd = new BufferedReader(
+                new InputStreamReader(response.getEntity().getContent()));
+
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
+        }
+        String str = result.toString();
+        JsonParser jsonParser = new JsonParser();
+        JsonElement element = jsonParser.parse(str);
+        JsonObject jobj = element.getAsJsonObject();
+        JsonArray arr = jobj.getAsJsonObject("payload").getAsJsonArray("number_of_quotation_request");
+
+        for (int i = 0; i < arr.size(); i++) {
+            JsonElement qrElement = arr.get(i);
+            JsonObject qrObj = qrElement.getAsJsonObject();
+            JsonElement attElement = qrObj.get("shop_id");
+            int shopId = 0;
+            if (!attElement.isJsonNull()) {
+                shopId = attElement.getAsInt();
+            }
+
+            attElement = qrObj.get("num_new_requests");
+            int number = 0;
+            if (!attElement.isJsonNull()) {
+                number = attElement.getAsInt();
+            }
+
+            numberOfNewRequests.put(shopId, number);
+        }
+        return numberOfNewRequests;
+    }
+    
+    public HashMap<Integer, Integer> retrieveNumberOfCompletedRequests(int staffId, String token) throws SQLException, UnsupportedEncodingException, IOException, ParseException {
+
+        //Key = Shop Id
+        //Value = Number of new request that shop has
+        HashMap<Integer, Integer> numberOfNewRequests = new HashMap<Integer, Integer>();
+        String url = "http://119.81.43.85/erp/quotation_request/get_number_of_new_or_completed_requests";
+
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(url);
+
+        // add header
+        post.setHeader("User-Agent", USER_AGENT);
+
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        urlParameters.add(new BasicNameValuePair("staff_id", staffId + ""));
+        urlParameters.add(new BasicNameValuePair("token", token));
+        urlParameters.add(new BasicNameValuePair("status", 7 + ""));
+
+        post.setEntity(new UrlEncodedFormEntity(urlParameters));
+
+        HttpResponse response = client.execute(post);
+        BufferedReader rd = new BufferedReader(
+                new InputStreamReader(response.getEntity().getContent()));
+
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
+        }
+        String str = result.toString();
+        JsonParser jsonParser = new JsonParser();
+        JsonElement element = jsonParser.parse(str);
+        JsonObject jobj = element.getAsJsonObject();
+        JsonArray arr = jobj.getAsJsonObject("payload").getAsJsonArray("number_of_quotation_request");
+
+        for (int i = 0; i < arr.size(); i++) {
+            JsonElement qrElement = arr.get(i);
+            JsonObject qrObj = qrElement.getAsJsonObject();
+            JsonElement attElement = qrObj.get("shop_id");
+            int shopId = 0;
+            if (!attElement.isJsonNull()) {
+                shopId = attElement.getAsInt();
+            }
+
+            attElement = qrObj.get("num_completed_requests");
+            int number = 0;
+            if (!attElement.isJsonNull()) {
+                number = attElement.getAsInt();
+            }
+
+            numberOfNewRequests.put(shopId, number);
+        }
+        return numberOfNewRequests;
+    }
+    
     public static void main(String[] args) throws Exception {
         //HashMap<Integer, QuotationRequest> qList = retrieveAllQuotationRequests(3, "57cd00bbfaf886f8fe9fc98e15ee3bb0b31663a18f752de76cd998d71fe983be2b2f2a3de0f41ab8f69f3d19ab29b78c1b957578f5e7679e112de86fd1841da08c48d0a674fa001c3a2fe1e161c76edc6ce950b080c9a876034b3dfeabf826efacc3fde2d5542e8d4ccb90fd0163cb76371b7159546fd7d652d31abd73c235b290d4d62e2c31a8a00704432fae9a60e9f04eb4338698e0b2d5183d8cd4a4671ac1bc1d0ae79792bc21c8a1cd902d841a8fb6e8d0197cbccb3fd6f92456d9a361b940c0ff1affe7149e458fac8d7b0783e095d0dc4c82b86930e9fa378b4ffe1f15ce963d80291a7bc1c69ee0d63fb8b1d613d5feb3820b6c1a86cf7ab95d1340d8974f4acdf8e6ce9b426565d4f14b348c80787b4f24e95f9cd625f2a50e28d5118b364c362ae096623208881a9cc9f2161a422bac6d4d8e968f7b26093837d95b17352f417d0a061138438242a2cf6dd32e736bad691912e3d2701fc17a84a855a3aeb57969ad875a656e80206f10677818967ecd6942ea5463d1e3f188b84bc54c781ca85a3dceb76da8a17d9728fb0eb94b51ecd96787f11abefc7fb0e6f80307402b8d8e00920d8a48b566dbf1ad84b0487bb67863a31d122c86084ae08b891252fad4fe7df17c76cf419f33e2fb760968ac9e112567188c0b163961ef708e1fbb9059de5d7fa1f7f20da40123d5311fd308fcee95f36a3a4991b814ef3b", 0, 0, null, "requested_datetime", "desc");
         //retrieveOffer(20, "bfa5334a57318d381e35ca9cd6c41f12cf504f6458e0f6799f62a946459def5f73f3490ba6577c61b4ea9bb69cc020ef8d37bc98ca12c57b757babf71b1d1b337729275e333b20f19a8738eca93bef992c49912d1943e599b5b5a1f33ad2d31dc6daa4f706d44760abd86764701d46b8c0e09ed0929977e41e41c62223c3267db510a9d8ff69994474d438dbee3d13d52bad3f65272b802f3cd54b9ef6da8d6c6d24a00cb263aa58e50fac2479d95f9664b1c31bfe1b0f640d3621f84f7642fefc28c0fe0c5069cbf37bf73e7e1a970a01374d3412cce1668e060af58fa02081a3ec9ba1bfe50d5a87ce82c5b30848b6c5026ba4839ab00e7fdd7e350691b323603ce4b511b5f4e7657361287d1a208ee8bf169b26db5a8419c54ca22428416ab28b95074192be54d4685b6acdaba8d1d8ceffff8c3afd565c929424faaca62f27d0e00acbd46cba910f274facfd511ed7acab33a5bb81dc622e10f43ce64f6394549535d58fb40271558f07c5b0e054121fa2382dafa2993ee393e6a2cc2693f5d11c88890bab3020f11a3e20c49fe040173b948d07cc0b76439a4a2966a59962268fb556a8deb4009333b4b0c327751430463097ca0d5231b0803c950bfb534291c57688306e4fc891b060b0a81bebc7261cf6618108f807a6685a785d72f13b086373d412218e4468bab6078c998d5f6ec3867330934c39e497d58850c5ec", 59);
         //retrieveQuotationRequest(16, "494ccf8d9c4367d5ea8de06645dfea172e50aeec2368bdcd7a2d9d3425b8dd9e6436719eb153df80789397279afa78acd5050cb05de7c0a7f993004646eceb089932a6d4d0755950e0ddeedd875590dd6be10c01c5cf2f569a3e9879e598a971dac1b94d210758f4cf7f9142d7ab2a1cc51b745bf9f3559731d7641650591b09e4c5a764b200a23609aceb382c2982e7f5ee2b5602c7f05714424805c355c364348486fb6b26f3c4621430e239bfa3c05943cbaba1492af684c81ad08e84bf410b3968568eb9c01fcfa507965c76d4b1806944ebea4b3bec84d788bbf5a950bc15bf101edbdb233c737fa3cea6ec3b6450822f1f663b13559c8369ccac2b15010f3cc519d342797db8d42ce3bf4e492ce6933165833b88b0275d08515c2c9bb0843b4e2ba178c83c4e5ce075d81329950fbc12002f7d2407fb00cc94ae029cdfa0ad6a91e0b20eb23dcb62dbec225849828bc0f86839090d0ec44361462d768e6f886438dcdb92494751cd94255147f183dc91256a8f150dd49f901a232bd3dcc6176483c587d79d23565419e7a62fbef62ea5cc4031b4173b42fa734419a8941fc52f753841cf58cb3431b20f53059185692e2b84fc6bdf85efdefdfa4248b8a8a410bb4b8e155e2e37caf4e4f66af9986846ec83d1c5079a01119d40559a37149c66b331cdd58798424dbbcdcc3d5cb503d7ec3ffd2756bb5e92e85625e1fd", 659);
         //retrieveQuotationRequestsWithoutOffer(29, "b2397f111518e143d1875ee5f8f5a4fd7d47383aeecddf3b3c43ff28d9bf54ac0ba628c2abcffe4b25226f1e5c9f68852c63ae941579665da5e6bcbeabb593f123210000747c7b22e959a940d29f1ee0a3623a7f17259223fe67d8a281400edb305090339efa8cdb611bb4b6aea366e1ff6a55127a3a468278841db2b104c7dbca6aebe9a2e5dcab697eeeb0259e8b298609c3300d3c96af0e3bc72b68e9f4e1d7ffcfcbe87a0c3b37ebc6fe0b48609bdee4e052e8839ea4a265b91ffafda9d160b88234f2608bab79c39b6b09cf498db2dda5c579fb2b853333d1d77d0a9ebd9b32a67ac143b2660cf42a4630223e88fd141aaaf218664164d5a6e6d9b234f0c5979c394c3e3b2e3795928b9a86243852fd1777909246374c7696aa3233ef53f526f85b02ff9bf7b6fc0ddd30508b05b775ffa576be425924dcc048211a9fa247b0b18eac39096bc10c68cb08b6d47fd6e71fa2e1534a94c35f833d8b6c55002494332f38dfebd4d4d10f1011793f64c76a7b46d2e3ddf8a1bc1593e6ec1e95cf0a175a434a6a69d25fe8abd7b682198b438d38e62f5b7a67c2f1fafb77d83a8b7c3ee2711821b62de37f68efff029c42a72ebdbf016cea8ad020a5cfa95e638791f4286a6f117f03c1d1e72a760d5de37b581c73063c9f2b7d0bb99efde8e29cc7886dacac160fb1252ae48da48d54c29eef3c8a75992b8f495d1219af452a");
         //retrieveCompletedQuotationRequests(1, "125ec4bb60d3718c7fa212e7242714dfcac0c49a344b6b89373c21d321fe252c4d504406bb825503bc9fadc3bcd2d809d446ef29cdbdb88c344a211c03445eb5ba08cec06f6431d6a5a322e36d2c61a3e8f585af4563f77766b89658b7b7004fcaf6ed66efb11e000861a814770e45f892baf7d5b0169634387d31ed8f46a2dc9c25325aba1da930dd66307e29dfc023ffe37597e8332fe89376dc955cf2e1a422e9dbeae51b23451f6087703be4f0c023d5926ea5bfccf64bc17e068f2b80e652c62bf78dec49501a62dcfae19d66765932940ad5876cc9910b7841f3ef5735a32c52709913eaca01180f299d89974c0f5c2d7dedbf4721a5b43605d416ec2f6a0bf5ff4f825b3269950d5039955b6e4de322772a31b516141515161aa8d52ed38f1e432912e7215e6b2eecb2d3137276ff33b0f59583eb3ad5d1d8036de7dbe8cfa8501506f5534b08c3551ae8774363e5990661363bfc1fe8a74467add5694f43f73e4d09a396ac5b856ea5bff7528ff2a777136e233636b146952d3dc62c0d1b4b6e1d3e878eaf4e130f601b4b147852b9ab2502f9235109f93bbd7d135963df0fff5a4fa2e6e9f25c0e46796b3acea1a292eda83e4df8e1038d9ea810ac0c2e23f94bad28e1c6e9b620ed32728fbbfe4c435759247b21504ecad7791a55978106173a800cc5d0a5ac72fb6c5b5a2cd0fc5b9e73064ad1f1f7c503440f34");
+        //retrieveNumberOfCompletedRequests(1, "dc8119110ed8e06cab87edc6f886016acb87d2f00e96ec52dddbb43ea49e8676d5f00b0bd6b9295e8d898736bc0d27e233cf680da3149b42d5e94af7f3d6986ccb184e0d8d294fe9622be0f0c472d7c7edf96a5ac8e2fe12fe059d714a5137e40065e552813feb1e2e6f00739363e98f42f667dbe7b21104d8575a5fcf1412ef83b6a701a06399355af63cc8a2299096f1a30a06b33201fd8571f764e4f3279ce15f5cf363424271f8e04df163c0ebe7494b3683b10fa26fb9a2f2df471dc377aacdbcbe47304d8afe3b87d53feaba7c0b35978f2716d69f01bd233115b45231f1ee32a50ad8ad9047d0a5f4c2a71c847648a9fa55bede50adf3f553922a2d9a7a9dcebeb0722f15bb72b5841b938de34e3174862b8b5f61014b48e0f1d3eaefab3c457ee094c19b9eadbb281af987857fdc54061580282f738e6bc9428c50d4e8ebeb96b3aa104faa8bacb0a06f36e9528cc65250901996be7deb35e58e7926439bfebd4953b583b6e308879678f7ab015631b5372ce9cb1b3ca96b81e11c00ef8f0a5841716d10b029f46a0bc6bfac1f4859c0d00912d9bbe9b976c8bc577f3c9a3d25c80d116a6a232f127a1e5d93ff0f7696a2c6212fc281b5e77efdfbca7e32090a69dc6edf68757d1ef330d387600415d8ff078070e232e11b99f7a9283cde2e02bfff8e382dab72d90ec5a0ca3b8e323f2bde582822ac3f7772aae27d");
     }
 }
