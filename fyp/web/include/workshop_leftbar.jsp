@@ -85,6 +85,11 @@
                     <i class="fa fa-bar-chart-o"></i> Analytics
                 </a>
             </li>
+            <li>
+                <a href="Schedule.jsp">
+                    <i class="fa fa-calendar"></i> Schedule
+                </a>
+            </li>
 
 
 

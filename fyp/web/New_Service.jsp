@@ -917,68 +917,6 @@
             $('.bootstrap-datetimepicker-widget').css('top', newtop + 'px');
         });
     </script>
-    <!--        <script>
-                $(function () {
-    
-                    //check all checkboxes
-                    $('table thead input[type="checkbox"]').change(function () {
-                        $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', $(this).prop('checked'));
-                    });
-    
-                    // sortable table
-                    $('.table.table-sortable1 th.sortable').click(function () {
-                        var o = $(this).hasClass('sort-asc') ? 'sort-desc' : 'sort-asc';
-                        $(this).parents('table').find('th.sortable').removeClass('sort-asc').removeClass('sort-desc');
-                        $(this).addClass(o);
-                    });
-    
-                    //chosen select input
-                    $(".chosen-select").chosen({disable_search_threshold: 10});
-    
-                    //check toggling
-                    $('.check-toggler').on('click', function () {
-                        $(this).toggleClass('checked');
-                    });
-                });
-    
-            </script>-->
-    <script>
-        //        $(function(){
-        //            $('.table.table-sortable1 th.sortable').click(function () {
-        //                var o = $(this).hasClass('sort-asc') ? 'sort-desc' : 'sort-asc';
-        //                $(this).parents('table').find('th.sortable').removeClass('sort-asc').removeClass('sort-desc');
-        //                $(this).addClass(o);
-        //            });
-        //        });
-
-
-    </script>
-    <script>
-        $(document).ready(function ()
-        {
-            //        $("#myTable1").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable2").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable3").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable4").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable5").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable1").tablesorter();
-            //        $("#myTable2").tablesorter();
-            //        $("#myTable3").tablesorter();
-            //        $("#myTable4").tablesorter();
-            //        $("#myTable5").tablesorter();
-        }
-        );
-    </script>
     <script>
         //Script to load tab and data based on the href #
         $(window).load(function () {
@@ -1058,17 +996,6 @@
 
         })(document);
     </script>
-    <script>
-        //    var acc = document.getElementsByClassName("accordion");
-        //    var i;
-        //
-        //    for (i = 0; i < acc.length; i++) {
-        //        acc[i].onclick = function () {
-        //            this.classList.toggle("active");
-        //            this.nextElementSibling.classList.toggle("show");
-        //        }
-        //    }
-    </script>
     <script type="text/javascript">
         function displaymsg() {
             var msg = '<%=session.getAttribute("isSuccess")%>';
@@ -1102,29 +1029,6 @@
 
     </script>
     <script>
-        //    $(document).ready(function () {
-        //        $(".tabpager").tabpager({
-        ////  maximum visible items
-        //            items: 5,
-        //// CSS class for tabbed content
-        //            contents: 'contents',
-        //// transition speed
-        //            time: 300,
-        //// text for previous button
-        //            previous: '&laquo;Prev',
-        //// text for next button
-        //            next: 'Next&raquo;',
-        //// initial tab
-        //            start: 1,
-        //// top or bottom
-        //            position: 'bottom',
-        //// scrollable
-        //            scroll: true
-        //        });
-        //    });
-
-    </script>
-    <script>
         $(document).ready(function () {
             $('#example').DataTable();
             $('#example2').DataTable();
@@ -1138,8 +1042,9 @@
     <script type="text/javascript">
         $(".date").each(function () {
             $(this).datetimepicker({
+                sideBySide: true,
                 format: 'YYYY-MM-DD HH:mm',
-                minDate: new Date()
+                minDate: new Date(),
             });
         });
     </script>
