@@ -54,6 +54,11 @@
                             <i class="fa fa-caret-right"></i> Ongoing Service
                         </a>
                     </li>
+                    <li>
+                        <a href="Rejected_Request.jsp">
+                            <i class="fa fa-caret-right"></i> Rejected Request
+                        </a>
+                    </li>
                 </ul>
             </li>
             

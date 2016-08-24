@@ -6,7 +6,8 @@
     int finalAcceptSize = statusSize.get(2);
     int newServiceSize = statusSize.get(2) - statusSize.get(3);
     int ongoingServiceSize = statusSize.get(4);
-//    int rejectedSize = statusSize.get(4);
+    int rejectedSize = statusSize.get(5);
+    String a="";
 %>
 <div class="row">
     <div class="col-lg-6 col-sm-18 col-sm-36"><h4>REQUEST</h4></div>
@@ -14,7 +15,7 @@
     <div class="col-lg-2 col-sm-6 col-sm-12">4</div>-->
     <div class="col-lg-4 col-sm-12 col-sm-24"><h4>SERVICE</h4></div>
     <!--<div class="col-lg-2 col-sm-6 col-sm-12"><h4>RATING</h4></div>-->
-    <!--<div class="col-lg-2 col-sm-6 col-sm-12"><h4>REJECTED</h4></div>-->
+    <div class="col-lg-2 col-sm-6 col-sm-12"><h4>REJECTED</h4></div>
     
 </div>
 <div class="row cards">
@@ -146,6 +147,33 @@
             </div>
             <div class="back card-custom">
                 <a href="Ongoing_Service.jsp">
+                    <!--<i class="fa fa-bar-chart-o fa-4x"></i>-->
+                    <span>More Information</span>
+                </a>
+            </div>
+        </div>
+    </div>
+                    
+    <div class="card-container col-lg-2 col-sm-6 col-sm-12" onclick="location.href='Rejected_Request.jsp'">
+        <div class="card card-slategray hover">
+            <div class="front card-custom">        
+
+                <div class="media">
+                    <span class="pull-left">
+                        <i class="fa fa-trash-o media-object"></i>
+                    </span>
+
+                    <div class="media-body">
+                        Rejected Requests
+                        <h2 class="media-heading animate-number" data-value="<%=rejectedSize%>" data-animation-duration="1500">0</h2>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="back card-custom">
+                <a href="Rejected_Request.jsp">
                     <!--<i class="fa fa-bar-chart-o fa-4x"></i>-->
                     <span>More Information</span>
                 </a>
