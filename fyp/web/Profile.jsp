@@ -38,9 +38,13 @@
                         <a href="EditProfile.jsp" type="button" class="btn btn-primary margin-bottom-20 col-md-offset-8">Edit Profile</a>
                     </div>
                     <!-- /page header -->
-                    <%                  
-                        
+                    <%
+                        int staffID = user.getStaffId();
+                        String phone_number = user.getHandphone();
+                        String user_name = user.getName();
+                        String user_email = user.getEmail();
                         Workshop ws = wsDAO.retrieveWorkshop(user.getShopId(), user.getStaffId(), user.getToken());
+                        String workshop_name = ws.getName();
                         String address = ws.getAddress();
                         String wsAddress = address.substring(0, address.lastIndexOf(" "));
                         String wsPostal = address.substring(address.lastIndexOf(" ") + 1);
@@ -366,6 +370,7 @@
         <!--End page wrap-->
         <%-- scripts --%>
         <jsp:include page="include/scripts.jsp"/>
+        <script type="text/javascript" src="js/intercom.js"></script> 
         <script>
             $(document).ready(function ()
             {
@@ -522,6 +527,9 @@
                 });
             });
 
+        </script>
+        <script>
+            intercom("<%=user_name%>", "<%=user_email%>",<%=staffID%>, "<%=phone_number%>", "<%=workshop_name%>", "<%=wsCategory%>", "<%=wsBrands%>");
         </script>
     </body>
 </html>

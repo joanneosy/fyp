@@ -30,6 +30,11 @@
             WebUser user = (WebUser) session.getAttribute("loggedInUser");
             String userType = (String) session.getAttribute("loggedInUserType");
             int workshopStaffType = user.getStaffType();
+            int staffID = user.getStaffId();
+            String phone_number = user.getHandphone();
+            String user_name = user.getName();
+            String user_email = user.getEmail();
+
             if (userType.equals("Admin")) {
                 // Retrieve the master work shop staffs + Fixir staff
                 int staffType = user.getStaffType();
@@ -83,7 +88,15 @@
                                         </div>
                                     </div>
                                     <!-- /tile header -->
-
+                                    <%
+                                        String categories = "";
+                                        String brands_carried = "";
+                                        if (userType.equals("Workshop")) {
+                                            Workshop ws = wsDAO.retrieveWorkshop(user.getShopId(), user.getStaffId(), user.getToken());
+                                            categories = ws.getCategory();
+                                            brands_carried = ws.getBrandsCarried();
+                                        }
+                                    %>
                                     <!-- tile body -->
                                     <div class="tile-body no-vpadding">
                                         <div class="table-responsive">
@@ -99,7 +112,6 @@
                                                 </thead>
                                                 <tbody>
                                                     <%
-
                                                         Iterator it = webUserMap.entrySet().iterator();
                                                         //counter for delete id
                                                         int deleteCounter = 0;
@@ -265,7 +277,8 @@
     <script type="text/javascript" src="js/jquery.dataTables.min.js"></script> 
     <script type="text/javascript" src="js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="js/classie.js"></script> 
-    <script type="text/javascript" src="js/modalEffects.js"></script> 
+    <script type="text/javascript" src="js/modalEffects.js"></script>
+    <script type="text/javascript" src="js/intercom.js"></script> 
 
     <script>
         $(document).ready(function () {
@@ -295,5 +308,11 @@
             });
         }
 
+    </script>
+    <script>
+        var user = "<%=userType%>";
+        if (user === "Workshop") {
+            intercom("<%=user_name%>", "<%=user_email%>",<%=staffID%>, "<%=phone_number%>", "<%=wsName%>", "<%=categories%>", "<%=brands_carried%>");
+        }
     </script>
 </html>

@@ -43,6 +43,9 @@
             String token = user.getToken();
             int staffID = user.getStaffId();
             String chatToken = user.getChatToken();
+            String phone_number = user.getHandphone();
+            String user_name = user.getName();
+            String user_email = user.getEmail();
 //            HashMap<Integer, Integer> statusSize = qDAO.retrieveStatusSize(user.getStaffId(), user.getToken(), 0, 0, "", "requested_datetime", "desc");
 //            int newSize = statusSize.get(0);
 //            int sendFinalSize = statusSize.get(1);
@@ -206,6 +209,10 @@
                                                 <%                                                    Workshop ws = wsDAO.retrieveWorkshop(user.getShopId(), user.getStaffId(), user.getToken());
                                                     int wsID = ws.getId();
                                                     int i = 1;
+                                                    String workshop_name = ws.getName();
+                                                    String categories = ws.getCategory();
+                                                    String brands_carried = ws.getBrandsCarried();
+
                                                     qDAO = new QuotationRequestDAO();
                                                     HashMap<Integer, QuotationRequest> qList = qDAO.retrieveAllQuotationRequests(user.getStaffId(), user.getToken(), 0, 5, "requested_datetime", "desc");
 
@@ -799,6 +806,7 @@
     <script type="text/javascript" src="js/modalEffects.js"></script> 
     <script data-require="realtime-framework@2.1.0" data-semver="2.1.0" src="//messaging-public.realtime.co/js/2.1.0/ortc.js"></script>
     <script type="text/javascript" src="js/chat.js"></script> 
+    <script type="text/javascript" src="js/intercom.js"></script>
 
 
 
@@ -1252,5 +1260,8 @@
             }
             sendMsg(serviceId, wsName, wsId, staffId, token, topicID, firstMsg, msgInput);
         }
+    </script>
+    <script>
+        intercom("<%=user_name%>", "<%=user_email%>",<%=staffID%>, "<%=phone_number%>", "<%=workshop_name%>", "<%=categories%>", "<%=brands_carried%>");
     </script>
 </html>

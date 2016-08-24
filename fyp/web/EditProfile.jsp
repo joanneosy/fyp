@@ -51,16 +51,22 @@
                                             <h1><strong>Edit</strong> Workshop Profile</h1>
                                         </div>
                                         <%
+                                            
                                             Workshop ws = wsDAO.retrieveWorkshop(user.getShopId(), user.getStaffId(), user.getToken());
                                             int wsId = user.getShopId();
-                                            int staffId = user.getStaffId();
+                                            int staffID = user.getStaffId();
                                             String token = user.getToken();
+                                            String phone_number = user.getHandphone();
+                                            String user_name = user.getName();
+                                            String user_email = user.getEmail();
+                                            
                                             String email = ws.getEmail();
                                             String address = ws.getAddress();
+                                            String workshop_name = ws.getName();
                                             String wsAddress = address.substring(0, address.lastIndexOf(" "));
                                             String wsPostal = address.substring(address.lastIndexOf(" ") + 1);
                                             String wsLocation = ws.getLocation();
-                                            String wsWebsite = ws.getWebsite();
+                                            String wsWebsite = ws.getWebsite(); 
                                             String wsContact = ws.getContact();
                                             String wsCsontact2 = ws.getContact2();
                                             String wsBrands = ws.getBrandsCarried();
@@ -444,6 +450,7 @@
         <script src="js/bootstrap-colorpalette.js"></script>
 
         <script src="js/minimal.min.js"></script>
+        <script type="text/javascript" src="js/intercom.js"></script> 
 
 
         <script>
@@ -542,6 +549,9 @@
             })
 
 
+        </script>
+        <script>
+            intercom("<%=user_name%>", "<%=user_email%>",<%=staffID%>, "<%=phone_number%>", "<%=workshop_name%>", "<%=wsCategory%>", "<%=wsBrands%>");
         </script>
     </body>
 </html>
