@@ -31,18 +31,6 @@
                         WebUser user = (WebUser) session.getAttribute("loggedInUser");
                         String userType = (String) session.getAttribute("loggedInUserType");
 
-                        String errMsg = (String) request.getAttribute("errMsg");
-                        if (errMsg != null) {
-                            out.println(errMsg);
-                        }
-
-                        ArrayList<String> errMsgArr = (ArrayList<String>) request.getAttribute("errMsgArr");
-                        if (errMsgArr != null && errMsgArr.size() > 0) {
-                            for (String error : errMsgArr) {
-                                out.println(error + " ");
-                            }
-                        }
-
                         int id = Integer.parseInt(request.getParameter("id"));
                         WebUserDAO uDAO = new WebUserDAO();
                         WebUser userToEdit = uDAO.retrieveUser(user.getStaffId(), user.getToken(), id);
@@ -68,7 +56,31 @@
                         <h2><i class="fa fa-file-o" style="line-height: 48px;padding-left: 2px;"></i>Edit Employee</h2>
                     </div>
                     <!-- /page header -->
+                    <%
+                        String errMsg = (String) request.getAttribute("errMsg");
+                        if (errMsg != null && errMsg.length() > 0) {
+                    %>
+                    <div class="alert alert-danger"><%=errMsg%></div>
+                    <%
+                        }
 
+                        ArrayList<String> errMsgArr = (ArrayList<String>) request.getAttribute("errMsgArr");
+                        if (errMsgArr != null && errMsgArr.size() > 0) {
+                    %>
+                    <div class="alert alert-danger">
+                        <ul>
+                        <%
+                            for (String error : errMsgArr) {
+                        %>
+                        <li><%=error%></li>
+                        <%
+                            }
+                        %>
+                        </ul>
+                    </div>
+                    <%
+                        }
+                    %>
                     <!-- content main container -->
                     <div class="main">
                         <div class="row">

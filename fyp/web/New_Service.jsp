@@ -110,7 +110,21 @@
                             <!-- /col 12 -->        
                         </div>
                         <!-- /row -->
-
+                        <%                            
+                            String success = (String) session.getAttribute("isSuccess");
+                            String fail = (String) session.getAttribute("fail");
+                            if (success != null && !(success.equals("null")) && success.length() > 0) {
+                        %>
+                            <div class="alert alert-success"><%=success%></div>
+                        <%
+                                session.setAttribute("isSuccess", "");
+                            } else if(fail != null && !(fail.equals("null")) && fail.length() > 0) {
+                        %>
+                            <div class="alert alert-danger"><%=fail%></div>
+                            <%
+                                session.setAttribute("fail", "");
+                        }
+                        %>
 
 
 
@@ -997,15 +1011,15 @@
         })(document);
     </script>
     <script type="text/javascript">
-        function displaymsg() {
-            var msg = '<%=session.getAttribute("isSuccess")%>';
-            if (msg != "null") {
-                //                function alertName(msg) {
-                alert(msg);
-                //                }
-            }
-        <%session.setAttribute("isSuccess", "null");%>
-        }
+//        function displaymsg() {
+//            var msg = '<%=session.getAttribute("isSuccess")%>';
+//            if (msg != "null") {
+//                //                function alertName(msg) {
+//                alert(msg);
+//                //                }
+//            }
+//        <%session.setAttribute("isSuccess", "null");%>
+//        }
     </script> 
     <!--<script type="text/javascript"> window.onload = alertName;</script>-->
     <script type="text/JavaScript">

@@ -163,7 +163,20 @@
                             <!-- /col 12 -->        
                         </div>
                         <!-- /row -->
-
+                        <%    String success = (String) session.getAttribute("isSuccess");
+                            String fail = (String) session.getAttribute("fail");
+                            if (success != null && !(success.equals("null")) && success.length() > 0) {
+                        %>
+                        <div class="alert alert-success"><%=success%></div>
+                        <%
+                            session.setAttribute("isSuccess", "");
+                        } else if (fail != null && !(fail.equals("null")) && fail.length() > 0) {
+                        %>
+                        <div class="alert alert-danger"><%=fail%></div>
+                        <%
+                                session.setAttribute("fail", "");
+                            }
+                        %>
 
 
 
@@ -954,69 +967,7 @@
                                                                                         });
 
 
-    </script>
-    <!--        <script>
-                $(function () {
-    
-                    //check all checkboxes
-                    $('table thead input[type="checkbox"]').change(function () {
-                        $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', $(this).prop('checked'));
-                    });
-    
-                    // sortable table
-                    $('.table.table-sortable1 th.sortable').click(function () {
-                        var o = $(this).hasClass('sort-asc') ? 'sort-desc' : 'sort-asc';
-                        $(this).parents('table').find('th.sortable').removeClass('sort-asc').removeClass('sort-desc');
-                        $(this).addClass(o);
-                    });
-    
-                    //chosen select input
-                    $(".chosen-select").chosen({disable_search_threshold: 10});
-    
-                    //check toggling
-                    $('.check-toggler').on('click', function () {
-                        $(this).toggleClass('checked');
-                    });
-                });
-    
-            </script>-->
-    <script>
-        //        $(function(){
-        //            $('.table.table-sortable1 th.sortable').click(function () {
-        //                var o = $(this).hasClass('sort-asc') ? 'sort-desc' : 'sort-asc';
-        //                $(this).parents('table').find('th.sortable').removeClass('sort-asc').removeClass('sort-desc');
-        //                $(this).addClass(o);
-        //            });
-        //        });
-
-
-    </script>
-    <script>
-        $(document).ready(function ()
-        {
-            //        $("#myTable1").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable2").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable3").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable4").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable5").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable1").tablesorter();
-            //        $("#myTable2").tablesorter();
-            //        $("#myTable3").tablesorter();
-            //        $("#myTable4").tablesorter();
-            //        $("#myTable5").tablesorter();
-        }
-        );
-    </script>
+    </script>    
     <script>
         //Script to load tab and data based on the href #
         $(window).load(function () {
@@ -1107,17 +1058,6 @@
         //        }
         //    }
     </script>
-    <script type="text/javascript">
-        function displaymsg() {
-            var msg = '<%=session.getAttribute("isSuccess")%>';
-            if (msg != "null") {
-                //                function alertName(msg) {
-                alert(msg);
-                //                }
-            }
-        <%session.setAttribute("isSuccess", "null");%>
-        }
-    </script> 
     <!--<script type="text/javascript"> window.onload = alertName;</script>-->
     <script type="text/JavaScript">
         function timedRefresh(timeoutPeriod) {
@@ -1137,29 +1077,6 @@
             $(this).toggleClass("active").next('div').slideToggle(250)
                     .closest('li').siblings().find('span').removeClass('active').next('div').slideUp(250);
         });
-
-    </script>
-    <script>
-        //    $(document).ready(function () {
-        //        $(".tabpager").tabpager({
-        ////  maximum visible items
-        //            items: 5,
-        //// CSS class for tabbed content
-        //            contents: 'contents',
-        //// transition speed
-        //            time: 300,
-        //// text for previous button
-        //            previous: '&laquo;Prev',
-        //// text for next button
-        //            next: 'Next&raquo;',
-        //// initial tab
-        //            start: 1,
-        //// top or bottom
-        //            position: 'bottom',
-        //// scrollable
-        //            scroll: true
-        //        });
-        //    });
 
     </script>
     <script>

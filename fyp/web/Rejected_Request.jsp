@@ -39,6 +39,11 @@
                 out.println(successChangePasswordMsg + "<br/><br/>");
             }
             QuotationRequestDAO qDAO = new QuotationRequestDAO();
+            int staffID = user.getStaffId();
+            String chatToken = user.getChatToken();
+            String phone_number = user.getHandphone();
+            String user_name = user.getName();
+            String user_email = user.getEmail();
 //            HashMap<Integer, Integer> statusSize = qDAO.retrieveStatusSize(user.getStaffId(), user.getToken(), 0, 0, "", "requested_datetime", "desc");
 //            int newSize = statusSize.get(0);
 //            int sendFinalSize = statusSize.get(1);
@@ -104,7 +109,6 @@
                             <!-- /col 12 -->        
                         </div>
                         <!-- /row -->
-
 
 
 
@@ -183,10 +187,14 @@
                                             <!-- tile body -->
                                             <div class="tile-body no-vpadding" id="pageRefresh">
                                                 <div class="tab-content">
-                                                    <%                                                    int i = 1;
+                                                    <%                                                        Workshop ws = wsDAO.retrieveWorkshop(user.getShopId(), user.getStaffId(), user.getToken());
+                                                        int wsID = ws.getId();
+                                                        String workshop_name = ws.getName();
+                                                        String categories = ws.getCategory();
+                                                        String brands_carried = ws.getBrandsCarried();
+                                                        int i = 1;
                                                         qDAO = new QuotationRequestDAO();
                                                         HashMap<Integer, QuotationRequest> qList = qDAO.retrieveAllQuotationRequests(user.getStaffId(), user.getToken(), 0, 8, "requested_datetime", "desc");
-
 
                                                     %>
 
@@ -696,7 +704,7 @@
 <script type="text/javascript" src="js/dataTables.bootstrap.min.js"></script> 
 <script type="text/javascript" src="js/classie.js"></script> 
 <script type="text/javascript" src="js/modalEffects.js"></script> 
-
+<script type="text/javascript" src="js/intercom.js"></script>
 
 
 <script>
@@ -790,31 +798,6 @@
 
 
 </script>
-<!--        <script>
-            $(function () {
-
-                //check all checkboxes
-                $('table thead input[type="checkbox"]').change(function () {
-                    $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', $(this).prop('checked'));
-                });
-
-                // sortable table
-                $('.table.table-sortable1 th.sortable').click(function () {
-                    var o = $(this).hasClass('sort-asc') ? 'sort-desc' : 'sort-asc';
-                    $(this).parents('table').find('th.sortable').removeClass('sort-asc').removeClass('sort-desc');
-                    $(this).addClass(o);
-                });
-
-                //chosen select input
-                $(".chosen-select").chosen({disable_search_threshold: 10});
-
-                //check toggling
-                $('.check-toggler').on('click', function () {
-                    $(this).toggleClass('checked');
-                });
-            });
-
-        </script>-->
 <script>
     //        $(function(){
     //            $('.table.table-sortable1 th.sortable').click(function () {
@@ -825,32 +808,6 @@
     //        });
 
 
-</script>
-<script>
-    $(document).ready(function ()
-    {
-        //        $("#myTable1").tablesorter({
-        //            sortList: [[0,0],[1,0]]
-        //        });
-        //        $("#myTable2").tablesorter({
-        //            sortList: [[0,0],[1,0]]
-        //        });
-        //        $("#myTable3").tablesorter({
-        //            sortList: [[0,0],[1,0]]
-        //        });
-        //        $("#myTable4").tablesorter({
-        //            sortList: [[0,0],[1,0]]
-        //        });
-        //        $("#myTable5").tablesorter({
-        //            sortList: [[0,0],[1,0]]
-        //        });
-        //        $("#myTable1").tablesorter();
-        //        $("#myTable2").tablesorter();
-        //        $("#myTable3").tablesorter();
-        //        $("#myTable4").tablesorter();
-        //        $("#myTable5").tablesorter();
-    }
-    );
 </script>
 <script>
     //Script to load tab and data based on the href #
@@ -1005,5 +962,8 @@
         $('#example4').DataTable();
         $('#example5').DataTable();
     });
+</script>
+<script>
+    intercom("<%=user_name%>", "<%=user_email%>",<%=staffID%>, "<%=phone_number%>", "<%=workshop_name%>", "<%=categories%>", "<%=brands_carried%>");
 </script>
 </html>

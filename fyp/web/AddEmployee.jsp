@@ -35,8 +35,32 @@
                         <h2><i class="fa fa-file-o" style="line-height: 48px;padding-left: 2px;"></i> Add Employee</h2>
                         <!--<a href="AddWorshop.jsp" class="btn btn-primary btn-lg pull-right margin-top-15"  role="button">Submit</a>-->
                     </div>
-                    <!-- /page header -->
+                    <!-- /page header -->                    
+                    <%
+                        String errMsg = (String) request.getAttribute("errMsg");
+                        if (errMsg != null && errMsg.length() > 0) {
+                    %>
+                    <div class="alert alert-danger"><%=errMsg%></div>
+                    <%
+                        } 
 
+                        ArrayList<String> errMsgArr = (ArrayList<String>) request.getAttribute("errMsgArr");
+                        if (errMsgArr != null && errMsgArr.size() > 0) {
+                    %>
+                    <div class="alert alert-danger">
+                        <ul>
+                        <%
+                            for (String error : errMsgArr) {
+                        %>
+                        <li><%=error%></li>
+                        <%
+                            }
+                        %>
+                        </ul>
+                    </div>
+                    <%
+                        }
+                    %>
                     <!-- content main container -->
                     <div class="main">
                         <div class="row">
@@ -54,19 +78,7 @@
 
                                         <!-- /tile body -->
                                         <div class="tile-body">
-                                            <%
-                                                String errMsg = (String) request.getAttribute("errMsg");
-                                                if (errMsg != null) {
-                                                    out.println(errMsg);
-                                                }
 
-                                                ArrayList<String> errMsgArr = (ArrayList<String>) request.getAttribute("errMsgArr");
-                                                if (errMsgArr != null && errMsgArr.size() > 0) {
-                                                    for (String error : errMsgArr) {
-                                                        out.println(error + " ");
-                                                    }
-                                                }
-                                            %>
 
 
                                             <form class="form-horizontal" role="form" action="AddEmployee" method="POST">

@@ -90,6 +90,7 @@ public class AddEmployeeServlet extends HttpServlet {
                 }
             }
             if (errorMsg.isEmpty()) {
+                session.setAttribute("success", staffName + " added!");
                 response.sendRedirect("ViewEmployees.jsp");
             } else {
                 request.setAttribute("workshopId", wsId);

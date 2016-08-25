@@ -70,11 +70,12 @@ public class DeleteEmployeeServlet extends HttpServlet {
         } 
         
         if (errMsg.equals("")) {
-                request.setAttribute("errMsg", "Employee successfully edited!");
-                RequestDispatcher view = request.getRequestDispatcher("ViewEmployees.jsp?id=" + idToDelete);
-                view.forward(request, response);
+                session.setAttribute("success", "Employee successfully deleted!");
+                response.sendRedirect("ViewEmployees.jsp");
+//                RequestDispatcher view = request.getRequestDispatcher("ViewEmployees.jsp?id=" + idToDelete);
+//                view.forward(request, response);
             } else {
-                request.setAttribute("errMsg", errMsg);
+                request.setAttribute("fail", errMsg);
                 RequestDispatcher view = request.getRequestDispatcher("ViewEmployees.jsp?id=" + idToDelete);
                 view.forward(request, response);
             }

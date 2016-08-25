@@ -143,9 +143,10 @@ public class AddWorkshopServlet extends HttpServlet {
                 Workshop ws = wDAO.retrieveWorkshop(email, user.getStaffId(), user.getToken());
                 int wsId = ws.getId();
                 session.setAttribute("workshopId", wsId);
-                RequestDispatcher view = request.getRequestDispatcher("AddWorkshopMasterAccount.jsp");
-                view.forward(request, response);
-                //response.sendRedirect("AddWorkshopMasterAccount.jsp");
+                session.setAttribute("success", name + " has been created!");
+//                RequestDispatcher view = request.getRequestDispatcher("AddWorkshopMasterAccount.jsp");
+//                view.forward(request, response);
+                response.sendRedirect("AddWorkshopMasterAccount.jsp");
             } else {
                 request.setAttribute("errMsg", addErrMsg);
                 request.setAttribute("name", name);

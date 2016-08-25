@@ -39,7 +39,24 @@
                         <!--<a href="AddWorshop.jsp" class="btn btn-primary btn-lg pull-right margin-top-15"  role="button">Submit</a>-->
                     </div>
                     <!-- /page header -->
-
+                    <%
+                        ArrayList<String> msg = (ArrayList<String>) request.getAttribute("fail");
+                        if (msg != null && msg.size() > 0) {
+                    %>
+                    <div class="alert alert-danger">
+                        <ul>
+                            <%
+                                for (String error : msg) {
+                            %>
+                            <li><%=error%></li>
+                                <%
+                                    }
+                                %>
+                        </ul>
+                    </div>
+                    <%
+                        }
+                    %>
                     <!-- content main container -->
                     <div class="main">
                         <%
@@ -475,7 +492,7 @@
 
                                                 <%
                                                     }//end of for loop for operating days
-%>
+                                                %>
                                                 <div class="form-group form-footer">
                                                     <div class="col-sm-offset-5 col-sm-8">
                                                         <button type="submit" class="btn btn-primary">Submit</button>

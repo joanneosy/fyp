@@ -39,6 +39,17 @@
                     </div>
                     <!-- /page header -->
                     <%
+                        String msg = (String) session.getAttribute("success");
+                        if (msg != null && msg.length() > 0 && !(msg.equals("null"))) {
+                    %>
+                    <div class="alert alert-success"><%=msg%></div>
+                    <%
+                        session.setAttribute("success","");
+                        }
+                    %>
+
+
+                    <%
                         int staffID = user.getStaffId();
                         String phone_number = user.getHandphone();
                         String user_name = user.getName();

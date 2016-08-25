@@ -56,7 +56,7 @@ public class AddFinalQuotationServlet extends HttpServlet {
 //            view.forward(request, response);
             response.sendRedirect("Send_Final_Quote.jsp");
         } else {
-            session.setAttribute("isSuccess", isSuccess + "(ID: " + offerId + ")");
+            session.setAttribute("fail", isSuccess + "(ID: " + offerId + ")");
 //            RequestDispatcher view = request.getRequestDispatcher("AddFinalQuotation.jsp?id=" + offerId);
 //            view.forward(request, response);
             response.sendRedirect("Send_Final_Quote.jsp");

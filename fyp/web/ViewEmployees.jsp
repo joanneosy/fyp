@@ -51,6 +51,7 @@
 
                 webUserMap = webUserDAO.retrieveNormalWorkshopStaff(user.getStaffId(), user.getToken(), user.getShopId());
             }
+
         %>
         <!-- Wrap all page content here -->
         <div id="wrap">
@@ -67,6 +68,24 @@
                         <!--<a href="AddWorshop.jsp" class="btn btn-primary btn-lg pull-right margin-top-15"  role="button">Submit</a>-->
                     </div>
                     <!-- /page header -->
+
+                    <%
+                        String msg = (String) session.getAttribute("success");
+                        if (msg != null && msg.length() > 0) {
+                    %>
+                    <div class="alert alert-success"><%=msg%></div>
+                    <%
+                        session.setAttribute("success", "");
+                    } else {
+                        msg = (String) request.getAttribute("fail");
+                        if (msg != null && msg.length() > 0) {
+                    %>
+                    <div class="alert alert-danger"><%=msg%></div>
+                    <%
+                            }
+                        }
+                    %>
+
 
                     <!-- content main container -->
                     <div class="main">
@@ -139,7 +158,7 @@
 
                                                                 if (user.getStaffId() != idToDelete && workshopStaffType == 1) {
                                                                     //if (userType.equals("Admin")) { 
-                                                            %>
+%>
 
                                                             <a href="EditEmployee.jsp?id=<%=idToDelete%>" name="idToDelete" class="btn btn-xs btn-primary" role="button">Edit</a>
                                                             <button class="btn btn-default btn-xs md-trigger" data-modal="<% out.print("myModal" + idToDelete);%>" type="button">Delete</button>

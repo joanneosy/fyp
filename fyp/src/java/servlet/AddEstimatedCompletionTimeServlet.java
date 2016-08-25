@@ -66,7 +66,7 @@ public class AddEstimatedCompletionTimeServlet extends HttpServlet {
 //            view.forward(request, response);
             response.sendRedirect("New_Service.jsp");
         } else {
-            session.setAttribute("isSuccess", isSuccess + "(ID: " + offerId + ")");
+            session.setAttribute("fail", isSuccess + "(ID: " + offerId + ")");
 //            RequestDispatcher view = request.getRequestDispatcher("ManageService.jsp");
 //            view.forward(request, response);
             response.sendRedirect("New_Service.jsp");

@@ -57,7 +57,7 @@ public class AddInitialQuotationServlet extends HttpServlet {
 //            view.forward(request, response);
             response.sendRedirect("New_Request.jsp");
         } else {
-            session.setAttribute("isSuccess", isSuccess + "(ID: " + quotationRequestId + ")");
+            session.setAttribute("fail", isSuccess + "(ID: " + quotationRequestId + ")");
 //            RequestDispatcher view = request.getRequestDispatcher("ViewRequest.jsp");
 //            view.forward(request, response);
             response.sendRedirect("New_Request.jsp");

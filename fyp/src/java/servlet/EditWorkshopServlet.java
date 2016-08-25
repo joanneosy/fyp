@@ -84,7 +84,8 @@ public class EditWorkshopServlet extends HttpServlet {
                 + "Friday-" + fridayOpen + "-" + fridayClose + ","
                 + "Saturday-" + saturdayOpen + "-" + saturdayClose + ","
                 + "Sunday-" + sundayOpen + "-" + sundayClose + ","
-                + "Ph-" + phOpen + "-" + phClose + ",";
+                + "Ph-" + phOpen + "-" + phClose + ","
+                + "PhEve-" + phEveOpen + "-" + phEveOpen;
 
         String openingHourFormat = request.getParameter("openingHourFormat");
         double latitude = 0.0;
@@ -143,14 +144,17 @@ public class EditWorkshopServlet extends HttpServlet {
             ArrayList<String> addErrMsg = wDAO.updateWorkshop(id, email, name, description, website, address + " " + postalCode, openingHour, openingHourFormat,
                     latitude, longitude, contact, contact2, location, specialize, category, brandsCarried, remark, 1, staffId, token);
             if (addErrMsg.size() == 0) {
-                request.setAttribute("successMsg", "Workshop successfully edited!");
-                RequestDispatcher view = request.getRequestDispatcher("ViewWorkshop.jsp");
+                session.setAttribute("success", name + " successfully edited!");
+                String url = "ViewWorkshop.jsp";
+//                RequestDispatcher view = request.getRequestDispatcher("ViewWorkshop.jsp");
                 if (userType.equals("Workshop")) {
-                    view = request.getRequestDispatcher("Profile.jsp");
+//                    view = request.getRequestDispatcher("Profile.jsp");
+                    url = "Profile.jsp";
                 }
-                view.forward(request, response);
+//                view.forward(request, response);
+                response.sendRedirect(url);
             } else {
-                request.setAttribute("errMsg", addErrMsg);
+                request.setAttribute("fail", addErrMsg);
                 if (userType.equals("Admin")) {
                     RequestDispatcher view = request.getRequestDispatcher("EditWorkshop.jsp?id=" + id);
                     view.forward(request, response);
@@ -161,7 +165,7 @@ public class EditWorkshopServlet extends HttpServlet {
 
             }
         } else {
-            request.setAttribute("errMsg", errMsg);
+            request.setAttribute("fail", errMsg);
             if (userType.equals("Admin")) {
                 RequestDispatcher view = request.getRequestDispatcher("EditWorkshop.jsp?id=" + id);
                 view.forward(request, response);

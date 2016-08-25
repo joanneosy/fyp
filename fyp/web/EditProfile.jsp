@@ -36,7 +36,24 @@
                         <!--<a href="AddWorshop.jsp" class="btn btn-primary btn-lg pull-right margin-top-15"  role="button">Submit</a>-->
                     </div>
                     <!-- /page header -->
-
+                    <%
+                        ArrayList<String> msg = (ArrayList<String>) request.getAttribute("fail");
+                        if (msg != null && msg.size() > 0) {
+                    %>
+                    <div class="alert alert-danger">
+                        <ul>
+                            <%
+                                for (String error : msg) {
+                            %>
+                            <li><%=error%></li>
+                                <%
+                                    }
+                                %>
+                        </ul>
+                    </div>
+                    <%
+                        }
+                    %>
                     <!-- content main container -->
                     <div class="main">
                         <div class="row">
@@ -51,7 +68,6 @@
                                             <h1><strong>Edit</strong> Workshop Profile</h1>
                                         </div>
                                         <%
-                                            
                                             Workshop ws = wsDAO.retrieveWorkshop(user.getShopId(), user.getStaffId(), user.getToken());
                                             int wsId = user.getShopId();
                                             int staffID = user.getStaffId();
@@ -59,14 +75,14 @@
                                             String phone_number = user.getHandphone();
                                             String user_name = user.getName();
                                             String user_email = user.getEmail();
-                                            
+
                                             String email = ws.getEmail();
                                             String address = ws.getAddress();
                                             String workshop_name = ws.getName();
                                             String wsAddress = address.substring(0, address.lastIndexOf(" "));
                                             String wsPostal = address.substring(address.lastIndexOf(" ") + 1);
                                             String wsLocation = ws.getLocation();
-                                            String wsWebsite = ws.getWebsite(); 
+                                            String wsWebsite = ws.getWebsite();
                                             String wsContact = ws.getContact();
                                             String wsCsontact2 = ws.getContact2();
                                             String wsBrands = ws.getBrandsCarried();
@@ -391,7 +407,7 @@
 
                                                 <%
                                                     }//end of for loop for operating days
-%>
+                                                %>
                                                 <div class="form-group form-footer">
                                                     <div class="col-sm-offset-5 col-sm-8">
                                                         <button type="submit" class="btn btn-primary">Submit</button>
