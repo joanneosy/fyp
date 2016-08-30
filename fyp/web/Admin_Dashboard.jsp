@@ -99,6 +99,8 @@
 //            int newService = statusSize.get(2);
 //            int completedService = statusSize.get(3);
 
+            
+            
 
         %>
 
@@ -162,12 +164,15 @@
                                         <!-- tile body -->
                                         <div class="tile-body no-vpadding" id="pageRefresh">
                                             <div class="tab-content">
-                                                <%                                                    int i = 1;
+                                                <%                                                   
+                                                    int i = 1;
                                                     qDAO = new QuotationRequestDAO();
                                                     //HashMap<Integer, QuotationRequest> qList = qDAO.retrieveAllQuotationRequests(user.getStaffId(), user.getToken(), 0, 1, "requested_datetime", "desc");
                                                     HashMap<Integer, QuotationRequest> qList = qDAO.retrieveQuotationRequestsWithoutOffer(user.getStaffId(), user.getToken());
                                                     int staffId = user.getStaffId();
                                                     String token = user.getToken();
+                                                    
+                                                    HashMap<Integer, Integer> newRequestCount = qDAO.retrieveNumberOfNewRequests(staffId, token);
                                                 %>
                                                 <div class="tab-pane fade active in" id="New" >
                                                     <div class="table-responsive">
@@ -187,11 +192,13 @@
                                                                     for (Workshop workshop : wsList) {
                                                                         //get workshop user
                                                                         int wsId = workshop.getId();
+                                                                        int newRequests = newRequestCount.get(wsId);
+            
                                                                 %>
                                                                 <tr>
                                                                     <td><center><%=workshop.getName()%></center></td>
                                                                     <!--<td><center><button type="button" class="btn btn-block btn-primary">5</button></center></td>-->
-                                                                    <td><a class="btn btn-block btn-primary" href="Admin_View_Individual_Request.jsp?wsId=<%=wsId %>" name="wsId" >5</a></td>
+                                                                    <td><a class="btn btn-block btn-primary" href="Admin_View_Individual_Request.jsp?wsId=<%=wsId %>" name="wsId" ><%=newRequests %></a></td>
                                                                     <td><center><button type="button" class="btn btn-block btn-danger disabled">Urgent</button></center></td>
                                                                     <td><center><button type="button" class="btn btn-default">Remind</button></center></td>
                                                                 </tr>
@@ -307,16 +314,11 @@
 
             </div>
             <!-- Wrap all page content end -->
-
+        </div>
 
 
             <section class="videocontent" id="video"></section>
-
-    </body>
-
-
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
 
@@ -647,4 +649,6 @@
             $('#example5').DataTable();
         });
     </script>
+    </body>
+
 </html>

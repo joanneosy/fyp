@@ -4,6 +4,10 @@
     Author     : Joshymantou
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.stripe.model.Charge"%>
+<%@page import="com.stripe.net.RequestOptions"%>
+<%@page import="com.stripe.Stripe"%>
 <%@page import="dao.WebUserDAO"%>
 <%@page import="entity.WebUser"%>
 <%@page import="entity.Workshop"%>
@@ -50,30 +54,39 @@
                                         <!--end tile header-->
 
                                         <!-- /tile body -->
+
                                         <div class="tile-body">
-                                            <form class="form-horizontal" role="form">
+                                            <%
+                                                ArrayList<String> errMsg = (ArrayList<String>) request.getAttribute("errMsg");
+                                                if (errMsg != null) {
+                                                    for (String s: errMsg) {
+                                                        out.println(s);
+                                                    }
+                                                }
+                                            %>
+                                            <form class="form-horizontal" role="form" action="RegisterStripe" method="POST">
                                                 <div class="form-group">
-                                                    <label for="input01" class="col-sm-4 control-label">Stripe Username</label>
+                                                    <label for="input01" class="col-sm-4 control-label">Email</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="input01">
+                                                        <input type="text" class="form-control" id="input01" name="email">
                                                     </div>
                                                 </div>
-                                                
 
-                                                <div class="form-group">
+
+<!--                                                <div class="form-group">
                                                     <label for="input02" class="col-sm-4 control-label">Password</label>
                                                     <div class="col-sm-8">
-                                                        <input type="password" class="form-control" id="input02">
+                                                        <input type="password" class="form-control" id="input02" name="password">
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="form-group">
                                                     <label for="input02" class="col-sm-4 control-label">Confirm Password</label>
                                                     <div class="col-sm-8">
-                                                        <input type="password" class="form-control" id="input02">
+                                                        <input type="password" class="form-control" id="input03" name="confirmPassword">
                                                     </div>
-                                                </div>
-                                                
+                                                </div>-->
+
                                                 <!--form footer for submit-->
                                                 <div class="form-group form-footer">
                                                     <div class="col-sm-offset-4 col-sm-8">
@@ -104,7 +117,7 @@
         </div>
         <!--End page wrap-->
         <%-- scripts --%>
-    
+
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="js/jquery.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -225,7 +238,7 @@
                     $(this).parents(".input-group").css("border-bottom-color", e.color);
                 });
 
-            })
+            });
 
 
         </script>

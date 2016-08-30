@@ -1421,6 +1421,117 @@ public class QuotationRequestDAO {
         return allQuotationRequests;
     }
     
+    public HashMap<Integer, Integer> retrieveNumberOfNewRequests(int staffId, String token) throws SQLException, UnsupportedEncodingException, IOException, ParseException {
+
+        //Key = Shop Id
+        //Value = Number of new request that shop has
+        HashMap<Integer, Integer> numberOfNewRequests = new HashMap<Integer, Integer>();
+        String url = "http://119.81.43.85/erp/quotation_request/get_number_of_new_or_completed_requests";
+
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(url);
+
+        // add header
+        post.setHeader("User-Agent", USER_AGENT);
+
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        urlParameters.add(new BasicNameValuePair("staff_id", staffId + ""));
+        urlParameters.add(new BasicNameValuePair("token", token));
+        urlParameters.add(new BasicNameValuePair("status", 1 + ""));
+
+        post.setEntity(new UrlEncodedFormEntity(urlParameters));
+
+        HttpResponse response = client.execute(post);
+        BufferedReader rd = new BufferedReader(
+                new InputStreamReader(response.getEntity().getContent()));
+
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
+        }
+        String str = result.toString();
+        JsonParser jsonParser = new JsonParser();
+        JsonElement element = jsonParser.parse(str);
+        JsonObject jobj = element.getAsJsonObject();
+        JsonArray arr = jobj.getAsJsonObject("payload").getAsJsonArray("number_of_quotation_request");
+
+        for (int i = 0; i < arr.size(); i++) {
+            JsonElement qrElement = arr.get(i);
+            JsonObject qrObj = qrElement.getAsJsonObject();
+            JsonElement attElement = qrObj.get("shop_id");
+            int shopId = 0;
+            if (!attElement.isJsonNull()) {
+                shopId = attElement.getAsInt();
+            }
+
+            attElement = qrObj.get("num_new_requests");
+            int number = 0;
+            if (!attElement.isJsonNull()) {
+                number = attElement.getAsInt();
+            }
+
+            numberOfNewRequests.put(shopId, number);
+        }
+        return numberOfNewRequests;
+    }
+    
+    public HashMap<Integer, Integer> retrieveNumberOfCompletedRequests(int staffId, String token) throws SQLException, UnsupportedEncodingException, IOException, ParseException {
+
+        //Key = Shop Id
+        //Value = Number of new request that shop has
+        HashMap<Integer, Integer> numberOfNewRequests = new HashMap<Integer, Integer>();
+        String url = "http://119.81.43.85/erp/quotation_request/get_number_of_new_or_completed_requests";
+
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(url);
+
+        // add header
+        post.setHeader("User-Agent", USER_AGENT);
+
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        urlParameters.add(new BasicNameValuePair("staff_id", staffId + ""));
+        urlParameters.add(new BasicNameValuePair("token", token));
+        urlParameters.add(new BasicNameValuePair("status", 7 + ""));
+
+        post.setEntity(new UrlEncodedFormEntity(urlParameters));
+
+        HttpResponse response = client.execute(post);
+        BufferedReader rd = new BufferedReader(
+                new InputStreamReader(response.getEntity().getContent()));
+
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
+        }
+        String str = result.toString();
+        JsonParser jsonParser = new JsonParser();
+        JsonElement element = jsonParser.parse(str);
+        JsonObject jobj = element.getAsJsonObject();
+        JsonArray arr = jobj.getAsJsonObject("payload").getAsJsonArray("number_of_quotation_request");
+        
+         for (int i = 0; i < arr.size(); i++) {
+            JsonElement qrElement = arr.get(i);
+            JsonObject qrObj = qrElement.getAsJsonObject();
+            JsonElement attElement = qrObj.get("shop_id");
+            int shopId = 0;
+            if (!attElement.isJsonNull()) {
+                shopId = attElement.getAsInt();
+            }
+
+            attElement = qrObj.get("num_completed_requests");
+            int number = 0;
+            if (!attElement.isJsonNull()) {
+                number = attElement.getAsInt();
+            }
+
+            numberOfNewRequests.put(shopId, number);
+        }
+        return numberOfNewRequests;
+    }
+
+    
     public static void main(String[] args) throws Exception {
         //HashMap<Integer, QuotationRequest> qList = retrieveAllQuotationRequests(3, "57cd00bbfaf886f8fe9fc98e15ee3bb0b31663a18f752de76cd998d71fe983be2b2f2a3de0f41ab8f69f3d19ab29b78c1b957578f5e7679e112de86fd1841da08c48d0a674fa001c3a2fe1e161c76edc6ce950b080c9a876034b3dfeabf826efacc3fde2d5542e8d4ccb90fd0163cb76371b7159546fd7d652d31abd73c235b290d4d62e2c31a8a00704432fae9a60e9f04eb4338698e0b2d5183d8cd4a4671ac1bc1d0ae79792bc21c8a1cd902d841a8fb6e8d0197cbccb3fd6f92456d9a361b940c0ff1affe7149e458fac8d7b0783e095d0dc4c82b86930e9fa378b4ffe1f15ce963d80291a7bc1c69ee0d63fb8b1d613d5feb3820b6c1a86cf7ab95d1340d8974f4acdf8e6ce9b426565d4f14b348c80787b4f24e95f9cd625f2a50e28d5118b364c362ae096623208881a9cc9f2161a422bac6d4d8e968f7b26093837d95b17352f417d0a061138438242a2cf6dd32e736bad691912e3d2701fc17a84a855a3aeb57969ad875a656e80206f10677818967ecd6942ea5463d1e3f188b84bc54c781ca85a3dceb76da8a17d9728fb0eb94b51ecd96787f11abefc7fb0e6f80307402b8d8e00920d8a48b566dbf1ad84b0487bb67863a31d122c86084ae08b891252fad4fe7df17c76cf419f33e2fb760968ac9e112567188c0b163961ef708e1fbb9059de5d7fa1f7f20da40123d5311fd308fcee95f36a3a4991b814ef3b", 0, 0, null, "requested_datetime", "desc");
         //retrieveOffer(20, "bfa5334a57318d381e35ca9cd6c41f12cf504f6458e0f6799f62a946459def5f73f3490ba6577c61b4ea9bb69cc020ef8d37bc98ca12c57b757babf71b1d1b337729275e333b20f19a8738eca93bef992c49912d1943e599b5b5a1f33ad2d31dc6daa4f706d44760abd86764701d46b8c0e09ed0929977e41e41c62223c3267db510a9d8ff69994474d438dbee3d13d52bad3f65272b802f3cd54b9ef6da8d6c6d24a00cb263aa58e50fac2479d95f9664b1c31bfe1b0f640d3621f84f7642fefc28c0fe0c5069cbf37bf73e7e1a970a01374d3412cce1668e060af58fa02081a3ec9ba1bfe50d5a87ce82c5b30848b6c5026ba4839ab00e7fdd7e350691b323603ce4b511b5f4e7657361287d1a208ee8bf169b26db5a8419c54ca22428416ab28b95074192be54d4685b6acdaba8d1d8ceffff8c3afd565c929424faaca62f27d0e00acbd46cba910f274facfd511ed7acab33a5bb81dc622e10f43ce64f6394549535d58fb40271558f07c5b0e054121fa2382dafa2993ee393e6a2cc2693f5d11c88890bab3020f11a3e20c49fe040173b948d07cc0b76439a4a2966a59962268fb556a8deb4009333b4b0c327751430463097ca0d5231b0803c950bfb534291c57688306e4fc891b060b0a81bebc7261cf6618108f807a6685a785d72f13b086373d412218e4468bab6078c998d5f6ec3867330934c39e497d58850c5ec", 59);
