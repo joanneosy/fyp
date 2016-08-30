@@ -32,61 +32,61 @@
         <title>Request</title>
         <jsp:include page="include/head.jsp"/>
         <style>
-        #accordion {
-            list-style: none;
-            padding: 2px;
-        }
-        #accordion > li {
-            display: block;
-            list-style: none;
-        }
-        #accordion > li > span {
-            display: block;
-            color: #fff;
-            margin: 4px 0;
-            padding: 6px;
-            background: url(images/expand_arrow.png) no-repeat 99.5% 6px #525252;
-            background-size: 20px;
-            font-weight: normal;
-            cursor: pointer; font-size:16px
-        }
-        #accordion > li > div {
-            list-style: none;
-            padding: 6px;
-            display: none; overflow:auto
-        }
-        #accordion > ul li {
-            font-weight: normal;
-            cursor: auto;
-            padding: 0 0 0 7px;
-        }
-        #accordion a {
-            text-decoration: none;
-        }
-        #accordion li > span:hover {
-        }
-        #accordion li > span.active {
-            background: url(images/collapse-arrow.png) no-repeat 99.5% 6px #000;
-            background-size: 20px
-        }
-        #accordion li > span:after {
-            content: '\02795'; /* Unicode character for "plus" sign (+) */
-            font-size: 13px;
-            color: #fff;
-            float: right;
-            margin-left: 5px;
+            #accordion {
+                list-style: none;
+                padding: 2px;
+            }
+            #accordion > li {
+                display: block;
+                list-style: none;
+            }
+            #accordion > li > span {
+                display: block;
+                color: #fff;
+                margin: 4px 0;
+                padding: 6px;
+                background: url(images/expand_arrow.png) no-repeat 99.5% 6px #525252;
+                background-size: 20px;
+                font-weight: normal;
+                cursor: pointer; font-size:16px
+            }
+            #accordion > li > div {
+                list-style: none;
+                padding: 6px;
+                display: none; overflow:auto
+            }
+            #accordion > ul li {
+                font-weight: normal;
+                cursor: auto;
+                padding: 0 0 0 7px;
+            }
+            #accordion a {
+                text-decoration: none;
+            }
+            #accordion li > span:hover {
+            }
+            #accordion li > span.active {
+                background: url(images/collapse-arrow.png) no-repeat 99.5% 6px #000;
+                background-size: 20px
+            }
+            #accordion li > span:after {
+                content: '\02795'; /* Unicode character for "plus" sign (+) */
+                font-size: 13px;
+                color: #fff;
+                float: right;
+                margin-left: 5px;
 
-        }
+            }
 
-        #accordion li > span.active:after {
-            content: "\2796"; /* Unicode character for "minus" sign (-) */
-        }
+            #accordion li > span.active:after {
+                content: "\2796"; /* Unicode character for "minus" sign (-) */
+            }
 
 
 
-    </style>
+        </style>
     </head>
-    
+
     <body class="bg-3">
         <!--<h1>Welcome</h1>-->
         <%            String successChangePasswordMsg = (String) request.getAttribute("successChangePasswordMsg");
@@ -104,6 +104,9 @@
             String token = user.getToken();
             int staffID = user.getStaffId();
             String chatToken = user.getChatToken();
+            String phone_number = user.getHandphone();
+            String user_name = user.getName();
+            String user_email = user.getEmail();
 
         %>
 
@@ -166,10 +169,21 @@
                             <!-- /col 12 -->        
                         </div>
                         <!-- /row -->
-
-
-
-
+                        <%                            
+                            String success = (String) session.getAttribute("isSuccess");
+                            String fail = (String) session.getAttribute("fail");
+                            if (success != null && !(success.equals("null")) && success.length() > 0) {
+                        %>
+                            <div class="alert alert-success"><%=success%></div>
+                        <%
+                                session.setAttribute("isSuccess", "");
+                            } else if(fail != null && !(fail.equals("null")) && fail.length() > 0) {
+                        %>
+                            <div class="alert alert-danger"><%=fail%></div>
+                            <%
+                                session.setAttribute("fail", "");
+                        }
+                        %>
 
 
                         <!-- content main container -->
@@ -229,9 +243,12 @@
                                         <!-- tile body -->
                                         <div class="tile-body no-vpadding" id="pageRefresh">
                                             <div class="tab-content">
-                                                <%      
-                                                    Workshop ws = wsDAO.retrieveWorkshop(user.getShopId(), user.getStaffId(), user.getToken());
+                                                <%                                                    Workshop ws = wsDAO.retrieveWorkshop(user.getShopId(), user.getStaffId(), user.getToken());
+
                                                     int wsID = ws.getId();
+                                                    String workshop_name = ws.getName();
+                                                    String categories = ws.getCategory();
+                                                    String brands_carried = ws.getBrandsCarried();
                                                     int i = 1;
                                                     qDAO = new QuotationRequestDAO();
                                                     HashMap<Integer, QuotationRequest> qList = qDAO.retrieveAllQuotationRequests(user.getStaffId(), user.getToken(), 0, 1, "requested_datetime", "desc");
@@ -856,6 +873,7 @@
     <script type="text/javascript" src="js/modalEffects.js"></script> 
     <script data-require="realtime-framework@2.1.0" data-semver="2.1.0" src="//messaging-public.realtime.co/js/2.1.0/ortc.js"></script>
     <script type="text/javascript" src="js/chat.js"></script> 
+    <script type="text/javascript" src="js/intercom.js"></script> 
 
 
     <!--<script type="text/javascript" src="js/modalEffects.js"></script>--> 
@@ -872,43 +890,33 @@
                                                                                             }, function () {
                                                                                                 $(this).removeClass('flip');
                                                                                             });
-
                                                                                             //         sortable table
                                                                                             $('.table.table-sortable th.sortable').click(function () {
                                                                                                 var o = $(this).hasClass('sort-asc') ? 'sort-desc' : 'sort-asc';
                                                                                                 $('th.sortable').removeClass('sort-asc').removeClass('sort-desc');
                                                                                                 $(this).addClass(o);
                                                                                             });
-
                                                                                             //todo's
                                                                                             $('#todolist li label').click(function () {
                                                                                                 $(this).toggleClass('done');
                                                                                             });
-
-
                                                                                         });
-
                                                                                         $(function () {
 
                                                                                             var contentHeight = $('#content').height();
                                                                                             var chatInboxHeight = contentHeight - 178;
                                                                                             var chatContentHeight = contentHeight - 178 - 200;
-
                                                                                             var setChatHeight = function () {
                                                                                                 $('#chat-inbox').css('height', chatInboxHeight);
                                                                                                 $('#chat-content').css('height', chatContentHeight);
                                                                                             };
-
                                                                                             setChatHeight();
-
                                                                                             $(window).resize(function () {
                                                                                                 contentHeight = $('#content').height();
                                                                                                 chatInboxHeight = contentHeight - 178;
                                                                                                 chatContentHeight = contentHeight - 178 - 200;
-
                                                                                                 setChatHeight();
                                                                                             });
-
                                                                                             $("#chat-inbox").niceScroll({
                                                                                                 cursorcolor: '#000000',
                                                                                                 zindex: 999999,
@@ -918,7 +926,6 @@
                                                                                                 cursorborderradius: 0,
                                                                                                 cursorwidth: '5px'
                                                                                             });
-
                                                                                             $("#chat-content").niceScroll({
                                                                                                 cursorcolor: '#000000',
                                                                                                 zindex: 999999,
@@ -928,33 +935,25 @@
                                                                                                 cursorborderradius: 0,
                                                                                                 cursorwidth: '5px'
                                                                                             });
-
                                                                                             $('#chat-inbox .chat-actions > span').tooltip({
                                                                                                 placement: 'top',
                                                                                                 trigger: 'hover',
                                                                                                 html: true,
                                                                                                 container: 'body'
                                                                                             });
-
                                                                                             $('#initialize-search').click(function () {
                                                                                                 $('#chat-search').toggleClass('active').focus();
                                                                                             });
-
                                                                                             $(document).click(function (e) {
                                                                                                 if (($(e.target).closest("#initialize-search").attr("id") != "initialize-search") && $(e.target).closest("#chat-search").attr("id") != "chat-search") {
                                                                                                     $('#chat-search').removeClass('active');
                                                                                                 }
                                                                                             });
-
                                                                                             $(window).mouseover(function () {
                                                                                                 $("#chat-inbox").getNiceScroll().resize();
                                                                                                 $("#chat-content").getNiceScroll().resize();
                                                                                             });
-
-                                                                                        });
-
-
-    </script>
+                                                                                        });</script>
     <script>
         //Script to load tab and data based on the href #
         $(window).load(function () {
@@ -973,7 +972,6 @@
             });
             url = url.substring(1);
             console.log(url);
-
             $(".tab-pane").each(function () {
                 var tab = $(this).attr('id');
                 if (tab === url) {
@@ -981,26 +979,19 @@
                     $(this).addClass('active in');
                 }
             });
-        });
-
-
-    </script>
+        });</script>
     <script>
         $('.dropdown-menu li').on('click', function () {
             $(this).siblings().removeClass('active');
             var link = $(this).text();
             document.getElementById("select").innerHTML = link + " <span class='caret'></span>";
-        });
-
-    </script>
+        });</script>
     <script>
         (function (document) {
             'use strict';
-
             var LightTableFilter = (function (Arr) {
 
                 var _input;
-
                 function _onInputEvent(e) {
                     _input = e.target;
                     var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
@@ -1025,25 +1016,22 @@
                     }
                 };
             })(Array.prototype);
-
             document.addEventListener('readystatechange', function () {
                 if (document.readyState === 'complete') {
                     LightTableFilter.init();
                 }
             });
-
-        })(document);
-    </script>
+        })(document);</script>
     <script type="text/javascript">
-        function displaymsg() {
-            var msg = '<%=session.getAttribute("isSuccess")%>';
-            if (msg != "null") {
-                //                function alertName(msg) {
-                alert(msg);
-                //                }
-            }
-        <%session.setAttribute("isSuccess", "null");%>
-        }
+//        function displaymsg() {
+//            var msg = '<%=session.getAttribute("isSuccess")%>';
+//            if (msg != "null") {
+//                //                function alertName(msg) {
+//                alert(msg);
+//                //                }
+//            }
+//        <%session.setAttribute("isSuccess", "null");%>
+//        }
     </script> 
     <!--<script type="text/javascript"> window.onload = alertName;</script>-->
     <script type="text/JavaScript">
@@ -1057,15 +1045,12 @@
             timedRefresh(300000);
             displaymsg();
         }
-        window.onload = start;
-    </script>
+        window.onload = start;</script>
     <script>
         $("#accordion > li > span").click(function () {
             $(this).toggleClass("active").next('div').slideToggle(250)
                     .closest('li').siblings().find('span').removeClass('active').next('div').slideUp(250);
-        });
-
-    </script>
+        });</script>
     <script>
         $(document).ready(function () {
             $('#example').DataTable();
@@ -1073,8 +1058,7 @@
             $('#example3').DataTable();
             $('#example4').DataTable();
             $('#example5').DataTable();
-        });
-    </script>
+        });</script>
     <script>
         function subscribe(requestID, wsID, userID, custName, chatToken, log) {
 //                event.preventDefault();
@@ -1124,6 +1108,7 @@
                         }
                     }
                     subscribeChat(requestID, wsID, custName, chatToken, log);
+//                    subscribeChat(requestID, wsID, custName, chatToken, log, <%=staffID%>, "<%=token%>");
                 },
                 error: function () {
                     alert("fail");
@@ -1145,9 +1130,7 @@
                     e.preventDefault();
                 }
             });
-        });
-
-    </script>
+        });</script>
     <script>
 //        $(".sendMsg").click(function () {
 //            prepareMsg();
@@ -1182,4 +1165,7 @@
         }
     </script>
 
+    <script>
+        intercom("<%=user_name%>", "<%=user_email%>",<%=staffID%>, "<%=phone_number%>", "<%=workshop_name%>", "<%=categories%>", "<%=brands_carried%>");
+    </script>
 </html>

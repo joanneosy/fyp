@@ -44,7 +44,7 @@ import org.w3c.dom.Document;
  */
 public class WorkshopDAO {
 
-    private final String USER_AGENT = "Mozilla/5.0";
+    private static final String USER_AGENT = "Mozilla/5.0";
 
     public Workshop retrieveWorkshop(String givenEmail, int staffId, String token) throws UnsupportedEncodingException, IOException {
         Workshop ws = null;
@@ -706,100 +706,191 @@ public class WorkshopDAO {
         return errMsg;
     }
 
-    public static void main(String[] args) throws IOException {
-        String openingHour = "Monday-0900-1800,Tuesday-0900-0800,Wednesday-0900-0800,Thursday-0900-1800,Friday-0900-1800,Saturday-0900-1400,Sunday-0900-Closed,Ph-Closed-Closed,PhEve-0000-0000";
-//        ArrayList<String> compiled = new ArrayList<String>();
-//        //Monday-0900-1800
-//        String[] daysAndTime = openingHr.split(",");
-//        //openCloseTimings[0] = Monday, openCloseTimings[1] = 0900, openCloseTimings[2] = 1800
-//        String[] openCloseTimings = daysAndTime[0].split("-");
-//        String dayToCompare = openCloseTimings[0];
-//        String openToCompare = openCloseTimings[1];
-//        String closeToCompare = openCloseTimings[2];
-//        String toAdd = dayToCompare + "-" + dayToCompare + "-" + openToCompare + "-" + closeToCompare;
-//
-//        for (int i = 1; i < daysAndTime.length - 2; i++) {
-//            openCloseTimings = daysAndTime[i].split("-");
-//            if (openCloseTimings[1].equals(openToCompare) && openCloseTimings[2].equals(closeToCompare)) {
-//                String[] toAddArr = toAdd.split("-");
-//                toAdd = toAddArr[0] + "-" + openCloseTimings[0] + "-" + openToCompare + "-" + closeToCompare;
-//            } else {
-//                String[] toAddArr = toAdd.split("-");
-//                //Closed-Closed
-//                if (toAddArr[2].equals("Closed")) {
-//                    //Saturday-Saturday
-//                    if (toAddArr[0].equals(toAddArr[1])) {
-//                        toAdd = toAddArr[0] + ": Closed";
-//                    } else {
-//                        toAdd = toAddArr[0] + " to " + toAddArr[1] + ": Closed";
-//                    }
-//                } else //Saturday-Saturday
-//                {
-//                    if (toAddArr[0].equals(toAddArr[1])) {
-//                        toAdd = toAddArr[0] + ": " + toAddArr[2] + " - " + toAddArr[3];
-//                    } else {
-//                        toAdd = toAddArr[0] + " to " + toAddArr[1] + ": " + toAddArr[2] + " - " + toAddArr[3];
-//                    }
-//                }
-//                compiled.add(toAdd);
-//                dayToCompare = openCloseTimings[0];
-//                openToCompare = openCloseTimings[1];
-//                closeToCompare = openCloseTimings[2];
-//                toAdd = dayToCompare + "-" + dayToCompare + "-" + openToCompare + "-" + closeToCompare;
-//            }
-//
-//            if (i == daysAndTime.length - 3) {
-//                String[] toAddArr = toAdd.split("-");
-//                //Closed-Closed
-//                if (toAddArr[2].equals("Closed")) {
-//                    //Saturday-Saturday
-//                    if (toAddArr[0].equals(toAddArr[1])) {
-//                        toAdd = toAddArr[0] + ": Closed";
-//                    } else {
-//                        toAdd = toAddArr[0] + " to " + toAddArr[1] + ": Closed";
-//                    }
-//                } else //Saturday-Saturday
-//                {
-//                    if (toAddArr[0].equals(toAddArr[1])) {
-//                        toAdd = toAddArr[0] + ": " + toAddArr[2] + " - " + toAddArr[3];
-//                    } else {
-//                        toAdd = toAddArr[0] + " to " + toAddArr[1] + ": " + toAddArr[2] + " - " + toAddArr[3];
-//                    }
-//                }
-//                compiled.add(toAdd);
-//            }
-//        }
-//
-//        for (int i = 7; i < 9; i++) {
-//            openCloseTimings = daysAndTime[i].split("-");
-//            //Closed-Closed
-//            if (openCloseTimings[2].equals("Closed")) {
-//                toAdd = openCloseTimings[0] + ": Closed";
-//            } else {
-//                toAdd = openCloseTimings[0] + ": " + openCloseTimings[1] + " - " + openCloseTimings[2];
-//            }
-//            compiled.add(toAdd);
-//        }
-//        for (String x : compiled) {
-//            System.out.println(x);
-//        }
+    public static int retrieveServiceCapcity(int staffId, String token, int shopId) throws UnsupportedEncodingException, IOException {
+        int serviceCapacity = 0;
+        String url = "http://119.81.43.85/erp/workshop/get_service_capacity";
 
-        String[] openingHoursArr = openingHour.split(",");
-        for (String s : openingHoursArr) {
-            String[] eachDayArr = s.split("-");
-            if (eachDayArr[1].equals("Closed") || eachDayArr[2].equals("Closed")) {
-                if (!eachDayArr[1].equals(eachDayArr[2])) {
-                    System.out.println("Invalid Opening Hours");
-                    break;
-                }
-            } else {
-                int open = Integer.parseInt(eachDayArr[1]);
-                int close = Integer.parseInt(eachDayArr[2]);
-                if (open > close) {
-                    System.out.println("Invalid Opening Hours");
-                    break;
-                }
-            }
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(url);
+
+        // add header
+        post.setHeader("User-Agent", USER_AGENT);
+
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        urlParameters.add(new BasicNameValuePair("staff_id", staffId + ""));
+        urlParameters.add(new BasicNameValuePair("token", token));
+        urlParameters.add(new BasicNameValuePair("shop_id", shopId + ""));
+
+        post.setEntity(new UrlEncodedFormEntity(urlParameters));
+
+        HttpResponse response = client.execute(post);
+        BufferedReader rd = new BufferedReader(
+                new InputStreamReader(response.getEntity().getContent()));
+
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
         }
+        String str = result.toString();
+        JsonParser jsonParser = new JsonParser();
+        JsonElement element = jsonParser.parse(str);
+        JsonObject jobj = element.getAsJsonObject();
+
+        JsonElement shopElement = jobj.get("payload");
+        JsonObject obj = null;
+        if (shopElement.isJsonNull()) {
+            return serviceCapacity;
+        } else {
+            obj = shopElement.getAsJsonObject();
+            JsonElement attElement = obj.get("service_capacity");
+            if (attElement != null && !attElement.isJsonNull()) {
+                serviceCapacity = attElement.getAsInt();
+            }
+            
+        }
+        return serviceCapacity;
+    }
+    
+    public static String updateServiceCapcity(int staffId, String token, int shopId, int serviceCapacity) throws UnsupportedEncodingException, IOException {
+
+        String url = "http://119.81.43.85/erp/workshop/update_service_capacity";
+
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(url);
+
+        // add header
+        post.setHeader("User-Agent", USER_AGENT);
+
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        urlParameters.add(new BasicNameValuePair("staff_id", staffId + ""));
+        urlParameters.add(new BasicNameValuePair("token", token));
+        urlParameters.add(new BasicNameValuePair("shop_id", shopId + ""));
+        urlParameters.add(new BasicNameValuePair("service_capacity", serviceCapacity + ""));
+        
+
+        post.setEntity(new UrlEncodedFormEntity(urlParameters));
+
+        HttpResponse response = client.execute(post);
+        BufferedReader rd = new BufferedReader(
+                new InputStreamReader(response.getEntity().getContent()));
+
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
+        }
+
+        String str = result.toString();
+        JsonParser jsonParser = new JsonParser();
+        JsonElement element = jsonParser.parse(str);
+        JsonObject jobj = element.getAsJsonObject();
+        JsonElement errMsgEle = jobj.get("error_message");
+        String errMsg = "";
+        if (errMsgEle != null && !errMsgEle.isJsonNull()) {
+            errMsg = errMsgEle.getAsString();
+        }
+        return errMsg;
+    }
+    
+    public static void main(String[] args) throws IOException {
+//        String openingHour = "Monday-0900-1800,Tuesday-0900-0800,Wednesday-0900-0800,Thursday-0900-1800,Friday-0900-1800,Saturday-0900-1400,Sunday-0900-Closed,Ph-Closed-Closed,PhEve-0000-0000";
+////        ArrayList<String> compiled = new ArrayList<String>();
+////        //Monday-0900-1800
+////        String[] daysAndTime = openingHr.split(",");
+////        //openCloseTimings[0] = Monday, openCloseTimings[1] = 0900, openCloseTimings[2] = 1800
+////        String[] openCloseTimings = daysAndTime[0].split("-");
+////        String dayToCompare = openCloseTimings[0];
+////        String openToCompare = openCloseTimings[1];
+////        String closeToCompare = openCloseTimings[2];
+////        String toAdd = dayToCompare + "-" + dayToCompare + "-" + openToCompare + "-" + closeToCompare;
+////
+////        for (int i = 1; i < daysAndTime.length - 2; i++) {
+////            openCloseTimings = daysAndTime[i].split("-");
+////            if (openCloseTimings[1].equals(openToCompare) && openCloseTimings[2].equals(closeToCompare)) {
+////                String[] toAddArr = toAdd.split("-");
+////                toAdd = toAddArr[0] + "-" + openCloseTimings[0] + "-" + openToCompare + "-" + closeToCompare;
+////            } else {
+////                String[] toAddArr = toAdd.split("-");
+////                //Closed-Closed
+////                if (toAddArr[2].equals("Closed")) {
+////                    //Saturday-Saturday
+////                    if (toAddArr[0].equals(toAddArr[1])) {
+////                        toAdd = toAddArr[0] + ": Closed";
+////                    } else {
+////                        toAdd = toAddArr[0] + " to " + toAddArr[1] + ": Closed";
+////                    }
+////                } else //Saturday-Saturday
+////                {
+////                    if (toAddArr[0].equals(toAddArr[1])) {
+////                        toAdd = toAddArr[0] + ": " + toAddArr[2] + " - " + toAddArr[3];
+////                    } else {
+////                        toAdd = toAddArr[0] + " to " + toAddArr[1] + ": " + toAddArr[2] + " - " + toAddArr[3];
+////                    }
+////                }
+////                compiled.add(toAdd);
+////                dayToCompare = openCloseTimings[0];
+////                openToCompare = openCloseTimings[1];
+////                closeToCompare = openCloseTimings[2];
+////                toAdd = dayToCompare + "-" + dayToCompare + "-" + openToCompare + "-" + closeToCompare;
+////            }
+////
+////            if (i == daysAndTime.length - 3) {
+////                String[] toAddArr = toAdd.split("-");
+////                //Closed-Closed
+////                if (toAddArr[2].equals("Closed")) {
+////                    //Saturday-Saturday
+////                    if (toAddArr[0].equals(toAddArr[1])) {
+////                        toAdd = toAddArr[0] + ": Closed";
+////                    } else {
+////                        toAdd = toAddArr[0] + " to " + toAddArr[1] + ": Closed";
+////                    }
+////                } else //Saturday-Saturday
+////                {
+////                    if (toAddArr[0].equals(toAddArr[1])) {
+////                        toAdd = toAddArr[0] + ": " + toAddArr[2] + " - " + toAddArr[3];
+////                    } else {
+////                        toAdd = toAddArr[0] + " to " + toAddArr[1] + ": " + toAddArr[2] + " - " + toAddArr[3];
+////                    }
+////                }
+////                compiled.add(toAdd);
+////            }
+////        }
+////
+////        for (int i = 7; i < 9; i++) {
+////            openCloseTimings = daysAndTime[i].split("-");
+////            //Closed-Closed
+////            if (openCloseTimings[2].equals("Closed")) {
+////                toAdd = openCloseTimings[0] + ": Closed";
+////            } else {
+////                toAdd = openCloseTimings[0] + ": " + openCloseTimings[1] + " - " + openCloseTimings[2];
+////            }
+////            compiled.add(toAdd);
+////        }
+////        for (String x : compiled) {
+////            System.out.println(x);
+////        }
+//
+//        String[] openingHoursArr = openingHour.split(",");
+//        for (String s : openingHoursArr) {
+//            String[] eachDayArr = s.split("-");
+//            if (eachDayArr[1].equals("Closed") || eachDayArr[2].equals("Closed")) {
+//                if (!eachDayArr[1].equals(eachDayArr[2])) {
+//                    System.out.println("Invalid Opening Hours");
+//                    break;
+//                }
+//            } else {
+//                int open = Integer.parseInt(eachDayArr[1]);
+//                int close = Integer.parseInt(eachDayArr[2]);
+//                if (open > close) {
+//                    System.out.println("Invalid Opening Hours");
+//                    break;
+//                }
+//            }
+//        }
+//    }
+    //retrieveServiceCapcity(1, "a937e7120cb738c3a4d34802159d14252e6f93ad40bf2d86160bf9681b3a2424d12d7187b54d4f7aeff1018daf4f4ef4251351d1b6306f851207da1a05ae5bc58dcbaef7484ddb00072c9d01cb7441de5bcf5c4a38e54703e3ee9db81a81ac03a57ac0c9adfc67502a9527b2b3c2f45ce72b18012bafa93453697b1ee4f8f7c2d44d5c3e1d1d3c3911d1ad0e28a6397d23399227855a56876801422efadfecf0ab5338c9a897445d4c9a69270a6a4fc7d4422cc61d2eedc3d69cd7768f0f60f08c690ad22226e12f592d26ad5ed8a5554ed0b62b199d040f8b300120b63ba9909497358e88557dfdddb18caf08945d286196b6f8f627b30282946c1bde9f7c9ad6c807292183b8221279c0ebaeeb48449dd8163ee79ebeae77cefc1e4f8fd6116bba9d17942552d50cfdc7d1d27fdc7a2a93a2131c385416c43dd3d7e689a16b415d5c29dd8b425be5c9acd140b974483984ee2377efa2b15cb19ef82d55ea6a79b01e63a684c8ef7bf499a2fd04f4035f51d8f0cbcf32c53992401d3d3dbecc9c5109ae45832204686d25daaa67822bc42f1965e260e95c903e3c0563b51a785085538d9b925ab574ff0a27b710de5c05c73f011a0c81fbaa81f4aa98923ccf47fa9a4c07f4947fd240299dfea65ab355d9ad96dd5f765b5637a9d81ea6b247adeb4330968362a3c8995d6e6d03ef353cd6305c72a92a399ab51b6e85d86c44", 1);
+    //updateServiceCapcity(1, "a937e7120cb738c3a4d34802159d14252e6f93ad40bf2d86160bf9681b3a2424d12d7187b54d4f7aeff1018daf4f4ef4251351d1b6306f851207da1a05ae5bc58dcbaef7484ddb00072c9d01cb7441de5bcf5c4a38e54703e3ee9db81a81ac03a57ac0c9adfc67502a9527b2b3c2f45ce72b18012bafa93453697b1ee4f8f7c2d44d5c3e1d1d3c3911d1ad0e28a6397d23399227855a56876801422efadfecf0ab5338c9a897445d4c9a69270a6a4fc7d4422cc61d2eedc3d69cd7768f0f60f08c690ad22226e12f592d26ad5ed8a5554ed0b62b199d040f8b300120b63ba9909497358e88557dfdddb18caf08945d286196b6f8f627b30282946c1bde9f7c9ad6c807292183b8221279c0ebaeeb48449dd8163ee79ebeae77cefc1e4f8fd6116bba9d17942552d50cfdc7d1d27fdc7a2a93a2131c385416c43dd3d7e689a16b415d5c29dd8b425be5c9acd140b974483984ee2377efa2b15cb19ef82d55ea6a79b01e63a684c8ef7bf499a2fd04f4035f51d8f0cbcf32c53992401d3d3dbecc9c5109ae45832204686d25daaa67822bc42f1965e260e95c903e3c0563b51a785085538d9b925ab574ff0a27b710de5c05c73f011a0c81fbaa81f4aa98923ccf47fa9a4c07f4947fd240299dfea65ab355d9ad96dd5f765b5637a9d81ea6b247adeb4330968362a3c8995d6e6d03ef353cd6305c72a92a399ab51b6e85d86c44", 999, 2);
+
     }
 }

@@ -87,9 +87,11 @@ public class EditStaffServlet extends HttpServlet {
             }
 
             if (errMsg.equals("")) {
-                request.setAttribute("errMsg", "Employee successfully edited!");
-                RequestDispatcher view = request.getRequestDispatcher("ViewEmployees.jsp?id=" + id);
-                view.forward(request, response);
+                session.setAttribute("success", "Employee successfully edited! (ID:" + id + ")");
+//                request.setAttribute("errMsg", "Employee successfully edited!");
+//                RequestDispatcher view = request.getRequestDispatcher("ViewEmployees.jsp?id=" + id);
+                response.sendRedirect("ViewEmployees.jsp");
+//                view.forward(request, response);
             } else {
                 request.setAttribute("errMsg", errMsg);
                 RequestDispatcher view = request.getRequestDispatcher("EditEmployee.jsp?id=" + id);

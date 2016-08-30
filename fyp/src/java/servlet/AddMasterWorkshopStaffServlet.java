@@ -9,6 +9,7 @@ import dao.WebUserDAO;
 import entity.WebUser;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import util.Validation;
 
 /**
  *
@@ -37,6 +39,7 @@ public class AddMasterWorkshopStaffServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        ArrayList<String> err = new ArrayList<String>();
         String wsStaffName = request.getParameter("staffName");
         String wsStaffHpNo = request.getParameter("staffHpNo");
         String wsStaffEmail = request.getParameter("staffEmail");
@@ -45,9 +48,24 @@ public class AddMasterWorkshopStaffServlet extends HttpServlet {
         String test = request.getParameter("workshopId");
         int wsId = Integer.parseInt(request.getParameter("workshopId"));
 
-        if (!password.equals(confirmPassword)) {
+        Validation validation = new Validation();
+        String hpValid = validation.isValidMobileContact(wsStaffHpNo);
+        String pwValid = validation.isValidPassword(password, confirmPassword);
+        if (hpValid != null && hpValid.length() > 0) {
+            err.add(hpValid);
+        }
+        if (pwValid != null && pwValid.length() > 0) {
+            err.add(pwValid);
+        }
+
+        if (err.size() > 0) {
             request.setAttribute("workshopId", wsId);
-            request.setAttribute("errMsg", "Passwords do not match.");
+            request.setAttribute("errMsg", err);
+            request.setAttribute("wsStaffName", wsStaffName);
+            request.setAttribute("wsStaffHpNo", wsStaffHpNo);
+            request.setAttribute("wsStaffEmail", wsStaffEmail);
+            request.setAttribute("password", password);
+            request.setAttribute("confirmPassword", confirmPassword);
             RequestDispatcher view = request.getRequestDispatcher("AddWorkshopMasterAccount.jsp");
             view.forward(request, response);
         } else {
@@ -57,13 +75,20 @@ public class AddMasterWorkshopStaffServlet extends HttpServlet {
             String token = user.getToken();
             WebUserDAO uDAO = new WebUserDAO();
             String isSuccess = uDAO.addMasterWorkshopStaff(staffId, token, wsStaffName, wsStaffEmail, wsStaffHpNo, wsId, password);
-            if (isSuccess.length()==0) {
-                request.setAttribute("successMsg", "Master Workshop Staff added successfully for workshop ID " + wsId);
-                RequestDispatcher view = request.getRequestDispatcher("ViewWorkshop.jsp");
-                view.forward(request, response);
+            if (isSuccess.length() == 0) {
+                session.setAttribute("success", "Master Workshop Staff added successfully for workshop ID " + wsId);
+//                RequestDispatcher view = request.getRequestDispatcher("ViewWorkshop.jsp");
+//                view.forward(request, response);
+                response.sendRedirect("ViewWorkshop.jsp");
             } else {
+                err.add(isSuccess + "(Workshop ID: " + wsId + ")");
                 request.setAttribute("workshopId", wsId);
-                request.setAttribute("errMsg", isSuccess + "(Workshop ID: " + wsId + ")");
+                request.setAttribute("errMsg", err);
+                request.setAttribute("wsStaffName", wsStaffName);
+                request.setAttribute("wsStaffHpNo", wsStaffHpNo);
+                request.setAttribute("wsStaffEmail", wsStaffEmail);
+                request.setAttribute("password", password);
+                request.setAttribute("confirmPassword", confirmPassword);
                 RequestDispatcher view = request.getRequestDispatcher("AddWorkshopMasterAccount.jsp");
                 view.forward(request, response);
             }

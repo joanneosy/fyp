@@ -1,4 +1,5 @@
 
+<%@page import="java.util.ArrayList"%>
 <%-- 
     Document   : AdminSettings
     Created on : 3 Aug, 2016, 12:26:26 PM
@@ -24,6 +25,27 @@
                 WebUser user = (WebUser) session.getAttribute("loggedInUser");
                 String userType = (String) session.getAttribute("loggedInUserType");
                 int wsId = (Integer) session.getAttribute("workshopId");
+
+                String wsStaffName = (String)request.getAttribute("wsStaffName");
+                if (wsStaffName == null || wsStaffName.equals("null")){
+                    wsStaffName = "";
+                }
+                String wsStaffHpNo = (String)request.getAttribute("wsStaffHpNo");
+                if (wsStaffHpNo == null || wsStaffHpNo.equals("null")){
+                    wsStaffHpNo = "";
+                }
+                String wsStaffEmail = (String)request.getAttribute("wsStaffEmail");
+                if (wsStaffEmail == null || wsStaffEmail.equals("null")){
+                    wsStaffEmail = "";
+                }
+                String password = (String)request.getAttribute("password");
+                if (password == null || password.equals("null")){
+                    password = "";
+                }
+                String confirmPassword = (String)request.getAttribute("confirmPassword");
+                if (confirmPassword == null || confirmPassword.equals("null")){
+                    confirmPassword = "";
+                }
             %>
 
             <!-- Make page fluid -->
@@ -39,7 +61,33 @@
                         <!--<a href="AddWorshop.jsp" class="btn btn-primary btn-lg pull-right margin-top-15"  role="button">Submit</a>-->
                     </div>
                     <!-- /page header -->
-
+                    <%
+                        String msg = (String) session.getAttribute("success");
+                        if (msg != null && msg.length() > 0 && !(msg.equals("null"))) {
+                    %>
+                    <div class="alert alert-success"><%=msg%></div>
+                    <%
+                            session.setAttribute("success", "");
+                        }
+                    %>
+                    <%
+                        ArrayList<String> err = (ArrayList<String>) request.getAttribute("errMsg");
+                        if (err != null && err.size() > 0) {
+                    %>
+                    <div class="alert alert-danger">
+                        <ul>
+                            <%
+                                for (String error : err) {
+                            %>
+                            <li><%=error%></li>
+                                <%
+                                    }
+                                %>
+                        </ul>
+                    </div>
+                    <%
+                        }
+                    %>
                     <!-- content main container -->
 
                     <div class="main">
@@ -62,14 +110,14 @@
                                                 <div class="form-group">
                                                     <label for="input01" class="col-sm-4 control-label">Username</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="input01" name="staffName" required>
+                                                        <input type="text" class="form-control" id="input01" name="staffName" value="<%=wsStaffName%>" required>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label for="input02" class="col-sm-4 control-label">Email</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="input02" name="staffEmail" required>
+                                                        <input type="text" class="form-control" id="input02" name="staffEmail" value="<%=wsStaffEmail%>" required>
                                                     </div>
                                                 </div>
 
@@ -77,21 +125,21 @@
                                                 <div class="form-group">
                                                     <label for="input03" class="col-sm-4 control-label">Password</label>
                                                     <div class="col-sm-8">
-                                                        <input type="password" class="form-control" id="input03" name="password" required>
+                                                        <input type="password" class="form-control" id="input03" name="password" value="<%=password%>" required>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label for="input04" class="col-sm-4 control-label">Confirm Password</label>
                                                     <div class="col-sm-8">
-                                                        <input type="password" class="form-control" id="input04" name="confirmPassword" required>
+                                                        <input type="password" class="form-control" id="input04" name="confirmPassword" value="<%=confirmPassword%>" required>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label for="input05" class="col-sm-4 control-label">Handphone Number</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="input05" name="staffHpNo" required>
+                                                        <input type="text" class="form-control" id="input05" name="staffHpNo" value="<%=wsStaffHpNo%>" required>
                                                     </div>
                                                 </div>
 

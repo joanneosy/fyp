@@ -5,11 +5,17 @@
  */
 package servlet;
 
+import dao.ChatDAO;
+import dao.QuotationRequestDAO;
 import dao.WebUserDAO;
+import entity.Chat;
 import entity.WebUser;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -49,6 +55,7 @@ public class AuthenticateServlet extends HttpServlet {
             session.setAttribute("loggedInUser", user);
             int userType = user.getUserType();
             if (userType == 1) {
+                subscribeChats(user);
                 session.setAttribute("loggedInUserType", "Workshop");
                 response.sendRedirect("New_Request.jsp");
             } else if (userType == 2) {
@@ -68,51 +75,70 @@ public class AuthenticateServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(AuthenticateServlet.class.getName()).log(Level.SEVERE, null, ex);
+    protected void subscribeChats(WebUser user) throws ServletException, IOException, Exception {
+        String chatToken = user.getChatToken();
+        String token = user.getToken();
+        int staffID = user.getStaffId();
+        ChatDAO chatDAO = new ChatDAO();
+        HashMap<Integer, Chat> chatMap = chatDAO.getChatList(staffID, token);
+        Iterator it = chatMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            Chat chat = (Chat) pair.getValue();
+            
         }
-    }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(AuthenticateServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
+        // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+        /**
+         * Handles the HTTP <code>GET</code> method.
+         *
+         * @param request servlet request
+         * @param response servlet response
+         * @throws ServletException if a servlet-specific error occurs
+         * @throws IOException if an I/O error occurs
+         */
+        @Override
+        protected void doGet
+        (HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+            try {
+                processRequest(request, response);
+            } catch (Exception ex) {
+                Logger.getLogger(AuthenticateServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        /**
+         * Handles the HTTP <code>POST</code> method.
+         *
+         * @param request servlet request
+         * @param response servlet response
+         * @throws ServletException if a servlet-specific error occurs
+         * @throws IOException if an I/O error occurs
+         */
+        @Override
+        protected void doPost
+        (HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+            try {
+                processRequest(request, response);
+            } catch (Exception ex) {
+                Logger.getLogger(AuthenticateServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        /**
+         * Returns a short description of the servlet.
+         *
+         * @return a String containing servlet description
+         */
+        @Override
+        public String getServletInfo
+        
+            () {
         return "Short description";
-    }// </editor-fold>
+        }// </editor-fold>
 
-}
+    }

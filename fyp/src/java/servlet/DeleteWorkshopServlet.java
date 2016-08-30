@@ -48,11 +48,13 @@ public class DeleteWorkshopServlet extends HttpServlet {
         String errMsg = wDAO.deleteWorkshop(staffId, token, id);
         
         if (errMsg.equals("")) {
-            request.setAttribute("errMsg", "Workshop successfully deleted!");
-            RequestDispatcher view = request.getRequestDispatcher("ViewWorkshop.jsp");
-            view.forward(request, response);
+            session.setAttribute("success", "Workshop successfully deleted!");
+//            RequestDispatcher view = request.getRequestDispatcher("ViewWorkshop.jsp");
+//            view.forward(request, response);
+            response.sendRedirect("ViewWorkshop.jsp");
+            
         } else {
-            request.setAttribute("errMsg", errMsg);
+            request.setAttribute("fail", errMsg);
             RequestDispatcher view = request.getRequestDispatcher("ViewWorkshop.jsp");
             view.forward(request, response);
         }

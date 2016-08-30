@@ -49,15 +49,10 @@
                                         <!-- tile header -->
                                         <div class="tile-header">
                                             <h1><strong>Add</strong> Workshop</h1>
-                                            <%
-                                                ArrayList<String> errMsg = (ArrayList<String>) request.getAttribute("errMsg");
-                                                
-                                            %>
                                         </div>
                                         <!-- /tile header -->
                                         <div class="tile-body">
-                                            <%
-                                                String email = (String) request.getAttribute("email");
+                                            <%                                                String email = (String) request.getAttribute("email");
                                                 if (email == null || email.equals("null")) {
                                                     email = "";
                                                 }
@@ -206,25 +201,32 @@
                                                 String[] openCloseTimings = {mondayOpen, mondayClose, tuesdayOpen, tuesdayClose, wednesdayOpen, wednesdayClose, thursdayOpen, thursdayClose, fridayOpen, fridayClose, saturdayOpen, saturdayClose, sundayOpen, sundayClose, phOpen, phClose, phEveOpen, phEveClose};
 
                                             %>
-                                            <%if (errMsg != null) { %>   
+                                            <%                                                
+                                                ArrayList<String> msg = (ArrayList<String>) request.getAttribute("errMsg");
+                                                if (msg != null && msg.size() > 0) {
+                                            %>
                                             <div class="alert alert-danger">
-
-                                                <strong>Error</strong>
-                                                <%
-                                                    for (String error : errMsg) {
-                                                        out.println(error + " ");
-                                                    }
-                                                %>
-                                            </div>       
-                                            <%}%>
+                                                <ul>
+                                                    <%
+                                                        for (String error : msg) {
+                                                    %>
+                                                    <li><%=error%></li>
+                                                        <%
+                                                            }
+                                                        %>
+                                                </ul>
+                                            </div>
+                                            <%
+                                                }
+                                            %>
                                             <form class="form-horizontal" role="form" action="AddWorkshop" method="POST">
 
                                                 <div class="form-group">
                                                     <label for="input01" class="col-sm-2 control-label">Workshop Name</label>
                                                     <div class="col-sm-4">
-                                                        <input type="text" class="form-control" name="name" />
+                                                        <input type="text" class="form-control" name="name" value="<%=name%>" />
                                                     </div>
-                                                    
+
                                                     <label for="input02" class="col-sm-2 control-label">Contact Number</label>
                                                     <div class="col-sm-4">
                                                         <input type="number" class="form-control" id="input02" name="contact" value="<%=contact%>">

@@ -54,6 +54,11 @@
                             <i class="fa fa-caret-right"></i> Ongoing Service
                         </a>
                     </li>
+                    <li>
+                        <a href="Rejected_Request.jsp">
+                            <i class="fa fa-caret-right"></i> Rejected Request
+                        </a>
+                    </li>
                 </ul>
             </li>
             
@@ -83,6 +88,11 @@
             <li>
                 <a href="PageOffline.jsp">
                     <i class="fa fa-bar-chart-o"></i> Analytics
+                </a>
+            </li>
+            <li>
+                <a href="Schedule.jsp">
+                    <i class="fa fa-calendar"></i> Schedule
                 </a>
             </li>
 

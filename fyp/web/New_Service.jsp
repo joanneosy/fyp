@@ -43,6 +43,9 @@
             String token = user.getToken();
             int staffID = user.getStaffId();
             String chatToken = user.getChatToken();
+            String phone_number = user.getHandphone();
+            String user_name = user.getName();
+            String user_email = user.getEmail();
 //            HashMap<Integer, Integer> statusSize = qDAO.retrieveStatusSize(user.getStaffId(), user.getToken(), 0, 0, "", "requested_datetime", "desc");
 //            int newSize = statusSize.get(0);
 //            int sendFinalSize = statusSize.get(1);
@@ -107,7 +110,21 @@
                             <!-- /col 12 -->        
                         </div>
                         <!-- /row -->
-
+                        <%                            
+                            String success = (String) session.getAttribute("isSuccess");
+                            String fail = (String) session.getAttribute("fail");
+                            if (success != null && !(success.equals("null")) && success.length() > 0) {
+                        %>
+                            <div class="alert alert-success"><%=success%></div>
+                        <%
+                                session.setAttribute("isSuccess", "");
+                            } else if(fail != null && !(fail.equals("null")) && fail.length() > 0) {
+                        %>
+                            <div class="alert alert-danger"><%=fail%></div>
+                            <%
+                                session.setAttribute("fail", "");
+                        }
+                        %>
 
 
 
@@ -206,6 +223,10 @@
                                                 <%                                                    Workshop ws = wsDAO.retrieveWorkshop(user.getShopId(), user.getStaffId(), user.getToken());
                                                     int wsID = ws.getId();
                                                     int i = 1;
+                                                    String workshop_name = ws.getName();
+                                                    String categories = ws.getCategory();
+                                                    String brands_carried = ws.getBrandsCarried();
+
                                                     qDAO = new QuotationRequestDAO();
                                                     HashMap<Integer, QuotationRequest> qList = qDAO.retrieveAllQuotationRequests(user.getStaffId(), user.getToken(), 0, 5, "requested_datetime", "desc");
 
@@ -799,6 +820,7 @@
     <script type="text/javascript" src="js/modalEffects.js"></script> 
     <script data-require="realtime-framework@2.1.0" data-semver="2.1.0" src="//messaging-public.realtime.co/js/2.1.0/ortc.js"></script>
     <script type="text/javascript" src="js/chat.js"></script> 
+    <script type="text/javascript" src="js/intercom.js"></script>
 
 
 
@@ -909,68 +931,6 @@
             $('.bootstrap-datetimepicker-widget').css('top', newtop + 'px');
         });
     </script>
-    <!--        <script>
-                $(function () {
-    
-                    //check all checkboxes
-                    $('table thead input[type="checkbox"]').change(function () {
-                        $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', $(this).prop('checked'));
-                    });
-    
-                    // sortable table
-                    $('.table.table-sortable1 th.sortable').click(function () {
-                        var o = $(this).hasClass('sort-asc') ? 'sort-desc' : 'sort-asc';
-                        $(this).parents('table').find('th.sortable').removeClass('sort-asc').removeClass('sort-desc');
-                        $(this).addClass(o);
-                    });
-    
-                    //chosen select input
-                    $(".chosen-select").chosen({disable_search_threshold: 10});
-    
-                    //check toggling
-                    $('.check-toggler').on('click', function () {
-                        $(this).toggleClass('checked');
-                    });
-                });
-    
-            </script>-->
-    <script>
-        //        $(function(){
-        //            $('.table.table-sortable1 th.sortable').click(function () {
-        //                var o = $(this).hasClass('sort-asc') ? 'sort-desc' : 'sort-asc';
-        //                $(this).parents('table').find('th.sortable').removeClass('sort-asc').removeClass('sort-desc');
-        //                $(this).addClass(o);
-        //            });
-        //        });
-
-
-    </script>
-    <script>
-        $(document).ready(function ()
-        {
-            //        $("#myTable1").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable2").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable3").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable4").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable5").tablesorter({
-            //            sortList: [[0,0],[1,0]]
-            //        });
-            //        $("#myTable1").tablesorter();
-            //        $("#myTable2").tablesorter();
-            //        $("#myTable3").tablesorter();
-            //        $("#myTable4").tablesorter();
-            //        $("#myTable5").tablesorter();
-        }
-        );
-    </script>
     <script>
         //Script to load tab and data based on the href #
         $(window).load(function () {
@@ -1050,27 +1010,16 @@
 
         })(document);
     </script>
-    <script>
-        //    var acc = document.getElementsByClassName("accordion");
-        //    var i;
-        //
-        //    for (i = 0; i < acc.length; i++) {
-        //        acc[i].onclick = function () {
-        //            this.classList.toggle("active");
-        //            this.nextElementSibling.classList.toggle("show");
-        //        }
-        //    }
-    </script>
     <script type="text/javascript">
-        function displaymsg() {
-            var msg = '<%=session.getAttribute("isSuccess")%>';
-            if (msg != "null") {
-                //                function alertName(msg) {
-                alert(msg);
-                //                }
-            }
-        <%session.setAttribute("isSuccess", "null");%>
-        }
+//        function displaymsg() {
+//            var msg = '<%=session.getAttribute("isSuccess")%>';
+//            if (msg != "null") {
+//                //                function alertName(msg) {
+//                alert(msg);
+//                //                }
+//            }
+//        <%session.setAttribute("isSuccess", "null");%>
+//        }
     </script> 
     <!--<script type="text/javascript"> window.onload = alertName;</script>-->
     <script type="text/JavaScript">
@@ -1094,29 +1043,6 @@
 
     </script>
     <script>
-        //    $(document).ready(function () {
-        //        $(".tabpager").tabpager({
-        ////  maximum visible items
-        //            items: 5,
-        //// CSS class for tabbed content
-        //            contents: 'contents',
-        //// transition speed
-        //            time: 300,
-        //// text for previous button
-        //            previous: '&laquo;Prev',
-        //// text for next button
-        //            next: 'Next&raquo;',
-        //// initial tab
-        //            start: 1,
-        //// top or bottom
-        //            position: 'bottom',
-        //// scrollable
-        //            scroll: true
-        //        });
-        //    });
-
-    </script>
-    <script>
         $(document).ready(function () {
             $('#example').DataTable();
             $('#example2').DataTable();
@@ -1130,8 +1056,9 @@
     <script type="text/javascript">
         $(".date").each(function () {
             $(this).datetimepicker({
+                sideBySide: true,
                 format: 'YYYY-MM-DD HH:mm',
-                minDate: new Date()
+                minDate: new Date(),
             });
         });
     </script>
@@ -1252,5 +1179,8 @@
             }
             sendMsg(serviceId, wsName, wsId, staffId, token, topicID, firstMsg, msgInput);
         }
+    </script>
+    <script>
+        intercom("<%=user_name%>", "<%=user_email%>",<%=staffID%>, "<%=phone_number%>", "<%=workshop_name%>", "<%=categories%>", "<%=brands_carried%>");
     </script>
 </html>
